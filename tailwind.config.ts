@@ -68,6 +68,7 @@ export default {
           700: '#1A1F2C',
           800: '#16171D',
           900: '#0F1016',
+          950: '#080809',
         },
         sidebar: {
           DEFAULT: 'hsl(var(--sidebar-background))',

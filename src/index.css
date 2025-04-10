@@ -105,14 +105,14 @@
   }
 
   .nav-link {
-    @apply text-gray-700 hover:text-proval-500 transition-colors font-medium;
+    @apply text-gray-700 dark:text-gray-300 hover:text-proval-500 dark:hover:text-proval-300 transition-colors font-medium;
   }
 
   .sidebar-link {
-    @apply flex items-center space-x-3 text-gray-700 hover:text-proval-500 hover:bg-proval-50 rounded-lg p-3 transition-all;
+    @apply flex items-center space-x-3 text-gray-700 dark:text-gray-300 hover:text-proval-500 dark:hover:text-proval-300 hover:bg-proval-50 dark:hover:bg-gray-800 rounded-lg p-3 transition-all;
   }
 
   .sidebar-link.active {
-    @apply bg-proval-50 text-proval-500 font-medium;
+    @apply bg-proval-50 dark:bg-gray-800 text-proval-500 dark:text-proval-300 font-medium;
   }
 }

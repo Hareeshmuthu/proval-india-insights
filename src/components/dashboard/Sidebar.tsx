@@ -14,11 +14,19 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const Sidebar = () => {
   const [collapsed, setCollapsed] = useState(false);
+  const [user, setUser] = useState<any>(null);
   const location = useLocation();
+  
+  useEffect(() => {
+    const userData = localStorage.getItem('proval_user');
+    if (userData) {
+      setUser(JSON.parse(userData));
+    }
+  }, []);
   
   const menuItems = [
     {
@@ -64,20 +72,31 @@ const Sidebar = () => {
 
   return (
     <div className={cn(
-      "bg-white border-r h-screen transition-all duration-300 flex flex-col",
+      "bg-background border-r h-screen transition-all duration-300 flex flex-col",
       collapsed ? "w-[70px]" : "w-[240px]"
     )}>
       <div className="p-4 border-b flex items-center justify-between">
-        {!collapsed && (
-          <Link to="/dashboard" className="font-bold text-xl text-proval-500">
-            Proval
-          </Link>
+        {!collapsed ? (
+          <div className="flex items-center gap-2">
+            <img 
+              src="/lovable-uploads/3a0a34a0-af4c-4f86-bc48-cd1521bc531c.png" 
+              alt="Proval Logo" 
+              className="h-6 w-auto"
+            />
+            <span className="font-bold text-xl text-proval-500">Proval</span>
+          </div>
+        ) : (
+          <img 
+            src="/lovable-uploads/3a0a34a0-af4c-4f86-bc48-cd1521bc531c.png" 
+            alt="Proval Logo" 
+            className="h-6 w-auto mx-auto"
+          />
         )}
         <Button 
           variant="ghost" 
           size="icon" 
           onClick={toggleSidebar}
-          className="ml-auto"
+          className={collapsed ? "mx-auto" : "ml-auto"}
         >
           {collapsed ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
         </Button>
@@ -108,9 +127,9 @@ const Sidebar = () => {
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-crown"><path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7z"/><path d="M19 16v6H5v-6"/></svg>
           </Button>
         ) : (
-          <div className="bg-proval-50 rounded-lg p-4">
-            <p className="text-sm font-medium text-proval-600 mb-2">Upgrade to Pro</p>
-            <p className="text-xs text-gray-600 mb-3">
+          <div className="bg-proval-50 rounded-lg p-4 dark:bg-gray-800">
+            <p className="text-sm font-medium text-proval-600 dark:text-proval-300 mb-2">Upgrade to Pro</p>
+            <p className="text-xs text-gray-600 mb-3 dark:text-gray-400">
               Get access to advanced features and priority support.
             </p>
             <Button className="w-full bg-proval-500 hover:bg-proval-600">

@@ -1,22 +1,36 @@
 
-import { CheckCircle, FileText, TrendingUp } from "lucide-react";
+import { CheckCircle, FileText, TrendingUp, User } from "lucide-react";
 import Sidebar from "@/components/dashboard/Sidebar";
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
 import StatCard from "@/components/dashboard/StatCard";
 import ProjectsChart from "@/components/dashboard/ProjectsChart";
 import InvoiceStatusCard from "@/components/dashboard/InvoiceStatusCard";
 import RecentFilesTable from "@/components/dashboard/RecentFilesTable";
+import { useEffect, useState } from "react";
 
 const Dashboard = () => {
+  const [user, setUser] = useState<any>(null);
+
+  useEffect(() => {
+    const userData = localStorage.getItem('proval_user');
+    if (userData) {
+      setUser(JSON.parse(userData));
+    }
+  }, []);
+
   return (
-    <div className="flex h-screen overflow-hidden bg-gray-50">
+    <div className="flex h-screen overflow-hidden bg-background">
       <Sidebar />
       
       <div className="flex-1 flex flex-col overflow-hidden">
         <DashboardHeader />
         
         <main className="flex-1 overflow-y-auto p-6">
-          <h1 className="text-2xl font-bold text-gray-800 mb-6">Dashboard Overview</h1>
+          {user && (
+            <h1 className="text-2xl font-bold text-foreground mb-6">
+              Hello, {user.firstName} {user.lastName} 👋
+            </h1>
+          )}
           
           {/* Summary Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
