@@ -39,6 +39,20 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 const queryClient = new QueryClient();
 
 const App = () => {
+  useEffect(() => {
+    // Set dark mode by default for home page
+    const path = window.location.pathname;
+    if (path === "/" || path === "/signup" || path === "/login") {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("proval-theme", "dark");
+    } else {
+      const savedTheme = localStorage.getItem("proval-theme") as "light" | "dark" | null;
+      if (savedTheme) {
+        document.documentElement.classList.toggle("dark", savedTheme === "dark");
+      }
+    }
+  }, []);
+
   return (
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>

@@ -10,19 +10,30 @@ import { useEffect, useState } from "react";
 
 const Dashboard = () => {
   const [user, setUser] = useState<any>(null);
+  const [projects, setProjects] = useState<any[]>([]);
 
   useEffect(() => {
     const userData = localStorage.getItem('proval_user');
     if (userData) {
       setUser(JSON.parse(userData));
     }
+
+    // Get projects from localStorage
+    const storedProjects = localStorage.getItem('proval_projects');
+    if (storedProjects) {
+      setProjects(JSON.parse(storedProjects));
+    }
   }, []);
+
+  // Count completed and in-progress projects
+  const completedProjects = projects.filter(p => p.status === 'Completed').length;
+  const inProgressProjects = projects.filter(p => p.status === 'Pending' || p.status === 'In Progress').length;
 
   return (
     <div className="flex h-screen overflow-hidden bg-background">
       <Sidebar />
       
-      <div className="flex-1 flex flex-col overflow-hidden">
+      <div className="flex-1 flex flex-col overflow-hidden ml-[240px]">
         <DashboardHeader />
         
         <main className="flex-1 overflow-y-auto p-6">
@@ -36,13 +47,13 @@ const Dashboard = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
             <StatCard 
               title="Completed Projects" 
-              value="36"
+              value={completedProjects.toString()}
               icon={CheckCircle}
               trend={{ value: "12%", positive: true }}
             />
             <StatCard 
               title="In Progress" 
-              value="24"
+              value={inProgressProjects.toString()}
               icon={FileText}
               trend={{ value: "5%", positive: true }}
             />
@@ -56,7 +67,7 @@ const Dashboard = () => {
           
           {/* Charts Row */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-            <ProjectsChart />
+            <ProjectsChart projects={projects} />
             <InvoiceStatusCard />
           </div>
           

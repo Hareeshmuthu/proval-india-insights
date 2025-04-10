@@ -15,14 +15,42 @@ interface ProjectMapProps {
   latitude?: string;
   longitude?: string;
   onMarkerChange: (lat: string, lng: string) => void;
+  onAddressChange?: (address: string) => void; 
 }
 
-const ProjectMap = ({ latitude, longitude, onMarkerChange }: ProjectMapProps) => {
+const ProjectMap = ({ latitude, longitude, onMarkerChange, onAddressChange }: ProjectMapProps) => {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
   const marker = useRef<mapboxgl.Marker | null>(null);
   const [mapboxToken, setMapboxToken] = useState<string>(MAPBOX_TOKEN);
   const { toast } = useToast();
+
+  // Function to get address from coordinates (reverse geocoding)
+  const getAddressFromCoordinates = async (lng: number, lat: number) => {
+    try {
+      const response = await fetch(
+        `https://api.mapbox.com/geocoding/v5/mapbox.places/${lng},${lat}.json?access_token=${mapboxToken}`
+      );
+      
+      const data = await response.json();
+      
+      if (data && data.features && data.features.length > 0) {
+        const addressFeature = data.features[0];
+        const placeName = addressFeature.place_name;
+        
+        // Update address if callback provided
+        if (onAddressChange) {
+          onAddressChange(placeName);
+        }
+        
+        return placeName;
+      }
+    } catch (error) {
+      console.error("Error fetching address:", error);
+    }
+    
+    return "";
+  };
 
   useEffect(() => {
     if (!mapContainer.current) return;
@@ -52,17 +80,20 @@ const ProjectMap = ({ latitude, longitude, onMarkerChange }: ProjectMapProps) =>
         map.current.addControl(new mapboxgl.NavigationControl(), 'top-right');
         
         // Add a marker on click
-        map.current.on('click', (e) => {
+        map.current.on('click', async (e) => {
           if (marker.current) marker.current.remove();
           
           marker.current = new mapboxgl.Marker()
             .setLngLat(e.lngLat)
             .addTo(map.current!);
           
-          onMarkerChange(
-            e.lngLat.lat.toFixed(6),
-            e.lngLat.lng.toFixed(6)
-          );
+          const lat = e.lngLat.lat.toFixed(6);
+          const lng = e.lngLat.lng.toFixed(6);
+          
+          onMarkerChange(lat, lng);
+          
+          // Get address from coordinates
+          await getAddressFromCoordinates(parseFloat(lng), parseFloat(lat));
         });
       } catch (error) {
         console.error("Error initializing map:", error);
@@ -92,6 +123,9 @@ const ProjectMap = ({ latitude, longitude, onMarkerChange }: ProjectMapProps) =>
         center: [lng, lat],
         zoom: 14
       });
+      
+      // Get address from coordinates
+      getAddressFromCoordinates(lng, lat);
     }
 
     // Cleanup
@@ -101,7 +135,7 @@ const ProjectMap = ({ latitude, longitude, onMarkerChange }: ProjectMapProps) =>
         map.current = null;
       }
     };
-  }, [latitude, longitude, mapboxToken, onMarkerChange, toast]);
+  }, [latitude, longitude, mapboxToken, onMarkerChange, onAddressChange, toast]);
 
   const handleTokenSubmit = (e: React.FormEvent) => {
     e.preventDefault();

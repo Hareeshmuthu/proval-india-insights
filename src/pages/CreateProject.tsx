@@ -112,6 +112,13 @@ const CreateProject = () => {
     });
   };
   
+  const handleAddressChange = (address: string) => {
+    setFormData({
+      ...formData,
+      location: address
+    });
+  };
+  
   const handleSubmit = (e: React.FormEvent, andNext: boolean = false) => {
     e.preventDefault();
     
@@ -129,14 +136,16 @@ const CreateProject = () => {
     const storedProjects = localStorage.getItem('proval_projects');
     const projects = storedProjects ? JSON.parse(storedProjects) : [];
     
-    projects.push({
+    const newProject = {
       ...formData,
       id: nextProjectNumber,
       enquiryDate: format(formData.enquiryDate, 'yyyy-MM-dd'),
       expectedReportDate: format(formData.expectedReportDate, 'yyyy-MM-dd'),
       status: 'Pending',
       createdAt: new Date().toISOString()
-    });
+    };
+    
+    projects.push(newProject);
     
     localStorage.setItem('proval_projects', JSON.stringify(projects));
     
@@ -338,7 +347,7 @@ const CreateProject = () => {
                         name="location"
                         value={formData.location}
                         onChange={handleInputChange}
-                        placeholder="Enter property location"
+                        placeholder="Property Address"
                         className="mb-2"
                       />
                       <div className="grid grid-cols-2 gap-2">
@@ -364,7 +373,8 @@ const CreateProject = () => {
                   <ProjectMap 
                     latitude={formData.latitude} 
                     longitude={formData.longitude}
-                    onMarkerChange={handleMarkerChange} 
+                    onMarkerChange={handleMarkerChange}
+                    onAddressChange={handleAddressChange}
                   />
                 </div>
                 

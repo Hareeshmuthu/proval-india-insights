@@ -2,33 +2,48 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 // Sample data
-const currentMonthData = [
-  { name: "Received", value: 65, color: "#6E59A5" },
-  { name: "Yet to Come", value: 35, color: "#E5DEFF" },
-];
+const monthsData = {
+  Jan: [{ name: "Received", value: 65, color: "#6E59A5" }, { name: "Yet to Come", value: 35, color: "#E5DEFF" }],
+  Feb: [{ name: "Received", value: 70, color: "#6E59A5" }, { name: "Yet to Come", value: 30, color: "#E5DEFF" }],
+  Mar: [{ name: "Received", value: 75, color: "#6E59A5" }, { name: "Yet to Come", value: 25, color: "#E5DEFF" }],
+  Apr: [{ name: "Received", value: 60, color: "#6E59A5" }, { name: "Yet to Come", value: 40, color: "#E5DEFF" }],
+  May: [{ name: "Received", value: 55, color: "#6E59A5" }, { name: "Yet to Come", value: 45, color: "#E5DEFF" }],
+  Jun: [{ name: "Received", value: 80, color: "#6E59A5" }, { name: "Yet to Come", value: 20, color: "#E5DEFF" }],
+  Jul: [{ name: "Received", value: 85, color: "#6E59A5" }, { name: "Yet to Come", value: 15, color: "#E5DEFF" }],
+  Aug: [{ name: "Received", value: 90, color: "#6E59A5" }, { name: "Yet to Come", value: 10, color: "#E5DEFF" }],
+  Sep: [{ name: "Received", value: 75, color: "#6E59A5" }, { name: "Yet to Come", value: 25, color: "#E5DEFF" }],
+  Oct: [{ name: "Received", value: 65, color: "#6E59A5" }, { name: "Yet to Come", value: 35, color: "#E5DEFF" }],
+  Nov: [{ name: "Received", value: 60, color: "#6E59A5" }, { name: "Yet to Come", value: 40, color: "#E5DEFF" }],
+  Dec: [{ name: "Received", value: 70, color: "#6E59A5" }, { name: "Yet to Come", value: 30, color: "#E5DEFF" }]
+};
 
-const previousMonthData = [
-  { name: "Received", value: 70, color: "#6E59A5" },
-  { name: "Yet to Come", value: 30, color: "#E5DEFF" },
-];
+const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 const InvoiceStatusCard = () => {
-  const [showCurrentMonth, setShowCurrentMonth] = useState(true);
-  const data = showCurrentMonth ? currentMonthData : previousMonthData;
+  const currentMonth = new Date().toLocaleString('default', { month: 'short' });
+  const [selectedMonth, setSelectedMonth] = useState(currentMonth);
+  const data = monthsData[selectedMonth as keyof typeof monthsData];
   
   return (
     <div className="card-stats">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-base font-semibold text-gray-800">Invoice Status</h3>
-        <Button 
-          variant="outline" 
-          size="sm"
-          onClick={() => setShowCurrentMonth(!showCurrentMonth)}
-        >
-          {showCurrentMonth ? "Previous Month" : "Current Month"}
-        </Button>
+        <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">Invoice Status</h3>
+        <div className="flex items-center space-x-2">
+          <span className="text-sm text-gray-500 dark:text-gray-400">Month:</span>
+          <Select value={selectedMonth} onValueChange={setSelectedMonth}>
+            <SelectTrigger className="w-[100px]">
+              <SelectValue placeholder="Select month" />
+            </SelectTrigger>
+            <SelectContent>
+              {months.map(month => (
+                <SelectItem key={month} value={month}>{month}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
       </div>
       
       <div className="flex flex-col md:flex-row items-center justify-center h-64">
@@ -69,7 +84,7 @@ const InvoiceStatusCard = () => {
                   className="w-3 h-3 rounded-full mr-2" 
                   style={{ backgroundColor: item.color }}
                 ></div>
-                <span className="text-sm text-gray-700">{item.name}</span>
+                <span className="text-sm text-gray-700 dark:text-gray-300">{item.name}</span>
               </div>
               <span className="font-medium">{item.value}%</span>
             </div>

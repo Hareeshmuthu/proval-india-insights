@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const location = useLocation();
+  const isHomePage = location.pathname === "/";
 
   useEffect(() => {
     const loggedIn = localStorage.getItem('proval_logged_in') === 'true';
@@ -47,7 +48,7 @@ const Navbar = () => {
 
           {/* Auth Buttons */}
           <div className="flex items-center gap-4">
-            <ThemeToggle />
+            {!isHomePage && <ThemeToggle />}
             
             {isLoggedIn ? (
               <>
