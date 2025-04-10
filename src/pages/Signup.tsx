@@ -115,9 +115,9 @@ const Signup = () => {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle className="text-2xl">Create your Proval account</DialogTitle>
+            <DialogTitle className="text-2xl">Create your <span className="text-red-600">Proval</span> account</DialogTitle>
             <DialogDescription>
-              Fill in the form below to get started with Proval.
+              Fill in the form below to get started with <span className="text-red-600 font-bold">Proval</span>.
             </DialogDescription>
           </DialogHeader>
           

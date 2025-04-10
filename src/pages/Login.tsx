@@ -99,7 +99,7 @@ const Login = () => {
         <div className="w-full max-w-md">
           <div className="bg-card rounded-lg shadow-lg p-6 border">
             <div className="text-center mb-6">
-              <h1 className="text-2xl font-bold">Login to Proval</h1>
+              <h1 className="text-2xl font-bold">Login to <span className="text-red-600">Proval</span></h1>
               <p className="text-muted-foreground">Enter your credentials to access your account</p>
             </div>
             

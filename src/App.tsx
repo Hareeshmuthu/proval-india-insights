@@ -9,6 +9,8 @@ import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import CreateProject from "./pages/CreateProject";
+import ProjectFiles from "./pages/ProjectFiles";
 import { useEffect, useState } from "react";
 import { QueryClient } from "@tanstack/react-query";
 
@@ -48,10 +50,26 @@ const App = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route 
-              path="/dashboard/*" 
+              path="/dashboard" 
               element={
                 <ProtectedRoute>
                   <Dashboard />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/dashboard/create" 
+              element={
+                <ProtectedRoute>
+                  <CreateProject />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/dashboard/files" 
+              element={
+                <ProtectedRoute>
+                  <ProjectFiles />
                 </ProtectedRoute>
               } 
             />

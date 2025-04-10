@@ -27,12 +27,12 @@ const Navbar = () => {
           <div className="flex items-center gap-6">
             <Link to="/" className="flex items-center gap-2">
               <img 
-                src="/lovable-uploads/69f351dd-a9a7-40f9-b907-653b287b76aa.png" 
+                src="/lovable-uploads/9ea82532-ad63-47fb-9ac0-89f899471da7.png" 
                 alt="Proval Logo" 
                 className="h-8 w-auto"
               />
               <div className="flex flex-col items-start">
-                <span className="font-bold text-2xl text-proval-500">Proval</span>
+                <span className="font-bold text-2xl text-red-600">Proval</span>
                 <span className="text-[10px] text-red-600 font-italic -mt-1">Fast and Secured</span>
               </div>
             </Link>

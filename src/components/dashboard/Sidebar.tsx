@@ -72,22 +72,22 @@ const Sidebar = () => {
 
   return (
     <div className={cn(
-      "bg-background border-r h-screen transition-all duration-300 flex flex-col",
+      "bg-background border-r h-screen transition-all duration-300 flex flex-col fixed",
       collapsed ? "w-[70px]" : "w-[240px]"
     )}>
       <div className="p-4 border-b flex items-center justify-between">
         {!collapsed ? (
           <div className="flex items-center gap-2">
             <img 
-              src="/lovable-uploads/3a0a34a0-af4c-4f86-bc48-cd1521bc531c.png" 
+              src="/lovable-uploads/9ea82532-ad63-47fb-9ac0-89f899471da7.png" 
               alt="Proval Logo" 
               className="h-6 w-auto"
             />
-            <span className="font-bold text-xl text-proval-500">Proval</span>
+            <span className="font-bold text-xl text-red-600">Proval</span>
           </div>
         ) : (
           <img 
-            src="/lovable-uploads/3a0a34a0-af4c-4f86-bc48-cd1521bc531c.png" 
+            src="/lovable-uploads/9ea82532-ad63-47fb-9ac0-89f899471da7.png" 
             alt="Proval Logo" 
             className="h-6 w-auto mx-auto"
           />
@@ -128,7 +128,7 @@ const Sidebar = () => {
           </Button>
         ) : (
           <div className="bg-proval-50 rounded-lg p-4 dark:bg-gray-800">
-            <p className="text-sm font-medium text-proval-600 dark:text-proval-300 mb-2">Upgrade to Pro</p>
+            <p className="text-sm font-medium text-red-600 dark:text-red-300 mb-2">Upgrade to Pro</p>
             <p className="text-xs text-gray-600 mb-3 dark:text-gray-400">
               Get access to advanced features and priority support.
             </p>
