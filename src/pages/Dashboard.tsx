@@ -1,5 +1,5 @@
 
-import { CheckCircle, FileText, TrendingUp, User } from "lucide-react";
+import { CheckCircle, FileText, TrendingUp } from "lucide-react";
 import Sidebar from "@/components/dashboard/Sidebar";
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
 import StatCard from "@/components/dashboard/StatCard";
@@ -67,7 +67,12 @@ const Dashboard = () => {
           
           {/* Charts Row */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-            <ProjectsChart projects={projects} />
+            <div className="card-stats">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">Projects Overview</h3>
+              </div>
+              <ProjectsChart projects={projects} />
+            </div>
             <InvoiceStatusCard />
           </div>
           
