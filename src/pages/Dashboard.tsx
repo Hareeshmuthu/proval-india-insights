@@ -65,17 +65,15 @@ const Dashboard = () => {
             />
           </div>
           
-          {/* Charts Row - Rearranged */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-6">
-            <InvoiceStatusCard />
-            <div className="lg:col-span-6">
-              <div className="card-stats">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">Projects Overview</h3>
-                </div>
-                <ProjectsChart projects={projects} />
+          {/* Charts Row */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <div className="card-stats">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">Projects Overview</h3>
               </div>
+              <ProjectsChart projects={projects} />
             </div>
+            <InvoiceStatusCard />
           </div>
           
           {/* Recent Files Table */}
