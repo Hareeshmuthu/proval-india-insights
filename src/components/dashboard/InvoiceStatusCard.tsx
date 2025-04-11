@@ -1,156 +1,165 @@
 
 import { useState } from "react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/components/ui/tabs";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, TooltipProps } from "recharts";
-import { NameType, ValueType } from "recharts/types/component/DefaultTooltipContent";
+import { Button } from "@/components/ui/button";
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Calendar as CalendarIcon } from "lucide-react";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
+import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 
-// Define type for year keys
-type YearKey = "2023" | "2024" | "2025";
-
-// Define the type for invoice data
-interface InvoiceData {
-  name: string;
-  value: number;
-  amount: string;
-  color: string;
-}
-
-// Sample data with monthly invoices for different years
-const invoiceData: Record<YearKey, InvoiceData[]> = {
-  "2023": [
-    { name: "Jan", value: 45, amount: "₹12,500", color: "#8884d8" },
-    { name: "Feb", value: 52, amount: "₹14,200", color: "#82ca9d" },
-    { name: "Mar", value: 48, amount: "₹13,100", color: "#ffc658" },
-    { name: "Apr", value: 61, amount: "₹16,800", color: "#8dd1e1" },
-    { name: "May", value: 55, amount: "₹15,200", color: "#a4de6c" },
-    { name: "Jun", value: 67, amount: "₹18,500", color: "#d0ed57" },
-    { name: "Jul", value: 70, amount: "₹19,300", color: "#8884d8" },
-    { name: "Aug", value: 75, amount: "₹20,700", color: "#82ca9d" },
-    { name: "Sep", value: 68, amount: "₹18,800", color: "#ffc658" },
-    { name: "Oct", value: 82, amount: "₹22,600", color: "#8dd1e1" },
-    { name: "Nov", value: 78, amount: "₹21,500", color: "#a4de6c" },
-    { name: "Dec", value: 91, amount: "₹25,100", color: "#d0ed57" },
-  ],
-  "2024": [
-    { name: "Jan", value: 65, amount: "₹17,900", color: "#8884d8" },
-    { name: "Feb", value: 59, amount: "₹16,200", color: "#82ca9d" },
-    { name: "Mar", value: 80, amount: "₹22,000", color: "#ffc658" },
-    { name: "Apr", value: 71, amount: "₹19,500", color: "#8dd1e1" },
-    { name: "May", value: 56, amount: "₹15,400", color: "#a4de6c" },
-    { name: "Jun", value: 55, amount: "₹15,100", color: "#d0ed57" },
-    { name: "Jul", value: 40, amount: "₹11,000", color: "#8884d8" },
-    { name: "Aug", value: 45, amount: "₹12,400", color: "#82ca9d" },
-    { name: "Sep", value: 48, amount: "₹13,200", color: "#ffc658" },
-    { name: "Oct", value: 51, amount: "₹14,000", color: "#8dd1e1" },
-    { name: "Nov", value: 65, amount: "₹17,900", color: "#a4de6c" },
-    { name: "Dec", value: 78, amount: "₹21,500", color: "#d0ed57" },
-  ],
-  "2025": [
-    { name: "Jan", value: 85, amount: "₹23,400", color: "#8884d8" },
-    { name: "Feb", value: 79, amount: "₹21,700", color: "#82ca9d" },
-    { name: "Mar", value: 92, amount: "₹25,300", color: "#ffc658" },
-    { name: "Apr", value: 86, amount: "₹23,700", color: "#8dd1e1" },
-    { name: "May", value: 99, amount: "₹27,300", color: "#a4de6c" },
-    { name: "Jun", value: 88, amount: "₹24,200", color: "#d0ed57" },
-    { name: "Jul", value: 90, amount: "₹24,800", color: "#8884d8" },
-    { name: "Aug", value: 85, amount: "₹23,400", color: "#82ca9d" },
-    { name: "Sep", value: 72, amount: "₹19,800", color: "#ffc658" },
-    { name: "Oct", value: 71, amount: "₹19,500", color: "#8dd1e1" },
-    { name: "Nov", value: 80, amount: "₹22,000", color: "#a4de6c" },
-    { name: "Dec", value: 100, amount: "₹27,500", color: "#d0ed57" },
-  ],
-};
-
-// Custom tooltip component for the chart
-const CustomTooltip = ({
-  active,
-  payload,
-  label,
-}: TooltipProps<ValueType, NameType>) => {
-  if (active && payload && payload.length) {
-    const data = payload[0].payload as InvoiceData;
-    
-    return (
-      <div className="p-4 bg-white dark:bg-gray-800 rounded-md shadow-md border border-gray-200 dark:border-gray-700">
-        <p className="font-medium">{label}</p>
-        <p className="text-sm text-gray-500 dark:text-gray-400">
-          {data.value}% completed
-        </p>
-        <p className="text-sm font-medium">{data.amount}</p>
-      </div>
-    );
+// Sample data
+const yearData = {
+  2023: {
+    Jan: [{ name: "Received", value: 65, amount: "₹32,500" }, { name: "Yet to Come", value: 35, amount: "₹17,500" }],
+    Feb: [{ name: "Received", value: 70, amount: "₹35,000" }, { name: "Yet to Come", value: 30, amount: "₹15,000" }],
+    Mar: [{ name: "Received", value: 75, amount: "₹37,500" }, { name: "Yet to Come", value: 25, amount: "₹12,500" }],
+    Apr: [{ name: "Received", value: 60, amount: "₹30,000" }, { name: "Yet to Come", value: 40, amount: "₹20,000" }],
+    May: [{ name: "Received", value: 55, amount: "₹27,500" }, { name: "Yet to Come", value: 45, amount: "₹22,500" }],
+    Jun: [{ name: "Received", value: 80, amount: "₹40,000" }, { name: "Yet to Come", value: 20, amount: "₹10,000" }],
+    Jul: [{ name: "Received", value: 85, amount: "₹42,500" }, { name: "Yet to Come", value: 15, amount: "₹7,500" }],
+    Aug: [{ name: "Received", value: 90, amount: "₹45,000" }, { name: "Yet to Come", value: 10, amount: "₹5,000" }],
+    Sep: [{ name: "Received", value: 75, amount: "₹37,500" }, { name: "Yet to Come", value: 25, amount: "₹12,500" }],
+    Oct: [{ name: "Received", value: 65, amount: "₹32,500" }, { name: "Yet to Come", value: 35, amount: "₹17,500" }],
+    Nov: [{ name: "Received", value: 60, amount: "₹30,000" }, { name: "Yet to Come", value: 40, amount: "₹20,000" }],
+    Dec: [{ name: "Received", value: 70, amount: "₹35,000" }, { name: "Yet to Come", value: 30, amount: "₹15,000" }]
+  },
+  2024: {
+    Jan: [{ name: "Received", value: 70, amount: "₹35,000" }, { name: "Yet to Come", value: 30, amount: "₹15,000" }],
+    Feb: [{ name: "Received", value: 75, amount: "₹37,500" }, { name: "Yet to Come", value: 25, amount: "₹12,500" }],
+    Mar: [{ name: "Received", value: 80, amount: "₹40,000" }, { name: "Yet to Come", value: 20, amount: "₹10,000" }],
+    Apr: [{ name: "Received", value: 85, amount: "₹42,500" }, { name: "Yet to Come", value: 15, amount: "₹7,500" }],
+    May: [{ name: "Received", value: 90, amount: "₹45,000" }, { name: "Yet to Come", value: 10, amount: "₹5,000" }],
+    Jun: [{ name: "Received", value: 80, amount: "₹40,000" }, { name: "Yet to Come", value: 20, amount: "₹10,000" }],
+    Jul: [{ name: "Received", value: 75, amount: "₹37,500" }, { name: "Yet to Come", value: 25, amount: "₹12,500" }],
+    Aug: [{ name: "Received", value: 85, amount: "₹42,500" }, { name: "Yet to Come", value: 15, amount: "₹7,500" }],
+    Sep: [{ name: "Received", value: 80, amount: "₹40,000" }, { name: "Yet to Come", value: 20, amount: "₹10,000" }],
+    Oct: [{ name: "Received", value: 75, amount: "₹37,500" }, { name: "Yet to Come", value: 25, amount: "₹12,500" }],
+    Nov: [{ name: "Received", value: 70, amount: "₹35,000" }, { name: "Yet to Come", value: 30, amount: "₹15,000" }],
+    Dec: [{ name: "Received", value: 80, amount: "₹40,000" }, { name: "Yet to Come", value: 20, amount: "₹10,000" }]
+  },
+  2025: {
+    Jan: [{ name: "Received", value: 90, amount: "₹45,000" }, { name: "Yet to Come", value: 10, amount: "₹5,000" }],
+    Feb: [{ name: "Received", value: 85, amount: "₹42,500" }, { name: "Yet to Come", value: 15, amount: "₹7,500" }],
+    Mar: [{ name: "Received", value: 80, amount: "₹40,000" }, { name: "Yet to Come", value: 20, amount: "₹10,000" }],
+    Apr: [{ name: "Received", value: 75, amount: "₹37,500" }, { name: "Yet to Come", value: 25, amount: "₹12,500" }],
+    May: [{ name: "Received", value: 70, amount: "₹35,000" }, { name: "Yet to Come", value: 30, amount: "₹15,000" }],
+    Jun: [{ name: "Received", value: 65, amount: "₹32,500" }, { name: "Yet to Come", value: 35, amount: "₹17,500" }],
+    Jul: [{ name: "Received", value: 60, amount: "₹30,000" }, { name: "Yet to Come", value: 40, amount: "₹20,000" }],
+    Aug: [{ name: "Received", value: 65, amount: "₹32,500" }, { name: "Yet to Come", value: 35, amount: "₹17,500" }],
+    Sep: [{ name: "Received", value: 70, amount: "₹35,000" }, { name: "Yet to Come", value: 30, amount: "₹15,000" }],
+    Oct: [{ name: "Received", value: 75, amount: "₹37,500" }, { name: "Yet to Come", value: 25, amount: "₹12,500" }],
+    Nov: [{ name: "Received", value: 80, amount: "₹40,000" }, { name: "Yet to Come", value: 20, amount: "₹10,000" }],
+    Dec: [{ name: "Received", value: 85, amount: "₹42,500" }, { name: "Yet to Come", value: 15, amount: "₹7,500" }]
   }
-
-  return null;
 };
 
-export default function InvoiceStatusCard() {
-  const currentYear = new Date().getFullYear().toString() as YearKey;
-  const [year, setYear] = useState<YearKey>(currentYear);
+const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
+const InvoiceStatusCard = () => {
+  const currentYear = new Date().getFullYear();
+  const currentMonth = new Date().toLocaleString('default', { month: 'short' });
+  
+  const [selectedYear, setSelectedYear] = useState(currentYear.toString());
+  const [selectedMonth, setSelectedMonth] = useState(currentMonth);
+  const [date, setDate] = useState<Date | undefined>(new Date());
+  
+  const yearOptions = Object.keys(yearData);
+  const data = yearData[selectedYear as keyof typeof yearData][selectedMonth as keyof (typeof yearData)[keyof typeof yearData]];
+  
+  const handleDateSelect = (selected: Date | undefined) => {
+    if (selected) {
+      setDate(selected);
+      const year = selected.getFullYear().toString();
+      if (yearOptions.includes(year)) {
+        setSelectedYear(year);
+        setSelectedMonth(format(selected, 'MMM'));
+      }
+    }
+  };
+  
   return (
-    <Card className="col-span-6">
-      <CardHeader>
-        <CardTitle>Invoice Status</CardTitle>
-        <CardDescription>
-          Monthly completion percentage and payments.
-        </CardDescription>
-        <Tabs defaultValue={year} className="w-full" onValueChange={(value) => setYear(value as YearKey)}>
-          <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="2023">2023</TabsTrigger>
-            <TabsTrigger value="2024">2024</TabsTrigger>
-            <TabsTrigger value="2025">2025</TabsTrigger>
-          </TabsList>
-          {Object.keys(invoiceData).map((yearKey) => (
-            <TabsContent key={yearKey} value={yearKey} className="space-y-4">
-              <div className="h-[300px] mt-4">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart
-                    data={invoiceData[yearKey as YearKey]}
-                    margin={{ top: 10, right: 10, left: 10, bottom: 20 }}
-                  >
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                    <XAxis dataKey="name" />
-                    <YAxis 
-                      tickFormatter={(value) => `${value}%`}
-                      domain={[0, 100]}
-                    />
-                    <Tooltip content={<CustomTooltip />} />
-                    <Bar dataKey="value" fill="#8884d8" />
-                  </BarChart>
-                </ResponsiveContainer>
+    <div className="card-stats">
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">Invoice Status</h3>
+        <div className="flex items-center space-x-2">
+          <span className="text-sm text-gray-500 dark:text-gray-400">Date:</span>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                className={cn("w-[180px] justify-start text-left font-normal")}
+              >
+                <CalendarIcon className="mr-2 h-4 w-4" />
+                {date ? format(date, "MMMM yyyy") : <span>Pick a date</span>}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0">
+              <Calendar
+                mode="single"
+                selected={date}
+                onSelect={handleDateSelect}
+                initialFocus
+              />
+            </PopoverContent>
+          </Popover>
+        </div>
+      </div>
+      
+      <div className="flex flex-col md:flex-row items-center justify-center h-64">
+        <div className="w-full md:w-1/2 h-full">
+          <ResponsiveContainer width="100%" height="100%">
+            <PieChart>
+              <Pie
+                data={data}
+                cx="50%"
+                cy="50%"
+                innerRadius={60}
+                outerRadius={80}
+                paddingAngle={5}
+                dataKey="value"
+              >
+                {data.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={entry.color || (index === 0 ? "#6E59A5" : "#E5DEFF")} />
+                ))}
+              </Pie>
+              <Tooltip 
+                contentStyle={{ 
+                  backgroundColor: "#fff", 
+                  border: "1px solid #e2e8f0",
+                  borderRadius: "0.5rem",
+                  boxShadow: "0 2px 5px rgba(0,0,0,0.1)"
+                }} 
+                formatter={(value, name, props) => {
+                  const entry = data[props.dataKey === "value" ? props.index : 0];
+                  return [`${value}% (${entry.amount})`, name];
+                }}
+              />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
+        
+        <div className="w-full md:w-1/2 flex flex-col space-y-3 mt-4 md:mt-0">
+          {data.map((item, index) => (
+            <div key={index} className="flex items-center justify-between p-2 rounded bg-gray-50 dark:bg-gray-800">
+              <div className="flex items-center">
+                <div 
+                  className="w-3 h-3 rounded-full mr-2" 
+                  style={{ backgroundColor: item.color || (index === 0 ? "#6E59A5" : "#E5DEFF") }}
+                ></div>
+                <span className="text-sm text-gray-700 dark:text-gray-300">{item.name}</span>
               </div>
-            </TabsContent>
+              <div className="flex flex-col items-end">
+                <span className="font-medium">{item.value}%</span>
+                <span className="text-xs text-gray-500">{item.amount}</span>
+              </div>
+            </div>
           ))}
-        </Tabs>
-      </CardHeader>
-      <CardContent className="grid grid-cols-3 gap-4">
-        <div className="space-y-1">
-          <p className="text-xs text-muted-foreground">Completed</p>
-          <p className="text-xl font-bold">62%</p>
         </div>
-        <div className="space-y-1">
-          <p className="text-xs text-muted-foreground">Pending</p>
-          <p className="text-xl font-bold">38%</p>
-        </div>
-        <div className="space-y-1">
-          <p className="text-xs text-muted-foreground">Total Value</p>
-          <p className="text-xl font-bold">₹208,720</p>
-        </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
-}
+};
+
+export default InvoiceStatusCard;
