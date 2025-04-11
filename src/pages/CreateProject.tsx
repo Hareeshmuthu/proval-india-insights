@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { format, addDays } from "date-fns";
@@ -51,14 +50,11 @@ const CreateProject = () => {
   });
   
   useEffect(() => {
-    // Get user data from localStorage
     const userData = localStorage.getItem('proval_user');
     if (userData) {
       setUser(JSON.parse(userData));
     }
     
-    // In real app, fetch the next project number from backend
-    // For now, use 1 as default or increment based on localStorage
     const storedProjects = localStorage.getItem('proval_projects');
     if (storedProjects) {
       const projects = JSON.parse(storedProjects);
@@ -122,7 +118,6 @@ const CreateProject = () => {
   const handleSubmit = (e: React.FormEvent, andNext: boolean = false) => {
     e.preventDefault();
     
-    // Validate form
     if (!formData.customerName || !formData.bankName || !formData.propertyType) {
       toast({
         title: "Missing required fields",
@@ -132,7 +127,6 @@ const CreateProject = () => {
       return;
     }
     
-    // Save to localStorage (in real app, this would be an API call)
     const storedProjects = localStorage.getItem('proval_projects');
     const projects = storedProjects ? JSON.parse(storedProjects) : [];
     
@@ -154,8 +148,12 @@ const CreateProject = () => {
       description: `Project #${nextProjectNumber} has been created successfully.`
     });
     
+    if (formData.bankName === "SBI" && formData.propertyType === "Apartment Flat") {
+      navigate(`/dashboard/sbi-apartment-form/${nextProjectNumber}`);
+      return;
+    }
+    
     if (andNext) {
-      // Reset form for next entry
       setNextProjectNumber(prev => prev + 1);
       setFormData({
         projectNumber: nextProjectNumber + 1,
@@ -172,7 +170,6 @@ const CreateProject = () => {
       });
       setShowPvr(false);
     } else {
-      // Navigate to projects page
       navigate("/dashboard/files");
     }
   };
@@ -189,7 +186,6 @@ const CreateProject = () => {
         <DashboardHeader />
         
         <main className="flex-1 overflow-y-auto p-6">
-          {/* Header with greeting */}
           <div className="flex justify-between items-center mb-8">
             <h1 className="text-2xl font-bold text-foreground">
               Hey {user?.firstName || 'there'}! Time for a new project.
@@ -199,11 +195,9 @@ const CreateProject = () => {
             </Button>
           </div>
           
-          {/* Project Form */}
           <div className="bg-card border rounded-lg shadow-sm p-6">
             <form onSubmit={(e) => handleSubmit(e, false)}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                {/* Project Number */}
                 <div className="space-y-2">
                   <Label htmlFor="projectNumber">Project Number</Label>
                   <Input
@@ -215,7 +209,6 @@ const CreateProject = () => {
                   />
                 </div>
                 
-                {/* Enquiry Date */}
                 <div className="space-y-2">
                   <Label htmlFor="enquiryDate">Enquiry Date</Label>
                   <Popover>
@@ -240,7 +233,6 @@ const CreateProject = () => {
                   </Popover>
                 </div>
                 
-                {/* Expected Report Date */}
                 <div className="space-y-2">
                   <Label htmlFor="expectedReportDate">Expected Report Date</Label>
                   <Popover>
@@ -265,7 +257,6 @@ const CreateProject = () => {
                   </Popover>
                 </div>
                 
-                {/* Customer Name */}
                 <div className="space-y-2">
                   <Label htmlFor="customerName">Customer Name *</Label>
                   <Input
@@ -278,7 +269,6 @@ const CreateProject = () => {
                   />
                 </div>
                 
-                {/* Bank Name */}
                 <div className="space-y-2">
                   <Label htmlFor="bankName">Bank Name *</Label>
                   <Select 
@@ -297,7 +287,6 @@ const CreateProject = () => {
                   </Select>
                 </div>
                 
-                {/* PVR Type (conditional) */}
                 {showPvr && (
                   <div className="space-y-2">
                     <Label htmlFor="pvrType">PVR</Label>
@@ -318,7 +307,6 @@ const CreateProject = () => {
                   </div>
                 )}
                 
-                {/* Property Type */}
                 <div className="space-y-2">
                   <Label htmlFor="propertyType">Type of Property *</Label>
                   <Select 
@@ -337,7 +325,6 @@ const CreateProject = () => {
                   </Select>
                 </div>
 
-                {/* Location */}
                 <div className="col-span-full space-y-2">
                   <Label htmlFor="location">Location of Property</Label>
                   <div className="flex gap-4">
@@ -368,7 +355,6 @@ const CreateProject = () => {
                   </div>
                 </div>
                 
-                {/* Map View */}
                 <div className="col-span-full h-[300px] rounded-md overflow-hidden border">
                   <ProjectMap 
                     latitude={formData.latitude} 
@@ -378,7 +364,6 @@ const CreateProject = () => {
                   />
                 </div>
                 
-                {/* Remarks */}
                 <div className="col-span-full space-y-2">
                   <Label htmlFor="remarks">Remarks</Label>
                   <Textarea
@@ -392,7 +377,6 @@ const CreateProject = () => {
                 </div>
               </div>
               
-              {/* Form Actions */}
               <div className="flex justify-between mt-8">
                 <Button type="button" variant="outline" onClick={handleCancel}>
                   <ArrowLeft className="mr-2 h-4 w-4" /> Cancel

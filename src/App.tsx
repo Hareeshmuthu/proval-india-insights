@@ -11,6 +11,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import CreateProject from "./pages/CreateProject";
 import ProjectFiles from "./pages/ProjectFiles";
+import SBIApartmentForm from "./pages/SBIApartmentForm";
 import { useEffect, useState } from "react";
 import { QueryClient } from "@tanstack/react-query";
 
@@ -84,6 +85,14 @@ const App = () => {
               element={
                 <ProtectedRoute>
                   <ProjectFiles />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/dashboard/sbi-apartment-form/:projectId" 
+              element={
+                <ProtectedRoute>
+                  <SBIApartmentForm />
                 </ProtectedRoute>
               } 
             />
