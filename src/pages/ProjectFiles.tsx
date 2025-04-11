@@ -34,6 +34,7 @@ interface Project {
   bankName: string;
   createdAt: string;
   status: string;
+  propertyType?: string; // Added propertyType property with optional marker
 }
 
 const ProjectFiles = () => {
