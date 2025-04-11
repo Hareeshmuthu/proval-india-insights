@@ -3,11 +3,10 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import { 
-  Save, Printer, FileText, Calendar, ChevronDown 
+  Save, Printer, FileText, Calendar
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
@@ -25,8 +24,7 @@ import { Calendar as CalendarComponent } from "@/components/ui/calendar";
 import { useToast } from "@/components/ui/use-toast";
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
 import Sidebar from "@/components/dashboard/Sidebar";
-import { cn } from "@/lib/utils";
-import { SBI_FORM_SECTIONS, SBIFormData, SBIFormField } from "@/models/sbi-apartment-form";
+import { sbiFormFields, docOptions, SBIFormData, SBIFormField } from "@/models/sbi-apartment-form-new";
 
 const SBIApartmentForm = () => {
   const { projectId } = useParams();
@@ -35,6 +33,10 @@ const SBIApartmentForm = () => {
   const [formData, setFormData] = useState<SBIFormData>({});
   const [projectData, setProjectData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [refNumber, setRefNumber] = useState("");
+  const [branchName, setBranchName] = useState("");
+  const [cityName, setCityName] = useState("");
+  const [selectedDocs, setSelectedDocs] = useState<string[]>([]);
 
   // Load project data and existing form data if available
   useEffect(() => {
@@ -51,22 +53,20 @@ const SBIApartmentForm = () => {
           const storedFormData = localStorage.getItem(`sbi_apartment_form_${projectId}`);
           if (storedFormData) {
             const parsedData = JSON.parse(storedFormData);
-            // Convert date strings back to Date objects
-            const formattedData: SBIFormData = {};
-            Object.keys(parsedData).forEach(key => {
-              if (key.includes('date')) {
-                formattedData[key] = parsedData[key] ? new Date(parsedData[key]) : null;
-              } else {
-                formattedData[key] = parsedData[key];
-              }
-            });
-            setFormData(formattedData);
+            setFormData(parsedData);
+            
+            if (parsedData.refNumber) setRefNumber(parsedData.refNumber);
+            if (parsedData.branchName) setBranchName(parsedData.branchName);
+            if (parsedData.cityName) setCityName(parsedData.cityName);
+            if (parsedData.selectedDocs) setSelectedDocs(parsedData.selectedDocs);
           } else {
             // Pre-fill with project data
             setFormData({
-              name: project.customerName || '',
-              location: project.location || '',
-              date: new Date(),
+              "4": project.customerName || '',
+              "7": project.location || '',
+              "dateOfInspection": new Date().toISOString().split('T')[0],
+              "dateOfValuation": new Date().toISOString().split('T')[0],
+              "dateOfReport": new Date().toISOString().split('T')[0],
             });
           }
         }
@@ -75,36 +75,30 @@ const SBIApartmentForm = () => {
     setLoading(false);
   }, [projectId]);
 
-  const handleInputChange = (field: SBIFormField, value: string | number | Date | null) => {
+  const handleInputChange = (fieldId: string, value: string | number | string[] | null) => {
     setFormData(prev => ({
       ...prev,
-      [field.id]: value
+      [fieldId]: value
     }));
   };
 
+  const handleDocsChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selected = Array.from(e.target.selectedOptions, option => option.value);
+    setSelectedDocs(selected);
+    handleInputChange("3", selected);
+  };
+
   const handleSave = () => {
-    // Validate required fields
-    const missingFields: string[] = [];
+    // Save all form data
+    const completeFormData = {
+      ...formData,
+      refNumber,
+      branchName,
+      cityName,
+      selectedDocs,
+    };
     
-    SBI_FORM_SECTIONS.forEach(section => {
-      section.fields.forEach(field => {
-        if (field.required && !formData[field.id]) {
-          missingFields.push(field.label);
-        }
-      });
-    });
-    
-    if (missingFields.length > 0) {
-      toast({
-        title: "Missing required fields",
-        description: `Please fill in: ${missingFields.join(', ')}`,
-        variant: "destructive"
-      });
-      return;
-    }
-    
-    // Save form data to localStorage
-    localStorage.setItem(`sbi_apartment_form_${projectId}`, JSON.stringify(formData));
+    localStorage.setItem(`sbi_apartment_form_${projectId}`, JSON.stringify(completeFormData));
     
     // Update project status
     const storedProjects = localStorage.getItem('proval_projects');
@@ -141,50 +135,51 @@ const SBIApartmentForm = () => {
         <head>
           <title>SBI Apartment Valuation Form - Project #${projectId}</title>
           <style>
-            body { font-family: Arial, sans-serif; line-height: 1.6; }
+            body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
             .header { text-align: center; margin-bottom: 20px; }
+            .ref { margin-bottom: 10px; }
+            .to-address { margin-bottom: 15px; }
+            .title { font-weight: bold; text-align: center; margin: 20px 0; }
             .section { margin-bottom: 20px; }
             .section-title { font-weight: bold; margin-bottom: 10px; background: #f0f0f0; padding: 5px; }
-            .field { margin-bottom: 10px; display: flex; }
-            .field-label { font-weight: bold; width: 40%; }
-            .field-value { width: 60%; }
-            table { width: 100%; border-collapse: collapse; }
+            table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
             th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
             th { background-color: #f0f0f0; }
+            .footer { margin-top: 30px; }
+            .signature { margin-top: 50px; }
           </style>
         </head>
         <body>
-          <div class="header">
-            <h1>SBI Apartment Valuation Form</h1>
-            <p>Project #${projectId} - ${projectData?.customerName || 'N/A'}</p>
-            <p>Date: ${format(new Date(), 'PPP')}</p>
+          <div class="ref">Ref: SBI ${refNumber || '_____________'}</div>
+          <div class="to-address">
+            <p>TO,</p>
+            <p>STATE BANK OF INDIA BRANCH: ${branchName || '_____________'}, (${cityName || '_____________'})</p>
           </div>
+          <div class="title">VALUATION REPORT (IN RESPECT OF APARTMENT)</div>
     `;
     
     // Add sections and fields
-    SBI_FORM_SECTIONS.forEach(section => {
+    sbiFormFields.forEach(section => {
       printContent += `
         <div class="section">
-          <div class="section-title">${section.title}</div>
+          <div class="section-title">${section.section}</div>
           <table>
             <tr>
-              <th style="width: 5%;">S.No</th>
+              <th style="width: 10%;">S.No</th>
               <th style="width: 45%;">Field Name</th>
-              <th style="width: 50%;">Value</th>
+              <th style="width: 45%;">Value</th>
             </tr>
       `;
       
-      section.fields.forEach((field, index) => {
-        let value = formData[field.id] || 'N/A';
-        
-        // Format dates
-        if (field.type === 'date' && value instanceof Date) {
-          value = format(value as Date, 'PPP');
-        }
+      section.fields.forEach(field => {
+        const fieldId = field.sn.replace(/[a-z]/g, '');
+        const value = field.sn === "3" ? 
+          (selectedDocs.length > 0 ? selectedDocs.join(', ') : 'None') : 
+          (formData[field.sn] || formData[field.label] || 'Not provided');
         
         printContent += `
           <tr>
-            <td>${index + 1}</td>
+            <td>${field.sn}</td>
             <td>${field.label}</td>
             <td>${value}</td>
           </tr>
@@ -198,6 +193,13 @@ const SBIApartmentForm = () => {
     });
     
     printContent += `
+          <div class="footer">
+            <div class="signature">
+              <p>Signature of Valuer</p>
+              <p>Name: ${projectData?.valuerId || 'Authorized Valuer'}</p>
+              <p>Date: ${format(new Date(), 'dd/MM/yyyy')}</p>
+            </div>
+          </div>
         </body>
       </html>
     `;
@@ -213,20 +215,30 @@ const SBIApartmentForm = () => {
   };
 
   const handleExportToWord = () => {
-    // For a real implementation, you'd use a library like docx-js
-    // This is a simple placeholder that creates a text file
-    const content = SBI_FORM_SECTIONS.map(section => {
-      const sectionContent = section.fields.map((field, index) => {
-        let value = formData[field.id] || 'N/A';
-        // Format dates
-        if (field.type === 'date' && value instanceof Date) {
-          value = format(value as Date, 'PPP');
-        }
-        return `${index + 1}. ${field.label}: ${value}`;
-      }).join('\n');
+    // For a simple implementation, create a text file
+    let content = `SBI APARTMENT VALUATION REPORT\n\n`;
+    content += `Ref: SBI ${refNumber || ''}\n`;
+    content += `TO,\n`;
+    content += `STATE BANK OF INDIA BRANCH: ${branchName || ''}, (${cityName || ''})\n\n`;
+    content += `VALUATION REPORT (IN RESPECT OF APARTMENT)\n\n`;
+    
+    sbiFormFields.forEach(section => {
+      content += `${section.section}\n`;
       
-      return `${section.title}\n${sectionContent}\n`;
-    }).join('\n');
+      section.fields.forEach(field => {
+        const value = field.sn === "3" ? 
+          (selectedDocs.length > 0 ? selectedDocs.join(', ') : 'None') : 
+          (formData[field.sn] || formData[field.label] || 'Not provided');
+        
+        content += `${field.sn}. ${field.label}: ${value}\n`;
+      });
+      
+      content += `\n`;
+    });
+    
+    content += `\nSignature of Valuer\n`;
+    content += `Name: ${projectData?.valuerId || 'Authorized Valuer'}\n`;
+    content += `Date: ${format(new Date(), 'dd/MM/yyyy')}\n`;
     
     const blob = new Blob([content], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);
@@ -244,45 +256,135 @@ const SBIApartmentForm = () => {
     });
   };
 
-  const renderField = (field: SBIFormField, index: number) => {
+  const renderInputField = (field: SBIFormField) => {
+    const today = new Date().toISOString().split('T')[0];
+    
     switch (field.type) {
-      case 'text':
-      case 'number':
-        return (
-          <Input
-            type={field.type}
-            id={field.id}
-            value={formData[field.id] as string || ''}
-            onChange={(e) => handleInputChange(field, e.target.value)}
-            placeholder={field.placeholder || `Enter ${field.label.toLowerCase()}`}
-            className="w-full"
-            required={field.required}
-          />
-        );
-        
-      case 'textarea':
+      case "textarea":
         return (
           <Textarea
-            id={field.id}
-            value={formData[field.id] as string || ''}
-            onChange={(e) => handleInputChange(field, e.target.value)}
-            placeholder={field.placeholder || `Enter ${field.label.toLowerCase()}`}
-            className="w-full min-h-[100px]"
-            required={field.required}
+            className="w-full border px-2 py-1 rounded" 
+            placeholder={`Enter ${field.label.toLowerCase()}`}
+            rows={3}
+            value={formData[field.sn] as string || ''}
+            onChange={(e) => handleInputChange(field.sn, e.target.value)}
           />
         );
         
-      case 'select':
+      case "date":
+        return (
+          <Input
+            type="date"
+            className="w-full border px-2 py-1 rounded"
+            defaultValue={today}
+            value={formData[field.sn] as string || ''}
+            onChange={(e) => handleInputChange(field.sn, e.target.value)}
+          />
+        );
+        
+      case "multiple":
+        return (
+          <div className="relative">
+            <select
+              multiple
+              className="w-full border px-2 py-1 rounded"
+              onChange={handleDocsChange}
+              value={selectedDocs}
+            >
+              {docOptions.map(option => (
+                <option key={option} value={option}>{option}</option>
+              ))}
+            </select>
+            <div className="mt-2 text-sm font-medium text-gray-800">
+              {selectedDocs.length > 0 ? selectedDocs.join(', ') : (
+                <span className="text-gray-400">Select documents provided</span>
+              )}
+            </div>
+          </div>
+        );
+        
+      case "split":
+        if (field.label === "Plot No. / Survey No.") {
+          return (
+            <div className="flex items-center gap-2">
+              <Input
+                type="number"
+                className="w-1/2 border px-2 py-1 rounded"
+                placeholder="Plot No."
+                value={formData[`${field.sn}_plot`] as string || ''}
+                onChange={(e) => handleInputChange(`${field.sn}_plot`, e.target.value)}
+              />
+              <span>/</span>
+              <Input
+                type="number"
+                className="w-1/2 border px-2 py-1 rounded"
+                placeholder="Survey No."
+                value={formData[`${field.sn}_survey`] as string || ''}
+                onChange={(e) => handleInputChange(`${field.sn}_survey`, e.target.value)}
+              />
+            </div>
+          );
+        } else if (field.label === "Ward / Taluka") {
+          return (
+            <div className="flex items-center gap-2">
+              <Input
+                type="text"
+                className="w-1/2 border px-2 py-1 rounded"
+                placeholder="Ward"
+                value={formData[`${field.sn}_ward`] as string || ''}
+                onChange={(e) => handleInputChange(`${field.sn}_ward`, e.target.value)}
+              />
+              <span>/</span>
+              <Input
+                type="text"
+                className="w-1/2 border px-2 py-1 rounded"
+                placeholder="Taluka"
+                value={formData[`${field.sn}_taluka`] as string || ''}
+                onChange={(e) => handleInputChange(`${field.sn}_taluka`, e.target.value)}
+              />
+            </div>
+          );
+        } else if (field.label === "Mandal / District") {
+          return (
+            <div className="flex items-center gap-2">
+              <Input
+                type="text"
+                className="w-1/2 border px-2 py-1 rounded"
+                placeholder="Mandal"
+                value={formData[`${field.sn}_mandal`] as string || ''}
+                onChange={(e) => handleInputChange(`${field.sn}_mandal`, e.target.value)}
+              />
+              <span>/</span>
+              <Input
+                type="text"
+                className="w-1/2 border px-2 py-1 rounded"
+                placeholder="District"
+                value={formData[`${field.sn}_district`] as string || ''}
+                onChange={(e) => handleInputChange(`${field.sn}_district`, e.target.value)}
+              />
+            </div>
+          );
+        }
+        return <Input 
+          type="text" 
+          className="w-full border px-2 py-1 rounded" 
+          placeholder={`Enter ${field.label.toLowerCase()}`}
+          value={formData[field.sn] as string || ''}
+          onChange={(e) => handleInputChange(field.sn, e.target.value)}
+        />;
+        
+      case "select":
         return (
           <Select
-            value={formData[field.id] as string || ''}
-            onValueChange={(value) => handleInputChange(field, value)}
+            value={formData[field.sn] as string || ''}
+            onValueChange={(value) => handleInputChange(field.sn, value)}
           >
-            <SelectTrigger>
+            <SelectTrigger className="w-full border px-2 py-1 rounded">
               <SelectValue placeholder={`Select ${field.label.toLowerCase()}`} />
             </SelectTrigger>
             <SelectContent>
-              {field.options?.map((option) => (
+              <SelectItem value="">Select an option</SelectItem>
+              {field.options?.map(option => (
                 <SelectItem key={option} value={option}>
                   {option}
                 </SelectItem>
@@ -291,32 +393,27 @@ const SBIApartmentForm = () => {
           </Select>
         );
         
-      case 'date':
+      case "number":
         return (
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button
-                variant="outline"
-                className="w-full justify-start text-left font-normal"
-              >
-                <Calendar className="mr-2 h-4 w-4" />
-                {formData[field.id] ? format(formData[field.id] as Date, "PPP") : <span>Pick a date</span>}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0">
-              <CalendarComponent
-                mode="single"
-                selected={formData[field.id] as Date || undefined}
-                onSelect={(date) => handleInputChange(field, date)}
-                initialFocus
-                className="pointer-events-auto"
-              />
-            </PopoverContent>
-          </Popover>
+          <Input
+            type="number"
+            className="w-full border px-2 py-1 rounded"
+            placeholder={`Enter ${field.label.toLowerCase()}`}
+            value={formData[field.sn] as string || ''}
+            onChange={(e) => handleInputChange(field.sn, e.target.value)}
+          />
         );
         
       default:
-        return null;
+        return (
+          <Input
+            type="text"
+            className="w-full border px-2 py-1 rounded"
+            placeholder={`Enter ${field.label.toLowerCase()}`}
+            value={formData[field.sn] as string || ''}
+            onChange={(e) => handleInputChange(field.sn, e.target.value)}
+          />
+        );
     }
   };
 
@@ -394,66 +491,84 @@ const SBIApartmentForm = () => {
             </div>
           </div>
           
+          {/* Form Header */}
+          <div className="bg-card border rounded-lg shadow-sm p-6 mb-6">
+            <div className="text-base mb-2 flex items-center gap-2">
+              <span>Ref: SBI</span>
+              <Input 
+                type="text" 
+                placeholder="Enter reference number" 
+                className="border-none border-b border-black py-0 focus:ring-0"
+                style={{ borderBottom: '1px solid #000' }}
+                value={refNumber}
+                onChange={(e) => setRefNumber(e.target.value)}
+              />
+            </div>
+            <div className="mb-1 font-semibold">TO,</div>
+            <div className="mb-1 font-semibold flex gap-2 items-center">
+              STATE BANK OF INDIA BRANCH:
+              <Input 
+                type="text" 
+                placeholder="Branch name" 
+                className="border-none border-b border-black py-0 focus:ring-0"
+                style={{ borderBottom: '1px solid #000' }}
+                value={branchName}
+                onChange={(e) => setBranchName(e.target.value)}
+              />, (
+              <Input 
+                type="text" 
+                placeholder="City name" 
+                className="border-none border-b border-black py-0 focus:ring-0"
+                style={{ borderBottom: '1px solid #000' }}
+                value={cityName}
+                onChange={(e) => setCityName(e.target.value)}
+              />)
+            </div>
+            <div className="font-semibold text-center">VALUATION REPORT (IN RESPECT OF APARTMENT)</div>
+          </div>
+          
           {/* Form Sections */}
-          <div className="space-y-8">
-            {SBI_FORM_SECTIONS.map((section) => (
-              <div 
-                key={section.id} 
-                className="bg-card border rounded-lg shadow-sm p-6"
-              >
-                <h2 className="text-xl font-semibold mb-4">{section.title}</h2>
-                
-                <div className="grid grid-cols-1 gap-6">
-                  {section.fields.map((field, index) => (
-                    <div key={field.id} className="grid grid-cols-12 gap-4 items-start">
-                      <div className="col-span-1 flex items-center justify-center h-10 bg-muted rounded-md font-medium">
-                        {index + 1}
-                      </div>
-                      <div className="col-span-4">
-                        <Label htmlFor={field.id} className="flex h-10 items-center">
-                          {field.label}{field.required ? ' *' : ''}
-                        </Label>
-                      </div>
-                      <div className="col-span-7">
-                        {renderField(field, index)}
-                      </div>
-                    </div>
-                  ))}
-                </div>
+          <div className="space-y-6">
+            {sbiFormFields.map((section, sectionIndex) => (
+              <div key={sectionIndex} className="mb-8">
+                <h2 className="text-xl font-semibold mb-2">{section.section}</h2>
+                <table className="w-full border border-gray-300">
+                  <tbody>
+                    {section.fields.map((field, idx) => (
+                      <tr key={idx}>
+                        <td className="border p-2 text-center align-top w-12">{field.sn}</td>
+                        <td className="border p-2 w-1/2 align-top">{field.label}</td>
+                        <td className="border p-2 align-top">
+                          {renderInputField(field)}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
             ))}
           </div>
           
           {/* Form Actions */}
-          <div className="flex justify-between mt-8">
+          <div className="flex gap-4 mt-6">
             <Button 
-              variant="outline" 
-              onClick={() => navigate("/dashboard/files")}
+              className="bg-blue-600 hover:bg-blue-700 text-white"
+              onClick={handleSave}
             >
-              Back to Files
+              Save
             </Button>
-            <div className="space-x-2">
-              <Button 
-                variant="outline" 
-                className="flex items-center gap-2"
-                onClick={handlePrint}
-              >
-                <Printer size={18} /> Print
-              </Button>
-              <Button 
-                variant="outline" 
-                className="flex items-center gap-2"
-                onClick={handleExportToWord}
-              >
-                <FileText size={18} /> Export to Word
-              </Button>
-              <Button 
-                className="flex items-center gap-2"
-                onClick={handleSave}
-              >
-                <Save size={18} /> Save
-              </Button>
-            </div>
+            <Button 
+              className="bg-green-600 hover:bg-green-700 text-white"
+              onClick={handlePrint}
+            >
+              Print Preview
+            </Button>
+            <Button 
+              className="bg-gray-600 hover:bg-gray-700 text-white"
+              onClick={handleExportToWord}
+            >
+              Export to Word
+            </Button>
           </div>
         </main>
       </div>

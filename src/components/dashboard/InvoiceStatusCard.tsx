@@ -25,7 +25,7 @@ interface InvoiceData {
   name: string;
   value: number;
   amount: string;
-  color: string; // Adding color property
+  color: string;
 }
 
 // Sample data with monthly invoices for different years
@@ -100,7 +100,6 @@ const CustomTooltip = ({
 export default function InvoiceStatusCard() {
   const currentYear = new Date().getFullYear().toString() as YearKey;
   const [year, setYear] = useState<YearKey>(currentYear);
-  const [chartHeight, setChartHeight] = useState(300);
 
   return (
     <Card className="col-span-6">
@@ -130,13 +129,7 @@ export default function InvoiceStatusCard() {
                       domain={[0, 100]}
                     />
                     <Tooltip content={<CustomTooltip />} />
-                    {invoiceData[yearKey as YearKey].map((entry, index) => (
-                      <Bar
-                        key={`bar-${index}`}
-                        dataKey="value"
-                        fill={entry.color}
-                      />
-                    ))}
+                    <Bar dataKey="value" fill="#8884d8" />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
