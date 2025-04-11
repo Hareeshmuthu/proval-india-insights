@@ -1,5 +1,5 @@
 
-// Import necessary types
+import React, { useState } from 'react';
 import { 
   BarChart, Bar, XAxis, YAxis, CartesianGrid, 
   Tooltip, Legend, ResponsiveContainer, TooltipProps
@@ -66,8 +66,8 @@ const InvoiceStatusCard = () => {
   };
 
   // State for selected period and year
-  const [period, setPeriod] = React.useState<'monthly' | 'yearly'>('monthly');
-  const [year, setYear] = React.useState<YearKey>('2024');
+  const [period, setPeriod] = useState<'monthly' | 'yearly'>('monthly');
+  const [year, setYear] = useState<YearKey>('2024');
 
   // Get data based on selected period and year
   const data = invoiceStatusData[period][year] || [];
