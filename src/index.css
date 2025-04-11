@@ -2,117 +2,146 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+ 
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-
+    --foreground: 240 10% 3.9%;
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-
+    --card-foreground: 240 10% 3.9%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-
-    --primary: 263 56% 52%;
-    --primary-foreground: 210 40% 98%;
-
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 346.8 77.2% 49.8%;
+    --primary-foreground: 355.7 100% 97.3%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 263 56% 52%;
-
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 346.8 77.2% 49.8%;
     --radius: 0.5rem;
-
-    --sidebar-background: 263 56% 98%;
-    --sidebar-foreground: 263 56% 30%;
-    --sidebar-primary: 263 56% 52%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 263 56% 95%;
-    --sidebar-accent-foreground: 263 56% 30%;
-    --sidebar-border: 263 56% 90%;
-    --sidebar-ring: 263 56% 60%;
+    --sidebar: 0 0% 100%;
+    --sidebar-foreground: 240 10% 3.9%;
+    --sidebar-muted: 240 3.8% 46.1%;
+    --sidebar-muted-foreground: 240 5% 64.9%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 0 0% 89.8%;
+    --sidebar-ring: 346.8 77.2% 49.8%;
+    --proval-500: 346.8 77.2% 49.8%;
+    --proval-600: 346.8 77.2% 43.9%;
+    --proval-50: 346.8 77.2% 90%;
   }
-
+ 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 263 56% 52%;
-    --primary-foreground: 210 40% 98%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
+    --background: 20 14.3% 4.1%;
+    --foreground: 0 0% 95%;
+    --card: 24 9.8% 10%;
+    --card-foreground: 0 0% 95%;
+    --popover: 0 0% 9%;
+    --popover-foreground: 0 0% 95%;
+    --primary: 346.8 77.2% 49.8%;
+    --primary-foreground: 355.7 100% 97.3%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 12 6.5% 15.1%;
+    --accent-foreground: 0 0% 98%;
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 263 56% 60%;
-    
-    --sidebar-background: 224 71% 4%;
-    --sidebar-foreground: 263 56% 85%;
-    --sidebar-primary: 263 56% 52%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 225 27% 15%;
-    --sidebar-accent-foreground: 263 56% 85%;
-    --sidebar-border: 225 27% 15%;
-    --sidebar-ring: 263 56% 60%;
+    --destructive-foreground: 0 85.7% 97.3%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 346.8 77.2% 49.8%;
+    --sidebar: 240 10% 3.9%;
+    --sidebar-foreground: 0 0% 98%;
+    --sidebar-muted: 240 5% 64.9%;
+    --sidebar-muted-foreground: 240 5% 84.9%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 0 0% 98%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 346.8 77.2% 49.8%;
+    --proval-500: 346.8 77.2% 49.8%;
+    --proval-600: 346.8 77.2% 43.9%;
+    --proval-50: 340 6% 16%;
   }
 }
-
+ 
 @layer base {
   * {
     @apply border-border;
   }
-
   body {
     @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
   }
 }
 
 @layer components {
-  .proval-container {
-    @apply container mx-auto px-4 md:px-6 lg:px-8;
+  .sidebar-link {
+    @apply transition-colors duration-200 flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800;
+    
+    &.active {
+      @apply bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400;
+    }
+  }
+
+  .card-stats {
+    @apply bg-white dark:bg-gray-800 p-6 rounded-lg shadow;
+  }
+}
+
+/* Print styles */
+@media print {
+  @page {
+    size: auto;
+    margin: 15mm 10mm 15mm 10mm;
   }
   
-  .card-stats {
-    @apply bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 transition-all hover:shadow-md;
+  body {
+    background-color: white !important;
+    color: black !important;
   }
-
-  .nav-link {
-    @apply text-gray-700 dark:text-gray-300 hover:text-proval-500 dark:hover:text-proval-300 transition-colors font-medium;
+  
+  .ml-[240px] {
+    margin-left: 0 !important;
   }
-
-  .sidebar-link {
-    @apply flex items-center space-x-3 text-gray-700 dark:text-gray-300 hover:text-proval-500 dark:hover:text-proval-300 hover:bg-proval-50 dark:hover:bg-gray-800 rounded-lg p-3 transition-all;
+  
+  nav, header, footer, .no-print, button {
+    display: none !important;
   }
-
-  .sidebar-link.active {
-    @apply bg-proval-50 dark:bg-gray-800 text-proval-500 dark:text-proval-300 font-medium;
+  
+  .shadow {
+    box-shadow: none !important;
+  }
+  
+  .overflow-y-auto {
+    overflow: visible !important;
+  }
+  
+  .p-6 {
+    padding: 0 !important;
+  }
+  
+  .rounded-lg {
+    border-radius: 0 !important;
+  }
+  
+  .bg-white {
+    background: white !important;
+  }
+  
+  /* Make text and borders darker for better printing */
+  td, th {
+    border-color: #000 !important;
+  }
+  
+  input, select, textarea {
+    border: 1px solid #ccc !important;
   }
 }

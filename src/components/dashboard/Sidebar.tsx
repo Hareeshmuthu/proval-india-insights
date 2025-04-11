@@ -10,7 +10,8 @@ import {
   BookOpen, 
   FileSpreadsheet,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  Building
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -48,6 +49,11 @@ const Sidebar = () => {
       title: "My Files",
       icon: Folder,
       path: "/dashboard/files"
+    },
+    {
+      title: "SBI Apartment",
+      icon: Building,
+      path: "/dashboard/sbi-apartment"
     },
     {
       title: "Tools",
