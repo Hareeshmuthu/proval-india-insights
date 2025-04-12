@@ -12,24 +12,20 @@ import Signup from "./pages/Signup";
 import CreateProject from "./pages/CreateProject";
 import ProjectFiles from "./pages/ProjectFiles";
 import SBIApartmentValuation from "./pages/SBIApartmentValuation";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { QueryClient } from "@tanstack/react-query";
+import { AuthProvider, useAuth } from "./contexts/AuthContext";
 
 // Protected route component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
+  const { user, loading } = useAuth();
   
-  useEffect(() => {
-    const loggedIn = localStorage.getItem('proval_logged_in') === 'true';
-    setIsLoggedIn(loggedIn);
-  }, []);
-  
-  if (isLoggedIn === null) {
+  if (loading) {
     // Still loading
     return <div className="flex h-screen items-center justify-center">Loading...</div>;
   }
   
-  if (!isLoggedIn) {
+  if (!user) {
     return <Navigate to="/login" replace />;
   }
   
@@ -39,7 +35,9 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 // Create the query client instance
 const queryClient = new QueryClient();
 
-const App = () => {
+// We need this RouterWrapper because the AuthProvider needs to access useNavigate
+// but BrowserRouter needs to be the parent of AuthProvider
+const RouterWrapper = () => {
   useEffect(() => {
     // Set dark mode by default for home page
     const path = window.location.pathname;
@@ -55,50 +53,58 @@ const App = () => {
   }, []);
 
   return (
+    <AuthProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <Routes>
+          <Route path="/" element={<Index />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route 
+            path="/dashboard" 
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/dashboard/create" 
+            element={
+              <ProtectedRoute>
+                <CreateProject />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/dashboard/files" 
+            element={
+              <ProtectedRoute>
+                <ProjectFiles />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/dashboard/sbi-apartment" 
+            element={
+              <ProtectedRoute>
+                <SBIApartmentValuation />
+              </ProtectedRoute>
+            } 
+          />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </TooltipProvider>
+    </AuthProvider>
+  );
+};
+
+const App = () => {
+  return (
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route 
-              path="/dashboard" 
-              element={
-                <ProtectedRoute>
-                  <Dashboard />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/dashboard/create" 
-              element={
-                <ProtectedRoute>
-                  <CreateProject />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/dashboard/files" 
-              element={
-                <ProtectedRoute>
-                  <ProjectFiles />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/dashboard/sbi-apartment" 
-              element={
-                <ProtectedRoute>
-                  <SBIApartmentValuation />
-                </ProtectedRoute>
-              } 
-            />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </TooltipProvider>
+        <RouterWrapper />
       </QueryClientProvider>
     </BrowserRouter>
   );

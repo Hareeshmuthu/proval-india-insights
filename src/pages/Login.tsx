@@ -1,16 +1,15 @@
 
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useToast } from "@/components/ui/use-toast";
 import Navbar from "@/components/layout/Navbar";
 import { Eye, EyeOff } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Login = () => {
-  const { toast } = useToast();
-  const navigate = useNavigate();
+  const { signIn, loading } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
@@ -56,36 +55,16 @@ const Login = () => {
     return isValid;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (validateForm()) {
-      // In a real app, this would be an API call
-      const storedCredentials = localStorage.getItem('proval_credentials');
-      
-      if (storedCredentials) {
-        const credentials = JSON.parse(storedCredentials);
-        
-        if (credentials.email === formData.email && credentials.password === formData.password) {
-          // Set user as logged in
-          localStorage.setItem('proval_logged_in', 'true');
-          
-          toast({
-            title: "Login successful!",
-            description: "Welcome back to Proval.",
-          });
-          
-          navigate("/dashboard");
-        } else {
-          setErrors({
-            ...errors,
-            general: "Invalid email or password."
-          });
-        }
-      } else {
+      try {
+        await signIn(formData.email, formData.password);
+      } catch (error: any) {
         setErrors({
           ...errors,
-          general: "No account found. Please sign up first."
+          general: error.message || "An error occurred during login."
         });
       }
     }
@@ -150,7 +129,9 @@ const Login = () => {
                 {errors.password && <p className="text-sm text-red-500">{errors.password}</p>}
               </div>
               
-              <Button type="submit" className="w-full">Login</Button>
+              <Button type="submit" className="w-full" disabled={loading}>
+                {loading ? "Logging in..." : "Login"}
+              </Button>
               
               <p className="text-center text-sm text-gray-500">
                 Don't have an account?{" "}

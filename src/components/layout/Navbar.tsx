@@ -9,21 +9,15 @@ import {
   SheetContent,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Navbar = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { user, signOut } = useAuth();
   const location = useLocation();
   const isHomePage = location.pathname === "/";
 
-  useEffect(() => {
-    const loggedIn = localStorage.getItem('proval_logged_in') === 'true';
-    setIsLoggedIn(loggedIn);
-  }, [location]);
-
-  const handleLogout = () => {
-    localStorage.removeItem('proval_logged_in');
-    setIsLoggedIn(false);
-    window.location.href = '/';
+  const handleLogout = async () => {
+    await signOut();
   };
 
   return (
@@ -56,7 +50,7 @@ const Navbar = () => {
           <div className="flex items-center gap-4">
             {!isHomePage && <ThemeToggle />}
             
-            {isLoggedIn ? (
+            {user ? (
               <>
                 <Link to="/dashboard">
                   <Button 
@@ -111,7 +105,7 @@ const Navbar = () => {
                     <Link to="/pricing" className="text-lg font-medium py-2">Pricing</Link>
                     <Link to="/contact" className="text-lg font-medium py-2">Contact Us</Link>
                     <div className="border-t my-4 pt-4">
-                      {isLoggedIn ? (
+                      {user ? (
                         <>
                           <Link to="/dashboard">
                             <Button className="w-full mb-2">Dashboard</Button>

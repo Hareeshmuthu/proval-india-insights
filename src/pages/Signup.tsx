@@ -1,16 +1,16 @@
+
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useToast } from "@/components/ui/use-toast";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import Navbar from "@/components/layout/Navbar";
 import { Eye, EyeOff } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Signup = () => {
-  const { toast } = useToast();
-  const navigate = useNavigate();
+  const { signUp, loading } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [open, setOpen] = useState(true);
@@ -26,7 +26,8 @@ const Signup = () => {
     firstName: "",
     email: "",
     password: "",
-    confirmPassword: ""
+    confirmPassword: "",
+    general: ""
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -47,7 +48,7 @@ const Signup = () => {
 
   const validateForm = () => {
     let isValid = true;
-    const newErrors = { ...errors };
+    const newErrors = { ...errors, general: "" };
     
     if (!formData.firstName.trim()) {
       newErrors.firstName = "First name is required";
@@ -79,37 +80,30 @@ const Signup = () => {
     return isValid;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (validateForm()) {
-      // Store user in local storage (in a real app, this would be a backend API call)
-      const user = {
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        email: formData.email,
-        phoneNumber: formData.phoneNumber,
-      };
-      
-      // Save user data and credentials in localStorage
-      localStorage.setItem('proval_user', JSON.stringify(user));
-      localStorage.setItem('proval_credentials', JSON.stringify({
-        email: formData.email,
-        password: formData.password
-      }));
-      
-      toast({
-        title: "Account created successfully!",
-        description: "You can now log in with your credentials.",
-      });
-      
-      navigate("/login");
+      try {
+        const userData = {
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          phoneNumber: formData.phoneNumber
+        };
+        
+        await signUp(formData.email, formData.password, userData);
+      } catch (error: any) {
+        setErrors({
+          ...errors,
+          general: error.message || "An error occurred during signup."
+        });
+      }
     }
   };
 
   const handleClose = () => {
     setOpen(false);
-    navigate("/");
+    window.location.href = '/';
   };
 
   return (
@@ -125,6 +119,12 @@ const Signup = () => {
                 Fill in the form below to get started with <span className="text-red-600 font-bold">Proval</span>.
               </DialogDescription>
             </DialogHeader>
+            
+            {errors.general && (
+              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-4">
+                {errors.general}
+              </div>
+            )}
             
             <form onSubmit={handleSubmit} className="space-y-4 mt-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -220,7 +220,9 @@ const Signup = () => {
                 {errors.confirmPassword && <p className="text-sm text-red-500">{errors.confirmPassword}</p>}
               </div>
               
-              <Button type="submit" className="w-full">Create Account</Button>
+              <Button type="submit" className="w-full" disabled={loading}>
+                {loading ? "Creating Account..." : "Create Account"}
+              </Button>
               
               <p className="text-center text-sm text-gray-500">
                 Already have an account?{" "}
