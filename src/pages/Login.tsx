@@ -60,8 +60,10 @@ const Login = () => {
     
     if (validateForm()) {
       try {
+        console.log("Attempting to sign in with:", formData.email);
         await signIn(formData.email, formData.password);
       } catch (error: any) {
+        console.error("Login error:", error);
         setErrors({
           ...errors,
           general: error.message || "An error occurred during login."
