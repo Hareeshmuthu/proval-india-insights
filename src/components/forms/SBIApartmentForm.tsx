@@ -1,5 +1,15 @@
 
 import React, { useState } from "react";
+import { CalendarIcon } from "lucide-react";
+import { format } from "date-fns";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
 
 const sbiFormFields = [
   {
@@ -117,37 +127,90 @@ const sbiFormFields = [
   }
 ];
 
+const DatePicker = ({ value, onChange }: { value: Date, onChange: (date: Date) => void }) => {
+  return (
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button
+          variant="outline"
+          className="w-full justify-start text-left font-normal bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600"
+        >
+          <CalendarIcon className="mr-2 h-4 w-4" />
+          {format(value, "PPP")}
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-auto p-0">
+        <Calendar
+          mode="single"
+          selected={value}
+          onSelect={(date) => date && onChange(date)}
+          initialFocus
+          className="pointer-events-auto"
+        />
+      </PopoverContent>
+    </Popover>
+  );
+};
+
 export default function SBIApartmentForm() {
   const [selectedDocs, setSelectedDocs] = useState<string[]>([]);
+  const [dates, setDates] = useState({
+    inspection: new Date(),
+    valuation: new Date(),
+    report: new Date(),
+    layoutPlan: new Date()
+  });
+  
+  const handleDateChange = (dateType: keyof typeof dates, date: Date) => {
+    setDates(prev => ({
+      ...prev,
+      [dateType]: date
+    }));
+  };
   
   return (
     <div className="print:text-sm">
       <div className="mb-6">
         <div className="text-base mb-2 flex items-center gap-2">
-          <span>Ref: SBI</span>
-          <input type="text" placeholder="Enter reference number" className="border px-2 py-1 rounded focus:outline-none focus:ring-0" style={{ border: 'none', borderBottom: '1px solid #000', padding: 0 }} />
+          <span className="dark:text-white">Ref: SBI</span>
+          <input 
+            type="text" 
+            placeholder="Enter reference number" 
+            className="border px-2 py-1 rounded focus:outline-none focus:ring-0 dark:bg-gray-800 dark:text-white dark:border-gray-600" 
+            style={{ borderBottom: '1px solid', padding: 0 }} 
+          />
         </div>
-        <div className="mb-1 font-semibold">TO,</div>
-        <div className="mb-1 font-semibold flex gap-2 items-center">
+        <div className="mb-1 font-semibold dark:text-white">TO,</div>
+        <div className="mb-1 font-semibold flex gap-2 items-center dark:text-white">
           STATE BANK OF INDIA BRANCH:
-          <input type="text" placeholder="Branch name" className="border px-2 py-1 rounded focus:outline-none focus:ring-0" style={{ border: 'none', borderBottom: '1px solid #000', padding: 0 }} />, (
-          <input type="text" placeholder="City name" className="border px-2 py-1 rounded focus:outline-none focus:ring-0" style={{ border: 'none', borderBottom: '1px solid #000', padding: 0 }} />)
+          <input 
+            type="text" 
+            placeholder="Branch name" 
+            className="border px-2 py-1 rounded focus:outline-none focus:ring-0 dark:bg-gray-800 dark:text-white dark:border-gray-600" 
+            style={{ borderBottom: '1px solid', padding: 0 }} 
+          />, (
+          <input 
+            type="text" 
+            placeholder="City name" 
+            className="border px-2 py-1 rounded focus:outline-none focus:ring-0 dark:bg-gray-800 dark:text-white dark:border-gray-600" 
+            style={{ borderBottom: '1px solid', padding: 0 }} 
+          />)
         </div>
-        <div className="font-semibold text-center">VALUATION REPORT (IN RESPECT OF APARTMENT)</div>
+        <div className="font-semibold text-center dark:text-white">VALUATION REPORT (IN RESPECT OF APARTMENT)</div>
       </div>
       
       {sbiFormFields.map((section, sectionIndex) => (
         <div key={sectionIndex} className="mb-8">
-          <h2 className="text-xl font-semibold mb-2">{section.section}</h2>
-          <table className="w-full border border-gray-300">
+          <h2 className="text-xl font-semibold mb-2 dark:text-white">{section.section}</h2>
+          <table className="w-full border border-gray-300 dark:border-gray-600">
             <tbody>
               {section.fields.map((field, idx) => (
                 <tr key={idx} className="print:break-inside-avoid">
-                  <td className={`border p-2 text-center align-top w-12 ${field.sn === "" ? "invisible" : ""}`}>{field.sn}</td>
-                  <td className="border p-2 w-1/2 align-top">{field.label}</td>
-                  <td className="border p-2 align-top">
+                  <td className={`border p-2 text-center align-top w-12 ${field.sn === "" ? "invisible" : ""} dark:border-gray-600 dark:text-white`}>{field.sn}</td>
+                  <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white">{field.label}</td>
+                  <td className="border p-2 align-top dark:border-gray-600">
                     {(() => {
-                      const today = new Date().toISOString().split('T')[0];
+                      const today = new Date();
                       const docOptions = [
                         'Copy of Sale Deed',
                         'Copy of Settlement Deed',
@@ -158,19 +221,21 @@ export default function SBIApartmentForm() {
                       ];
 
                       if (field.label === 'Purpose for which the valuation is made' || field.label === 'Brief description of the property') {
-                        return <textarea className="w-full border px-2 py-1 rounded" placeholder={`Enter ${field.label.toLowerCase()}`} rows={3}></textarea>;
-                      } else if ([
-                        'Date of inspection',
-                        'Date on which the valuation is made',
-                        'Date of Report'
-                      ].includes(field.label)) {
-                        return <input type="date" className="w-full border px-2 py-1 rounded" defaultValue={today} />;
+                        return <textarea className="w-full border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" placeholder={`Enter ${field.label.toLowerCase()}`} rows={3}></textarea>;
+                      } else if (field.label === 'Date of inspection') {
+                        return <DatePicker value={dates.inspection} onChange={(date) => handleDateChange('inspection', date)} />;
+                      } else if (field.label === 'Date on which the valuation is made') {
+                        return <DatePicker value={dates.valuation} onChange={(date) => handleDateChange('valuation', date)} />;
+                      } else if (field.label === 'Date of Report') {
+                        return <DatePicker value={dates.report} onChange={(date) => handleDateChange('report', date)} />;
+                      } else if (field.label === 'Date of issue and validity of layout plan') {
+                        return <DatePicker value={dates.layoutPlan} onChange={(date) => handleDateChange('layoutPlan', date)} />;
                       } else if (field.label === 'List of documents produced for perusal') {
                         return (
                           <div className="relative">
                             <select
                               multiple
-                              className="w-full border px-2 py-1 rounded"
+                              className="w-full border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600"
                               onChange={(e) => {
                                 const selected = Array.from(e.target.selectedOptions, option => option.value);
                                 setSelectedDocs(selected);
@@ -180,43 +245,43 @@ export default function SBIApartmentForm() {
                                 <option key={option} value={option}>{option}</option>
                               ))}
                             </select>
-                            <div className="mt-2 text-sm font-medium text-gray-800">
-                              {selectedDocs.length > 0 ? selectedDocs.join(', ') : <span className="text-gray-400">Select documents provided</span>}
+                            <div className="mt-2 text-sm font-medium text-gray-800 dark:text-gray-200">
+                              {selectedDocs.length > 0 ? selectedDocs.join(', ') : <span className="text-gray-400 dark:text-gray-500">Select documents provided</span>}
                             </div>
                           </div>
                         );
                       } else if (['Plot No. / Survey No.', '6a'].includes(field.label)) {
                         return (
                           <div className="flex items-center gap-2">
-                            <input type="number" className="w-1/2 border px-2 py-1 rounded" placeholder="Plot No." />
-                            <span>/</span>
-                            <input type="number" className="w-1/2 border px-2 py-1 rounded" placeholder="Survey No." />
+                            <input type="number" className="w-1/2 border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" placeholder="Plot No." />
+                            <span className="dark:text-white">/</span>
+                            <input type="number" className="w-1/2 border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" placeholder="Survey No." />
                           </div>
                         );
                       } else if (field.label === 'Ward / Taluka') {
                         return (
                           <div className="flex items-center gap-2">
-                            <input type="text" className="w-1/2 border px-2 py-1 rounded" placeholder="Ward" />
-                            <span>/</span>
-                            <input type="text" className="w-1/2 border px-2 py-1 rounded" placeholder="Taluka" />
+                            <input type="text" className="w-1/2 border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" placeholder="Ward" />
+                            <span className="dark:text-white">/</span>
+                            <input type="text" className="w-1/2 border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" placeholder="Taluka" />
                           </div>
                         );
                       } else if (field.label === 'Mandal / District') {
                         return (
                           <div className="flex items-center gap-2">
-                            <input type="text" className="w-1/2 border px-2 py-1 rounded" placeholder="Mandal" />
-                            <span>/</span>
-                            <input type="text" className="w-1/2 border px-2 py-1 rounded" placeholder="District" />
+                            <input type="text" className="w-1/2 border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" placeholder="Mandal" />
+                            <span className="dark:text-white">/</span>
+                            <input type="text" className="w-1/2 border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" placeholder="District" />
                           </div>
                         );
                       } else if (field.label === 'Name of the owner(s) and address(es)' || field.label === 'Postal address of the property') {
-                        return <textarea className="w-full border px-2 py-1 rounded" placeholder={`Enter ${field.label.toLowerCase()}`} rows={3}></textarea>;
+                        return <textarea className="w-full border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" placeholder={`Enter ${field.label.toLowerCase()}`} rows={3}></textarea>;
                       } else if (field.label === 'Door No.') {
-                        return <input type="number" className="w-full border px-2 py-1 rounded" placeholder={`Enter ${field.label.toLowerCase()}`} />;
+                        return <input type="number" className="w-full border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" placeholder={`Enter ${field.label.toLowerCase()}`} />;
                       } else if (field.label === 'T. S. No. / Village') {
                         const villages = ['Village A', 'Village B', 'Village C', 'Village D'];
                         return (
-                          <select className="w-full border px-2 py-1 rounded">
+                          <select className="w-full border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600">
                             <option value="">Select a village</option>
                             {villages.map(v => (
                               <option key={v} value={v}>{v}</option>
@@ -225,7 +290,7 @@ export default function SBIApartmentForm() {
                         );
                       } else if (["Residential Area", "Commercial Area", "Industrial Area"].includes(field.label)) {
                         return (
-                          <select className="w-full border px-2 py-1 rounded">
+                          <select className="w-full border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600">
                             <option value="">Select Yes or No</option>
                             <option value="Yes">Yes</option>
                             <option value="No">No</option>
@@ -233,7 +298,7 @@ export default function SBIApartmentForm() {
                         );
                       } else if (field.label === 'Classification of area - High / Middle / Poor') {
                         return (
-                          <select className="w-full border px-2 py-1 rounded">
+                          <select className="w-full border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600">
                             <option value="">Select classification</option>
                             <option value="High">High</option>
                             <option value="Middle">Middle</option>
@@ -242,7 +307,7 @@ export default function SBIApartmentForm() {
                         );
                       } else if (field.label === 'Urban / Semi Urban / Rural') {
                         return (
-                          <select className="w-full border px-2 py-1 rounded">
+                          <select className="w-full border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600">
                             <option value="">Select area type</option>
                             <option value="Urban">Urban</option>
                             <option value="Semi Urban">Semi Urban</option>
@@ -251,7 +316,7 @@ export default function SBIApartmentForm() {
                         );
                       } else if (field.label === 'Coming under Corporation / Panchayat / Municipality') {
                         return (
-                          <select className="w-full border px-2 py-1 rounded">
+                          <select className="w-full border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600">
                             <option value="">Select administrative body</option>
                             <option value="Corporation">Corporation</option>
                             <option value="Panchayat">Panchayat</option>
@@ -259,7 +324,7 @@ export default function SBIApartmentForm() {
                           </select>
                         );
                       } else {
-                        return <input type="text" className="w-full border px-2 py-1 rounded" placeholder={`Enter ${field.label.toLowerCase()}`} />;
+                        return <input type="text" className="w-full border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" placeholder={`Enter ${field.label.toLowerCase()}`} />;
                       }
                     })()}
                   </td>
@@ -270,13 +335,15 @@ export default function SBIApartmentForm() {
         </div>
       ))}
       
-      <style jsx>{`
+      <style>
+        {`
         @media print {
           button {
             display: none;
           }
         }
-      `}</style>
+        `}
+      </style>
     </div>
   );
 }

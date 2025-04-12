@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { format, addDays } from "date-fns";
@@ -108,7 +107,8 @@ const CreateProject = () => {
     setFormData({
       ...formData,
       latitude: lat,
-      longitude: lng
+      longitude: lng,
+      location: `${lat}, ${lng}` // Set default address as coordinates
     });
   };
   
@@ -155,6 +155,12 @@ const CreateProject = () => {
     });
     
     if (andNext) {
+      // Check if it's SBI + Apartment Flat to navigate to SBI apartment page
+      if (formData.bankName === 'SBI' && formData.propertyType === 'Apartment Flat') {
+        navigate(`/dashboard/sbi-apartment?project=${nextProjectNumber}`);
+        return;
+      }
+      
       // Reset form for next entry
       setNextProjectNumber(prev => prev + 1);
       setFormData({
@@ -172,8 +178,12 @@ const CreateProject = () => {
       });
       setShowPvr(false);
     } else {
-      // Navigate to projects page
-      navigate("/dashboard/files");
+      // Navigate to projects page, or SBI apartment page if applicable
+      if (formData.bankName === 'SBI' && formData.propertyType === 'Apartment Flat') {
+        navigate(`/dashboard/sbi-apartment?project=${nextProjectNumber}`);
+      } else {
+        navigate("/dashboard/files");
+      }
     }
   };
   

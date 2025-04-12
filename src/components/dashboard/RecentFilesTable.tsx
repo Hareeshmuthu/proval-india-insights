@@ -3,17 +3,31 @@ import { useState, useEffect } from "react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { FileText, MoreHorizontal } from "lucide-react";
+import { FileText, MoreHorizontal, Trash, FileEdit, Download } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Link } from "react-router-dom";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 const RecentFilesTable = () => {
+  const navigate = useNavigate();
   const [files, setFiles] = useState<any[]>([]);
+  const [deleteProject, setDeleteProject] = useState<any | null>(null);
+  const [isAlertOpen, setIsAlertOpen] = useState(false);
   
   useEffect(() => {
     // Load projects from localStorage
@@ -28,6 +42,48 @@ const RecentFilesTable = () => {
       setFiles(sortedProjects.slice(0, 5));
     }
   }, []);
+
+  const handleDeleteProject = (project: any) => {
+    setDeleteProject(project);
+    setIsAlertOpen(true);
+  };
+
+  const confirmDelete = () => {
+    if (deleteProject) {
+      // Get all projects
+      const storedProjects = localStorage.getItem('proval_projects');
+      if (storedProjects) {
+        const allProjects = JSON.parse(storedProjects);
+        const updatedProjects = allProjects.filter((p: any) => p.id !== deleteProject.id);
+        
+        // Update localStorage
+        localStorage.setItem('proval_projects', JSON.stringify(updatedProjects));
+        
+        // Update state
+        const updatedFiles = files.filter(f => f.id !== deleteProject.id);
+        setFiles(updatedFiles);
+        
+        toast.success(`Project #${deleteProject.projectNumber} has been deleted`);
+      }
+      
+      setIsAlertOpen(false);
+      setDeleteProject(null);
+    }
+  };
+
+  const handleEditProject = (project: any) => {
+    // If SBI Apartment, navigate to SBI apartment page
+    if (project.bankName === 'SBI' && project.propertyType === 'Apartment Flat') {
+      navigate(`/dashboard/sbi-apartment?project=${project.projectNumber}`);
+    } else {
+      toast.info("Editing other project types is not yet implemented");
+    }
+  };
+
+  const handleDownloadProject = (project: any) => {
+    toast.success(`Project #${project.projectNumber} will be downloaded as a Word document`);
+    // In a real implementation, this would trigger a file download
+  };
   
   return (
     <div className="card-stats overflow-hidden">
@@ -46,7 +102,7 @@ const RecentFilesTable = () => {
               <TableHead>Bank Name</TableHead>
               <TableHead>Date Created</TableHead>
               <TableHead>Status</TableHead>
-              <TableHead className="w-[50px]"></TableHead>
+              <TableHead>Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -70,10 +126,10 @@ const RecentFilesTable = () => {
                       variant="outline"
                       className={
                         file.status === "Completed"
-                          ? "text-green-600 bg-green-50 border-green-200"
+                          ? "text-green-600 bg-green-50 border-green-200 dark:bg-green-900/20 dark:text-green-400 dark:border-green-800"
                           : file.status === "In Progress"
-                          ? "text-blue-600 bg-blue-50 border-blue-200"
-                          : "text-yellow-600 bg-yellow-50 border-yellow-200"
+                          ? "text-blue-600 bg-blue-50 border-blue-200 dark:bg-blue-900/20 dark:text-blue-400 dark:border-blue-800"
+                          : "text-yellow-600 bg-yellow-50 border-yellow-200 dark:bg-yellow-900/20 dark:text-yellow-400 dark:border-yellow-800"
                       }
                     >
                       {file.status}
@@ -82,14 +138,30 @@ const RecentFilesTable = () => {
                   <TableCell>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="icon">
+                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                          <span className="sr-only">Open menu</span>
                           <MoreHorizontal className="h-4 w-4" />
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuItem>View Details</DropdownMenuItem>
-                        <DropdownMenuItem>Edit</DropdownMenuItem>
-                        <DropdownMenuItem>Download</DropdownMenuItem>
+                        <DropdownMenuItem 
+                          onClick={() => handleEditProject(file)}
+                          className="cursor-pointer flex items-center gap-2"
+                        >
+                          <FileEdit className="h-4 w-4" /> Edit
+                        </DropdownMenuItem>
+                        <DropdownMenuItem 
+                          onClick={() => handleDownloadProject(file)}
+                          className="cursor-pointer flex items-center gap-2"
+                        >
+                          <Download className="h-4 w-4" /> Download
+                        </DropdownMenuItem>
+                        <DropdownMenuItem 
+                          onClick={() => handleDeleteProject(file)}
+                          className="cursor-pointer text-red-600 flex items-center gap-2"
+                        >
+                          <Trash className="h-4 w-4" /> Delete
+                        </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </TableCell>
@@ -105,6 +177,25 @@ const RecentFilesTable = () => {
           </TableBody>
         </Table>
       </div>
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={isAlertOpen} onOpenChange={setIsAlertOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This will permanently delete Project #{deleteProject?.projectNumber} for {deleteProject?.customerName}.
+              This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmDelete} className="bg-red-600 hover:bg-red-700">
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };

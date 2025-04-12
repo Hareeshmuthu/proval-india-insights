@@ -10,8 +10,7 @@ import {
   BookOpen, 
   FileSpreadsheet,
   ChevronLeft,
-  ChevronRight,
-  Building
+  ChevronRight
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -51,11 +50,6 @@ const Sidebar = () => {
       path: "/dashboard/files"
     },
     {
-      title: "SBI Apartment",
-      icon: Building,
-      path: "/dashboard/sbi-apartment"
-    },
-    {
       title: "Tools",
       icon: Settings,
       path: "/dashboard/tools"
@@ -87,7 +81,7 @@ const Sidebar = () => {
             <img 
               src="/lovable-uploads/9ea82532-ad63-47fb-9ac0-89f899471da7.png" 
               alt="Proval Logo" 
-              className="h-6 w-auto"
+              className="h-8 w-auto" // Increased logo size
             />
             <span className="font-bold text-xl text-red-600">Proval</span>
           </div>
@@ -95,7 +89,7 @@ const Sidebar = () => {
           <img 
             src="/lovable-uploads/9ea82532-ad63-47fb-9ac0-89f899471da7.png" 
             alt="Proval Logo" 
-            className="h-6 w-auto mx-auto"
+            className="h-8 w-auto mx-auto" // Increased logo size
           />
         )}
         <Button 

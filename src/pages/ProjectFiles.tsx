@@ -13,14 +13,32 @@ import {
 } from "@/components/ui/table";
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
 import Sidebar from "@/components/dashboard/Sidebar";
-import { FilePlus, Search } from "lucide-react";
+import { FilePlus, Search, MoreHorizontal, Trash, FileEdit, Download } from "lucide-react";
 import { format, parseISO } from "date-fns";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { toast } from "sonner";
 
 interface Project {
   id: number;
   projectNumber: number;
   customerName: string;
   bankName: string;
+  propertyType: string;
   createdAt: string;
   status: string;
 }
@@ -29,6 +47,8 @@ const ProjectFiles = () => {
   const navigate = useNavigate();
   const [projects, setProjects] = useState<Project[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [deleteProject, setDeleteProject] = useState<Project | null>(null);
+  const [isAlertOpen, setIsAlertOpen] = useState(false);
   
   useEffect(() => {
     // Load projects from localStorage
@@ -43,6 +63,36 @@ const ProjectFiles = () => {
     project.bankName.toLowerCase().includes(searchTerm.toLowerCase()) ||
     project.projectNumber.toString().includes(searchTerm)
   );
+
+  const handleDeleteProject = (project: Project) => {
+    setDeleteProject(project);
+    setIsAlertOpen(true);
+  };
+
+  const confirmDelete = () => {
+    if (deleteProject) {
+      const updatedProjects = projects.filter(p => p.id !== deleteProject.id);
+      setProjects(updatedProjects);
+      localStorage.setItem('proval_projects', JSON.stringify(updatedProjects));
+      toast.success(`Project #${deleteProject.projectNumber} has been deleted`);
+      setIsAlertOpen(false);
+      setDeleteProject(null);
+    }
+  };
+
+  const handleEditProject = (project: Project) => {
+    // If SBI Apartment, navigate to SBI apartment page
+    if (project.bankName === 'SBI' && project.propertyType === 'Apartment Flat') {
+      navigate(`/dashboard/sbi-apartment?project=${project.projectNumber}`);
+    } else {
+      toast.info("Editing other project types is not yet implemented");
+    }
+  };
+
+  const handleDownloadProject = (project: Project) => {
+    toast.success(`Project #${project.projectNumber} will be downloaded as a Word document`);
+    // In a real implementation, this would trigger a file download
+  };
   
   return (
     <div className="flex h-screen overflow-hidden bg-background">
@@ -87,6 +137,7 @@ const ProjectFiles = () => {
                     <TableHead>Bank Name</TableHead>
                     <TableHead>Date Created</TableHead>
                     <TableHead>Status</TableHead>
+                    <TableHead>Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -101,13 +152,43 @@ const ProjectFiles = () => {
                       <TableCell>
                         <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                           project.status === 'Completed' 
-                            ? 'bg-green-100 text-green-800' 
+                            ? 'bg-green-100 text-green-800 dark:bg-green-800/20 dark:text-green-400' 
                             : project.status === 'In Progress' 
-                              ? 'bg-blue-100 text-blue-800'
-                              : 'bg-yellow-100 text-yellow-800'
+                              ? 'bg-blue-100 text-blue-800 dark:bg-blue-800/20 dark:text-blue-400'
+                              : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-800/20 dark:text-yellow-400'
                         }`}>
                           {project.status}
                         </span>
+                      </TableCell>
+                      <TableCell>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                              <span className="sr-only">Open menu</span>
+                              <MoreHorizontal className="h-4 w-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuItem 
+                              onClick={() => handleEditProject(project)}
+                              className="cursor-pointer flex items-center gap-2"
+                            >
+                              <FileEdit className="h-4 w-4" /> Edit
+                            </DropdownMenuItem>
+                            <DropdownMenuItem 
+                              onClick={() => handleDownloadProject(project)}
+                              className="cursor-pointer flex items-center gap-2"
+                            >
+                              <Download className="h-4 w-4" /> Download
+                            </DropdownMenuItem>
+                            <DropdownMenuItem 
+                              onClick={() => handleDeleteProject(project)}
+                              className="cursor-pointer text-red-600 flex items-center gap-2"
+                            >
+                              <Trash className="h-4 w-4" /> Delete
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -126,6 +207,25 @@ const ProjectFiles = () => {
               </div>
             )}
           </div>
+
+          {/* Delete Confirmation Dialog */}
+          <AlertDialog open={isAlertOpen} onOpenChange={setIsAlertOpen}>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This will permanently delete Project #{deleteProject?.projectNumber} for {deleteProject?.customerName}.
+                  This action cannot be undone.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={confirmDelete} className="bg-red-600 hover:bg-red-700">
+                  Delete
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </main>
       </div>
     </div>
