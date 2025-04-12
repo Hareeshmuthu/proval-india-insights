@@ -16,7 +16,9 @@ export const supabase = createClient<Database>(
     auth: {
       autoRefreshToken: true,
       persistSession: true,
-      detectSessionInUrl: true
+      detectSessionInUrl: true,
+      storageKey: 'proval-auth-token',
+      storage: localStorage
     }
   }
 );

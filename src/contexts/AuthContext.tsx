@@ -40,9 +40,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 .upsert(
                   { 
                     id: session.user.id,
-                    first_name: session.user.user_metadata.firstName,
-                    last_name: session.user.user_metadata.lastName,
-                    phone_number: session.user.user_metadata.phoneNumber,
+                    first_name: session.user.user_metadata.firstName || '',
+                    last_name: session.user.user_metadata.lastName || '',
+                    phone_number: session.user.user_metadata.phoneNumber || '',
                     updated_at: new Date().toISOString()
                   },
                   { onConflict: 'id' }
@@ -50,6 +50,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 
               if (error) {
                 console.error("Error updating profile:", error);
+              } else {
+                console.log("Profile updated successfully");
               }
             }, 0);
           }
@@ -67,6 +69,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     // THEN check for existing session
     supabase.auth.getSession().then(({ data: { session } }) => {
+      console.log("Existing session check:", session?.user?.email || "No session");
       setSession(session);
       setUser(session?.user ?? null);
       setLoading(false);
@@ -78,27 +81,34 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const signUp = async (email: string, password: string, userData: any) => {
     try {
       setLoading(true);
-      const { error } = await supabase.auth.signUp({
+      console.log("Signing up with email:", email);
+      const { error, data } = await supabase.auth.signUp({
         email,
         password,
         options: {
           data: {
-            firstName: userData.firstName,
-            lastName: userData.lastName,
-            phoneNumber: userData.phoneNumber
-          }
+            firstName: userData.firstName || '',
+            lastName: userData.lastName || '',
+            phoneNumber: userData.phoneNumber || '',
+            email: email // Explicitly store email in metadata too
+          },
+          emailRedirectTo: window.location.origin + '/login'
         }
       });
 
       if (error) throw error;
       
+      console.log("Sign up response:", data);
+      
       toast({
         title: "Account created successfully!",
-        description: "You can now sign in with your credentials.",
+        description: "Please check your email for a confirmation link to verify your account.",
+        variant: "default"
       });
       
       navigate('/login');
     } catch (error: any) {
+      console.error("Sign up error:", error);
       toast({
         title: "Error creating account",
         description: error.message,
@@ -112,36 +122,49 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const signIn = async (email: string, password: string) => {
     try {
       setLoading(true);
-      const { error } = await supabase.auth.signInWithPassword({
+      console.log("Signing in with email:", email);
+      
+      const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
 
       if (error) {
-        // Special handling for email_not_confirmed error
-        if (error.message === 'Email not confirmed') {
-          // For development, we'll let users sign in anyway
-          const { data, error: signInError } = await supabase.auth.signInWithPassword({
-            email,
-            password
+        console.error("Login error:", error);
+        
+        // Special handling for email not confirmed
+        if (error.message.includes('Email not confirmed')) {
+          const { error: resendError } = await supabase.auth.resend({
+            type: 'signup',
+            email: email,
+            options: {
+              emailRedirectTo: window.location.origin + '/login',
+            },
           });
           
-          if (signInError) throw signInError;
+          if (resendError) {
+            throw resendError;
+          }
           
           toast({
-            title: "Login successful!",
-            description: "Note: Your email is not confirmed, but we've allowed you to sign in for testing purposes.",
+            title: "Email not verified",
+            description: "We've sent a new verification email. Please check your inbox and verify your email before logging in.",
+            variant: "destructive"
           });
           return;
         }
+        
         throw error;
       }
+      
+      console.log("Sign in successful:", data);
       
       toast({
         title: "Login successful!",
         description: "Welcome back to Proval.",
       });
     } catch (error: any) {
+      console.error("Login error:", error);
       toast({
         title: "Login failed",
         description: error.message,
@@ -157,6 +180,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setLoading(true);
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
+      
+      toast({
+        title: "Signed out successfully",
+      });
     } catch (error: any) {
       toast({
         title: "Error signing out",

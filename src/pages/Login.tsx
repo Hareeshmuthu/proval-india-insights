@@ -1,15 +1,17 @@
 
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Navbar from "@/components/layout/Navbar";
 import { Eye, EyeOff } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/components/ui/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 const Login = () => {
-  const { signIn, loading } = useAuth();
+  const { signIn, loading, user } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
@@ -20,6 +22,57 @@ const Login = () => {
     password: "",
     general: ""
   });
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
+  useEffect(() => {
+    // Check if there's a hash in the URL (email confirmation)
+    const handleEmailConfirmation = async () => {
+      const hashParams = new URLSearchParams(location.hash.substring(1));
+      const accessToken = hashParams.get('access_token');
+      const refreshToken = hashParams.get('refresh_token');
+      const type = hashParams.get('type');
+      
+      if (type === 'signup' && accessToken) {
+        try {
+          // Set the session using the tokens from the URL
+          const { error } = await supabase.auth.setSession({
+            access_token: accessToken,
+            refresh_token: refreshToken || '',
+          });
+          
+          if (error) throw error;
+          
+          toast({
+            title: "Email verified successfully!",
+            description: "You can now log in with your email and password.",
+          });
+          
+          // Clear the hash from the URL
+          window.history.replaceState(null, document.title, window.location.pathname);
+        } catch (error: any) {
+          console.error("Error confirming email:", error);
+          toast({
+            title: "Email verification failed",
+            description: error.message,
+            variant: "destructive"
+          });
+        }
+      }
+    };
+    
+    if (location.hash) {
+      handleEmailConfirmation();
+    }
+  }, [location.hash, toast]);
+
+  // Redirect if already logged in
+  useEffect(() => {
+    if (user) {
+      navigate('/dashboard');
+    }
+  }, [user, navigate]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -72,6 +125,40 @@ const Login = () => {
     }
   };
 
+  const handleResendVerification = async () => {
+    if (!formData.email) {
+      setErrors({
+        ...errors,
+        email: "Please enter your email address"
+      });
+      return;
+    }
+
+    try {
+      const { error } = await supabase.auth.resend({
+        type: 'signup',
+        email: formData.email,
+        options: {
+          emailRedirectTo: window.location.origin + '/login',
+        },
+      });
+
+      if (error) throw error;
+      
+      toast({
+        title: "Verification email sent",
+        description: "Please check your inbox and verify your email before logging in.",
+      });
+    } catch (error: any) {
+      console.error("Error resending verification email:", error);
+      toast({
+        title: "Error sending verification email",
+        description: error.message,
+        variant: "destructive"
+      });
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -87,6 +174,18 @@ const Login = () => {
             {errors.general && (
               <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-4">
                 {errors.general}
+                {errors.general.includes('Email not confirmed') && (
+                  <div className="mt-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={handleResendVerification}
+                      className="text-xs"
+                    >
+                      Resend verification email
+                    </Button>
+                  </div>
+                )}
               </div>
             )}
             
@@ -135,12 +234,24 @@ const Login = () => {
                 {loading ? "Logging in..." : "Login"}
               </Button>
               
-              <p className="text-center text-sm text-gray-500">
-                Don't have an account?{" "}
-                <Link to="/signup" className="text-primary font-medium">
-                  Sign up
-                </Link>
-              </p>
+              <div className="text-center space-y-2">
+                <p className="text-sm text-gray-500">
+                  Don't have an account?{" "}
+                  <Link to="/signup" className="text-primary font-medium">
+                    Sign up
+                  </Link>
+                </p>
+                
+                <p className="text-sm text-gray-500">
+                  <button
+                    type="button"
+                    className="text-primary font-medium"
+                    onClick={handleResendVerification}
+                  >
+                    Didn't receive verification email?
+                  </button>
+                </p>
+              </div>
             </form>
           </div>
         </div>

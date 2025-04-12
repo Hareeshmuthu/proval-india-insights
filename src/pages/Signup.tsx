@@ -1,6 +1,6 @@
 
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,7 +10,8 @@ import { Eye, EyeOff } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 
 const Signup = () => {
-  const { signUp, loading } = useAuth();
+  const { signUp, loading, user } = useAuth();
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [open, setOpen] = useState(true);
@@ -29,6 +30,13 @@ const Signup = () => {
     confirmPassword: "",
     general: ""
   });
+
+  // Redirect if already logged in
+  useEffect(() => {
+    if (user) {
+      navigate('/dashboard');
+    }
+  }, [user, navigate]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -85,14 +93,17 @@ const Signup = () => {
     
     if (validateForm()) {
       try {
+        console.log("Attempting to sign up with:", formData.email);
         const userData = {
           firstName: formData.firstName,
           lastName: formData.lastName,
-          phoneNumber: formData.phoneNumber
+          phoneNumber: formData.phoneNumber,
+          email: formData.email // Explicitly include email
         };
         
         await signUp(formData.email, formData.password, userData);
       } catch (error: any) {
+        console.error("Signup error:", error);
         setErrors({
           ...errors,
           general: error.message || "An error occurred during signup."
@@ -103,7 +114,7 @@ const Signup = () => {
 
   const handleClose = () => {
     setOpen(false);
-    window.location.href = '/';
+    navigate('/');
   };
 
   return (
