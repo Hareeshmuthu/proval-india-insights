@@ -1,10 +1,11 @@
+
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Loader2, MapPin, Search, TrendingUp, Home, Building, FileBarChart } from "lucide-react";
+import { Loader2, MapPin, Search, TrendingUp, Home, Building, FileBarChart, ExternalLink } from "lucide-react";
 import { toast } from "sonner";
 
 interface MarketDataResponse {
@@ -13,6 +14,10 @@ interface MarketDataResponse {
   comparables: string;
   marketTrends: string;
   areaDescription: string;
+  sources: {
+    name: string;
+    url: string;
+  }[];
 }
 
 const PropertyMarketDataTool: React.FC = () => {
@@ -50,7 +55,26 @@ const PropertyMarketDataTool: React.FC = () => {
         areaDescription: `This area is a well-established residential locality with good connectivity to major commercial hubs.
         The neighborhood features several educational institutions, healthcare facilities, and shopping complexes.
         Public transportation is readily available, and the area is known for its relatively green surroundings and community parks.
-        Recent infrastructure improvements include road widening and a new flyover, which have enhanced connectivity.`
+        Recent infrastructure improvements include road widening and a new flyover, which have enhanced connectivity.`,
+        
+        sources: [
+          {
+            name: "National Housing Bank",
+            url: "https://nhb.org.in/"
+          },
+          {
+            name: "Magicbricks Property Index",
+            url: "https://www.magicbricks.com/"
+          },
+          {
+            name: "99acres Property Trends",
+            url: "https://www.99acres.com/"
+          },
+          {
+            name: "Housing.com Market Reports",
+            url: "https://housing.com/"
+          }
+        ]
       };
       
       setMarketData(sampleResponse);
@@ -201,6 +225,25 @@ const PropertyMarketDataTool: React.FC = () => {
               <Separator className="my-4" />
               <h3 className="text-lg font-medium mb-2">Area Description</h3>
               <p className="whitespace-pre-line">{marketData.areaDescription}</p>
+              
+              <Separator className="my-4" />
+              
+              <h3 className="text-md font-medium mb-2">Data Sources</h3>
+              <div className="space-y-1">
+                {marketData.sources.map((source, index) => (
+                  <div key={index} className="flex items-center">
+                    <a 
+                      href={source.url} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:underline flex items-center"
+                    >
+                      {source.name}
+                      <ExternalLink className="h-3 w-3 ml-1" />
+                    </a>
+                  </div>
+                ))}
+              </div>
             </CardContent>
           </Card>
         </div>

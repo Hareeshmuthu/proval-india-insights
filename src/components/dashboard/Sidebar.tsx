@@ -10,14 +10,22 @@ import {
   BookOpen, 
   FileSpreadsheet,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  Building,
+  AlertTriangle
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useState, useEffect } from "react";
+import { 
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 
 const Sidebar = () => {
   const [collapsed, setCollapsed] = useState(false);
+  const [openTools, setOpenTools] = useState(false);
   const [user, setUser] = useState<any>(null);
   const location = useLocation();
   
@@ -50,11 +58,6 @@ const Sidebar = () => {
       path: "/dashboard/files"
     },
     {
-      title: "Tools",
-      icon: Settings,
-      path: "/dashboard/tools"
-    },
-    {
       title: "Maps",
       icon: Map,
       path: "/dashboard/maps"
@@ -65,6 +68,26 @@ const Sidebar = () => {
       path: "/dashboard/guidelines"
     }
   ];
+
+  const toolsSubMenu = [
+    {
+      title: "Property Market Data",
+      icon: Building,
+      path: "/dashboard/property-data"
+    },
+    {
+      title: "Threats Assessment",
+      icon: AlertTriangle,
+      path: "/dashboard/threats-assessment"
+    }
+  ];
+
+  useEffect(() => {
+    // Check if we're on any tools subpages
+    if (toolsSubMenu.some(item => location.pathname === item.path)) {
+      setOpenTools(true);
+    }
+  }, [location.pathname]);
 
   const toggleSidebar = () => {
     setCollapsed(!collapsed);
@@ -81,7 +104,7 @@ const Sidebar = () => {
             <img 
               src="/lovable-uploads/9ea82532-ad63-47fb-9ac0-89f899471da7.png" 
               alt="Proval Logo" 
-              className="h-8 w-auto" // Increased logo size
+              className="h-8 w-auto" 
             />
             <span className="font-bold text-xl text-red-600">Proval</span>
           </div>
@@ -89,7 +112,7 @@ const Sidebar = () => {
           <img 
             src="/lovable-uploads/9ea82532-ad63-47fb-9ac0-89f899471da7.png" 
             alt="Proval Logo" 
-            className="h-8 w-auto mx-auto" // Increased logo size
+            className="h-8 w-auto mx-auto" 
           />
         )}
         <Button 
@@ -118,6 +141,55 @@ const Sidebar = () => {
               {!collapsed && <span>{item.title}</span>}
             </Link>
           ))}
+          
+          {/* Tools with submenu */}
+          <Collapsible 
+            open={openTools && !collapsed} 
+            onOpenChange={!collapsed ? setOpenTools : undefined}
+            className="w-full"
+          >
+            <CollapsibleTrigger 
+              className={cn(
+                "sidebar-link w-full",
+                (location.pathname === "/dashboard/tools" || 
+                 toolsSubMenu.some(item => location.pathname === item.path)) && "active",
+                collapsed && "justify-center p-2"
+              )}
+              onClick={(e) => {
+                if (collapsed) {
+                  e.preventDefault();
+                  window.location.href = "/dashboard/tools";
+                }
+              }}
+            >
+              <Settings size={20} />
+              {!collapsed && (
+                <>
+                  <span className="flex-1">Tools</span>
+                  <ChevronRight
+                    size={16}
+                    className={`transition-transform duration-200 ${openTools ? 'rotate-90' : ''}`}
+                  />
+                </>
+              )}
+            </CollapsibleTrigger>
+            
+            <CollapsibleContent className="ml-6 mt-1 space-y-1">
+              {toolsSubMenu.map((subItem) => (
+                <Link
+                  key={subItem.path}
+                  to={subItem.path}
+                  className={cn(
+                    "sidebar-link text-sm py-2",
+                    location.pathname === subItem.path && "active"
+                  )}
+                >
+                  <subItem.icon size={16} />
+                  <span>{subItem.title}</span>
+                </Link>
+              ))}
+            </CollapsibleContent>
+          </Collapsible>
         </nav>
       </div>
       
