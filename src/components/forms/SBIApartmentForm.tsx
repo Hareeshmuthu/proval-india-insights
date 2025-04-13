@@ -393,7 +393,7 @@ export default function SBIApartmentForm() {
   const projectId = searchParams.get('project');
   const [projectData, setProjectData] = useState(null);
   
-  // Form state
+  // Form state with all required properties
   const [formData, setFormData] = useState({
     // Section I
     purpose: "",
@@ -408,9 +408,13 @@ export default function SBIApartmentForm() {
     mandal: "",
     district: "",
     genuinenessVerified: "",
+    approvedMapAuthority: "", // Added missing property
+    planAuthenticity: "", // Added missing property
     latitude: "",
     longitude: "",
     occupancyDetails: "",
+    ownerDetails: "", // Added missing property
+    propertyDescription: "", // Added missing property
     
     // Section II
     tsNoSfNoDoorNo: "",
@@ -449,6 +453,9 @@ export default function SBIApartmentForm() {
     meterCardNameOf: "",
     
     maintenanceOfFlat: "",
+    flatClass: "", // Added missing property
+    residentialOrCommercial: "", // Added missing property
+    ownerOrRented: "", // Added missing property
     
     // Section IV
     marketability: "",
