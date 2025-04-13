@@ -4,8 +4,10 @@ import { useSearchParams } from "react-router-dom";
 import Sidebar from "@/components/dashboard/Sidebar";
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
 import SBIApartmentForm from "@/components/forms/SBIApartmentForm";
-import { FilePenLine, Printer, FileText } from "lucide-react";
+import PropertyMarketDataTool from "@/components/tools/PropertyMarketDataTool";
+import { FilePenLine, Printer, FileText, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
 
 interface Project {
@@ -67,43 +69,61 @@ const SBIApartmentValuation = () => {
             </p>
           </div>
           
-          <div className="bg-white rounded-lg shadow dark:bg-gray-900">
-            <div className="p-4 border-b flex justify-between items-center dark:border-gray-700">
-              <h2 className="text-lg font-medium dark:text-white">Valuation Report</h2>
-              <div className="flex space-x-2">
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  className="flex items-center gap-2" 
-                  onClick={handleSave}
-                >
-                  <FilePenLine size={16} />
-                  Save
-                </Button>
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  className="flex items-center gap-2"
-                  onClick={handlePrint}
-                >
-                  <Printer size={16} />
-                  Print
-                </Button>
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  className="flex items-center gap-2"
-                  onClick={handleExportToWord}
-                >
-                  <FileText size={16} />
-                  Export
-                </Button>
+          <Tabs defaultValue="form" className="w-full">
+            <TabsList className="mb-4">
+              <TabsTrigger value="form">Valuation Form</TabsTrigger>
+              <TabsTrigger value="marketData">
+                <MapPin className="h-4 w-4 mr-2" />
+                Market Data
+              </TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="form">
+              <div className="bg-white rounded-lg shadow dark:bg-gray-900">
+                <div className="p-4 border-b flex justify-between items-center dark:border-gray-700">
+                  <h2 className="text-lg font-medium dark:text-white">Valuation Report</h2>
+                  <div className="flex space-x-2">
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="flex items-center gap-2" 
+                      onClick={handleSave}
+                    >
+                      <FilePenLine size={16} />
+                      Save
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="flex items-center gap-2"
+                      onClick={handlePrint}
+                    >
+                      <Printer size={16} />
+                      Print
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="flex items-center gap-2"
+                      onClick={handleExportToWord}
+                    >
+                      <FileText size={16} />
+                      Export
+                    </Button>
+                  </div>
+                </div>
+                <div className="print:p-0 p-4">
+                  <SBIApartmentForm />
+                </div>
               </div>
-            </div>
-            <div className="print:p-0 p-4">
-              <SBIApartmentForm />
-            </div>
-          </div>
+            </TabsContent>
+
+            <TabsContent value="marketData">
+              <div className="bg-white rounded-lg shadow dark:bg-gray-900 p-4">
+                <PropertyMarketDataTool />
+              </div>
+            </TabsContent>
+          </Tabs>
         </main>
       </div>
     </div>
