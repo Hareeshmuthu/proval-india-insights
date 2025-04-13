@@ -1,11 +1,10 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Loader2, MapPin, Search, TrendingUp, Home, Buildings, FileBarChart } from "lucide-react";
+import { Loader2, MapPin, Search, TrendingUp, Home, Building, FileBarChart } from "lucide-react";
 import { toast } from "sonner";
 
 interface MarketDataResponse {
@@ -22,17 +21,13 @@ const PropertyMarketDataTool: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [marketData, setMarketData] = useState<MarketDataResponse | null>(null);
 
-  // Simulated API call - in a real implementation, this would call your backend
   const fetchMarketData = async (searchType: 'coordinates' | 'address', searchValue: string) => {
     setIsLoading(true);
     setMarketData(null);
 
     try {
-      // In a real implementation, this would be a call to your AI service
-      // For now, we'll simulate a response with a delay
       await new Promise(resolve => setTimeout(resolve, 2000));
       
-      // Sample response data
       const sampleResponse: MarketDataResponse = {
         marketRates: `The average property rate in this area is ₹4,500 - ₹6,000 per sq.ft for apartments. 
         Independent houses command a premium of 15-20% over apartment rates. 
@@ -184,7 +179,7 @@ const PropertyMarketDataTool: React.FC = () => {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center">
-                  <Buildings className="mr-2 h-5 w-5" />
+                  <Building className="mr-2 h-5 w-5" />
                   Comparables
                 </CardTitle>
               </CardHeader>
