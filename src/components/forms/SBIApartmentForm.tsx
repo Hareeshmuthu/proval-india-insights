@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { CalendarIcon, ChevronDown, Check, Plus, Trash2 } from "lucide-react";
 import { format } from "date-fns";
@@ -772,4 +773,406 @@ export default function SBIApartmentForm() {
                   }
                   onChange={(e) => {
                     if (idx === 0) handleInputChange("totalCompositeValueBeforeValuation", e.target.value);
-                    else if (idx === 1) handleInputChange("dep
+                    else if (idx === 1) handleInputChange("depreciatedBuildingRateB", e.target.value);
+                    else if (idx === 2) handleInputChange("rateForLandOther", e.target.value);
+                    else handleInputChange("totalCompositeRate", e.target.value);
+                  }}
+                />
+              </td>
+            </tr>
+          ))}
+        </>
+      );
+    }
+  };
+
+  return (
+    <form className="space-y-8">
+      {sbiFormFields.map((section, sectionIndex) => (
+        <div key={`section-${sectionIndex}`} className="mb-8 print:break-inside-avoid">
+          <h2 className="text-lg font-medium mb-4 dark:text-white border-b pb-2">
+            {section.section}
+          </h2>
+          
+          <div className="border rounded-md dark:border-gray-700">
+            <table className="w-full">
+              <tbody>
+                {section.fields.map((field, idx) => {
+                  // Check if field has subfields to render them differently
+                  if (field.subFields) {
+                    if (section.section === "III. FLAT" && field.sn === "3") {
+                      // Specifications section (3)
+                      return (
+                        <React.Fragment key={`${section.section}-${field.sn}`}>
+                          <tr className="border-t first:border-t-0 dark:border-gray-700">
+                            <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white">
+                              {field.sn}
+                            </td>
+                            <td colSpan={2} className="border p-2 font-medium dark:border-gray-600 dark:text-white">
+                              {field.label}
+                            </td>
+                          </tr>
+                          {renderSubfields(field.subFields, field.sn)}
+                        </React.Fragment>
+                      );
+                    } else if (section.section === "III. FLAT" && field.sn === "4") {
+                      // House Tax section (4)
+                      return (
+                        <React.Fragment key={`${section.section}-${field.sn}`}>
+                          <tr className="border-t first:border-t-0 dark:border-gray-700">
+                            <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white">
+                              {field.sn}
+                            </td>
+                            <td colSpan={2} className="border p-2 font-medium dark:border-gray-600 dark:text-white">
+                              {field.label}
+                            </td>
+                          </tr>
+                          {renderSubfields(field.subFields, field.sn)}
+                        </React.Fragment>
+                      );
+                    } else if (section.section === "III. FLAT" && field.sn === "5") {
+                      // Electricity section (5)
+                      return (
+                        <React.Fragment key={`${section.section}-${field.sn}`}>
+                          <tr className="border-t first:border-t-0 dark:border-gray-700">
+                            <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white">
+                              {field.sn}
+                            </td>
+                            <td colSpan={2} className="border p-2 font-medium dark:border-gray-600 dark:text-white">
+                              {field.label}
+                            </td>
+                          </tr>
+                          {renderSubfields(field.subFields, field.sn)}
+                        </React.Fragment>
+                      );
+                    } else if (section.section === "V. RATE" && field.sn === "3") {
+                      // Break-up of rate section
+                      return (
+                        <React.Fragment key={`${section.section}-${field.sn}`}>
+                          <tr className="border-t first:border-t-0 dark:border-gray-700">
+                            <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white">
+                              {field.sn}
+                            </td>
+                            <td colSpan={2} className="border p-2 font-medium dark:border-gray-600 dark:text-white">
+                              {field.label}
+                            </td>
+                          </tr>
+                          {renderBreakupFields(field.subFields)}
+                        </React.Fragment>
+                      );
+                    } else if (section.section === "VI. COMPOSITE RATE AFTER DEPRECIATION") {
+                      // Composite Rate after Depreciation section
+                      return (
+                        <React.Fragment key={`${section.section}-${field.sn}`}>
+                          {renderDepreciationFields(field)}
+                        </React.Fragment>
+                      );
+                    }
+                  }
+                  
+                  // Regular fields without subfields
+                  return (
+                    <tr key={`${section.section}-${field.sn}`} className="border-t first:border-t-0 dark:border-gray-700 print:break-inside-avoid">
+                      <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white">
+                        {field.sn}
+                      </td>
+                      <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white">
+                        {field.label}
+                      </td>
+                      <td className="border p-2 align-top dark:border-gray-600">
+                        {/* Date Fields */}
+                        {field.sn === "2a" && (
+                          <DatePicker 
+                            value={dates.inspection} 
+                            onChange={(date) => handleDateChange("inspection", date)} 
+                          />
+                        )}
+                        {field.sn === "2b" && (
+                          <DatePicker 
+                            value={dates.valuation} 
+                            onChange={(date) => handleDateChange("valuation", date)} 
+                          />
+                        )}
+                        {field.sn === "2c" && (
+                          <DatePicker 
+                            value={dates.report} 
+                            onChange={(date) => handleDateChange("report", date)}
+                          />
+                        )}
+                        {field.sn === "6f" && (
+                          <DatePicker 
+                            value={dates.layoutPlan} 
+                            onChange={(date) => handleDateChange("layoutPlan", date)} 
+                          />
+                        )}
+                        
+                        {/* Document Selection Field */}
+                        {field.sn === "3" && section.section === "I. GENERAL" && (
+                          <MultiSelectDropdown 
+                            options={docOptions}
+                            value={formData.selectedDocs}
+                            onChange={(vals) => handleInputChange("selectedDocs", vals)}
+                            placeholder="Select documents..."
+                          />
+                        )}
+                        
+                        {/* Year of Construction Field */}
+                        {field.sn === "4" && section.section === "II. APARTMENT BUILDING" && (
+                          <YearPicker 
+                            value={formData.yearOfConstruction} 
+                            onChange={(year) => handleInputChange("yearOfConstruction", year)} 
+                          />
+                        )}
+                        
+                        {/* Custom Dropdown for Appearance of Building */}
+                        {field.sn === "9" && section.section === "II. APARTMENT BUILDING" && (
+                          <CustomDropdown 
+                            options={["Superior", "Fair", "Ugly"]}
+                            value={formData.appearanceOfBuilding}
+                            onChange={(val) => handleInputChange("appearanceOfBuilding", val)}
+                            placeholder="Select appearance..."
+                          />
+                        )}
+                        
+                        {/* Custom Dropdown for Maintenance of Flat */}
+                        {field.sn === "6" && section.section === "III. FLAT" && (
+                          <CustomDropdown 
+                            options={["Good", "Average", "Poor"]}
+                            value={formData.maintenanceOfFlat}
+                            onChange={(val) => handleInputChange("maintenanceOfFlat", val)}
+                            placeholder="Select maintenance..."
+                          />
+                        )}
+                        
+                        {/* Custom Dropdown for Flat Class */}
+                        {field.sn === "12" && section.section === "III. FLAT" && (
+                          <CustomDropdown 
+                            options={["Posh", "I Class", "Medium", "Ordinary"]}
+                            value={formData.flatClass}
+                            onChange={(val) => handleInputChange("flatClass", val)}
+                            placeholder="Select class..."
+                          />
+                        )}
+                        
+                        {/* Custom Dropdown for Residential/Commercial */}
+                        {field.sn === "13" && section.section === "III. FLAT" && (
+                          <CustomDropdown 
+                            options={["Residential Use", "Commercial Use"]}
+                            value={formData.residentialOrCommercial}
+                            onChange={(val) => handleInputChange("residentialOrCommercial", val)}
+                            placeholder="Select usage..."
+                          />
+                        )}
+                        
+                        {/* Custom Dropdown for Owner/Rented */}
+                        {field.sn === "14" && section.section === "III. FLAT" && (
+                          <CustomDropdown 
+                            options={["Owner Occupied", "Rented"]}
+                            value={formData.ownerOrRented}
+                            onChange={(val) => handleInputChange("ownerOrRented", val)}
+                            placeholder="Select occupancy..."
+                          />
+                        )}
+                        
+                        {/* Custom Dropdown for Marketability */}
+                        {field.sn === "1" && section.section === "IV. MARKETABILITY" && (
+                          <CustomDropdown 
+                            options={["Good", "Average", "Poor"]}
+                            value={formData.marketability}
+                            onChange={(val) => handleInputChange("marketability", val)}
+                            placeholder="Select marketability..."
+                          />
+                        )}
+                        
+                        {/* Factors Favoring (Multi-line) */}
+                        {field.sn === "2" && section.section === "IV. MARKETABILITY" && (
+                          <Textarea 
+                            className="w-full min-h-[100px] h-auto resize-none dark:bg-gray-800 dark:text-white dark:border-gray-600"
+                            placeholder="Enter factors favoring..."
+                            value={formData.factorsFavoring}
+                            onChange={(e) => handleInputChange("factorsFavoring", e.target.value)}
+                          />
+                        )}
+                        
+                        {/* Negative Factors (Multi-line) */}
+                        {field.sn === "3" && section.section === "IV. MARKETABILITY" && (
+                          <Textarea 
+                            className="w-full min-h-[100px] h-auto resize-none dark:bg-gray-800 dark:text-white dark:border-gray-600"
+                            placeholder="Enter negative factors..."
+                            value={formData.negativeFactors}
+                            onChange={(e) => handleInputChange("negativeFactors", e.target.value)}
+                          />
+                        )}
+                        
+                        {/* Default Text Inputs */}
+                        {!["2a", "2b", "2c", "3", "6f", "4", "9", "6", "12", "13", "14", "1", "2", "3"].includes(field.sn) || 
+                         (field.sn === "4" && section.section !== "II. APARTMENT BUILDING") ||
+                         (field.sn === "9" && section.section !== "II. APARTMENT BUILDING") ||
+                         (field.sn === "6" && section.section !== "III. FLAT") || 
+                         (field.sn === "1" && section.section !== "IV. MARKETABILITY") ||
+                         (field.sn === "2" && section.section !== "IV. MARKETABILITY") ||
+                         (field.sn === "3" && section.section !== "I. GENERAL" && section.section !== "IV. MARKETABILITY") && (
+                          <Input 
+                            type="text" 
+                            className="w-full border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600"
+                            placeholder={`Enter ${field.label.toLowerCase()}`}
+                            value={
+                              field.sn === "6a" ? formData.plotNo :
+                              field.sn === "6b" ? formData.doorNo :
+                              field.sn === "6c" ? formData.tsNo :
+                              field.sn === "6d" ? formData.ward :
+                              field.sn === "6e" ? formData.mandal :
+                              field.sn === "6g" ? formData.approvedMapAuthority :
+                              field.sn === "6h" ? formData.genuinenessVerified :
+                              field.sn === "6i" ? formData.planAuthenticity :
+                              field.sn === "15" ? `${formData.latitude}, ${formData.longitude}` :
+                              field.sn === "1" && section.section === "I. GENERAL" ? formData.purpose :
+                              field.sn === "4" && section.section === "I. GENERAL" ? formData.ownerDetails :
+                              field.sn === "5" && section.section === "I. GENERAL" ? formData.propertyDescription :
+                              field.sn === "2a" && section.section === "II. APARTMENT BUILDING" ? formData.tsNoSfNoDoorNo :
+                              field.sn === "2b" && section.section === "II. APARTMENT BUILDING" ? formData.blockNo :
+                              field.sn === "2c" && section.section === "II. APARTMENT BUILDING" ? formData.wardNo :
+                              field.sn === "2d" && section.section === "II. APARTMENT BUILDING" ? formData.villageMunicipalityCorp :
+                              field.sn === "2e" && section.section === "II. APARTMENT BUILDING" ? formData.doorNoStreetRoad :
+                              ""
+                            }
+                            onChange={(e) => {
+                              if (field.sn === "6a") handleInputChange("plotNo", e.target.value);
+                              else if (field.sn === "6b") handleInputChange("doorNo", e.target.value);
+                              else if (field.sn === "6c") handleInputChange("tsNo", e.target.value);
+                              else if (field.sn === "6d") handleInputChange("ward", e.target.value);
+                              else if (field.sn === "6e") handleInputChange("mandal", e.target.value);
+                              else if (field.sn === "6g") handleInputChange("approvedMapAuthority", e.target.value);
+                              else if (field.sn === "6h") handleInputChange("genuinenessVerified", e.target.value);
+                              else if (field.sn === "6i") handleInputChange("planAuthenticity", e.target.value);
+                              else if (field.sn === "15") {
+                                const [lat, lng] = e.target.value.split(',').map(s => s.trim());
+                                handleInputChange("latitude", lat || "");
+                                handleInputChange("longitude", lng || "");
+                              }
+                              else if (field.sn === "1" && section.section === "I. GENERAL") 
+                                handleInputChange("purpose", e.target.value);
+                              else if (field.sn === "4" && section.section === "I. GENERAL") 
+                                handleInputChange("ownerDetails", e.target.value);
+                              else if (field.sn === "5" && section.section === "I. GENERAL") 
+                                handleInputChange("propertyDescription", e.target.value);
+                              else if (field.sn === "2a" && section.section === "II. APARTMENT BUILDING") 
+                                handleInputChange("tsNoSfNoDoorNo", e.target.value);
+                              else if (field.sn === "2b" && section.section === "II. APARTMENT BUILDING") 
+                                handleInputChange("blockNo", e.target.value);
+                              else if (field.sn === "2c" && section.section === "II. APARTMENT BUILDING") 
+                                handleInputChange("wardNo", e.target.value);
+                              else if (field.sn === "2d" && section.section === "II. APARTMENT BUILDING") 
+                                handleInputChange("villageMunicipalityCorp", e.target.value);
+                              else if (field.sn === "2e" && section.section === "II. APARTMENT BUILDING") 
+                                handleInputChange("doorNoStreetRoad", e.target.value);
+                            }}
+                          />
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      ))}
+      
+      {/* Valuation Inputs Table */}
+      <div className="mb-8">
+        <h2 className="text-lg font-medium mb-4 dark:text-white border-b pb-2">
+          Details of Valuation: (Valuation Inputs)
+        </h2>
+        
+        <div className="overflow-x-auto border rounded-md dark:border-gray-700">
+          <table className="w-full">
+            <thead>
+              <tr className="bg-muted dark:bg-gray-800">
+                <th className="border p-2 text-left dark:border-gray-600 dark:text-white">SI.No.</th>
+                <th className="border p-2 text-left dark:border-gray-600 dark:text-white">Description</th>
+                <th className="border p-2 text-left dark:border-gray-600 dark:text-white">Qty.</th>
+                <th className="border p-2 text-left dark:border-gray-600 dark:text-white">Rate per unit Rs.</th>
+                <th className="border p-2 text-left dark:border-gray-600 dark:text-white">Unit</th>
+                <th className="border p-2 text-left dark:border-gray-600 dark:text-white">Estimated value Rs.in Lakhs</th>
+                <th className="border p-2 text-left dark:border-gray-600 dark:text-white">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {valuationRows.map((row) => (
+                <tr key={row.id} className="border-t dark:border-gray-700">
+                  <td className="border p-2 dark:border-gray-600 dark:text-white">{row.id}</td>
+                  <td className="border p-2 dark:border-gray-600">
+                    <Input
+                      value={row.description}
+                      onChange={(e) => handleValuationRowChange(row.id, 'description', e.target.value)}
+                      className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600"
+                    />
+                  </td>
+                  <td className="border p-2 dark:border-gray-600">
+                    <Input
+                      type="number"
+                      value={row.qty !== null ? row.qty : ''}
+                      onChange={(e) => handleValuationRowChange(row.id, 'qty', e.target.value ? parseFloat(e.target.value) : null)}
+                      className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600"
+                    />
+                  </td>
+                  <td className="border p-2 dark:border-gray-600">
+                    <Input
+                      type="number"
+                      value={row.ratePerUnit !== null ? row.ratePerUnit : ''}
+                      onChange={(e) => handleValuationRowChange(row.id, 'ratePerUnit', e.target.value ? parseFloat(e.target.value) : null)}
+                      className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600"
+                    />
+                  </td>
+                  <td className="border p-2 dark:border-gray-600">
+                    <CustomDropdown
+                      options={unitOptions}
+                      value={row.unit}
+                      onChange={(val) => handleValuationRowChange(row.id, 'unit', val)}
+                      placeholder="Select unit"
+                    />
+                  </td>
+                  <td className="border p-2 dark:border-gray-600 dark:text-white">
+                    {row.estimatedValue !== null ? row.estimatedValue.toFixed(2) : ''}
+                  </td>
+                  <td className="border p-2 dark:border-gray-600">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => removeValuationRow(row.id)}
+                      className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600"
+                    >
+                      <Trash2 className="h-4 w-4 mr-1" />
+                      Remove
+                    </Button>
+                  </td>
+                </tr>
+              ))}
+              {/* Total Row */}
+              <tr className="border-t bg-muted dark:bg-gray-800 dark:border-gray-700">
+                <td colSpan={5} className="border p-2 text-right font-medium dark:border-gray-600 dark:text-white">
+                  Total
+                </td>
+                <td className="border p-2 font-medium dark:border-gray-600 dark:text-white">
+                  {totalEstimatedValue.toFixed(2)}
+                </td>
+                <td className="border p-2 dark:border-gray-600">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={addValuationRow}
+                    className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600"
+                  >
+                    <Plus className="h-4 w-4 mr-1" />
+                    Add Row
+                  </Button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </form>
+  );
+}
