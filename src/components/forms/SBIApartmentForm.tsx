@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { CalendarIcon, ChevronDown, Check } from "lucide-react";
 import { format } from "date-fns";
@@ -29,6 +28,7 @@ import {
 import { useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Checkbox } from "@/components/ui/checkbox";
+import ValuationTable from './ValuationTable';
 
 // Updated SBI form fields with new requirements
 const sbiFormFields = [
@@ -124,8 +124,8 @@ const sbiFormFields = [
       { sn: "7", label: "Sale Deed executed in the name of" },
       { sn: "8", label: "Undivided land area" },
       { sn: "9", label: "Plinth Area" },
-      { sn: "10", label: "Floor Space Index" }, // Rearranged position
-      { sn: "11", label: "Carpet Area" }, // Rearranged position
+      { sn: "10", label: "Floor Space Index" },
+      { sn: "11", label: "Carpet Area" },
       { sn: "12", label: "Is it Posh / I Class / Medium / Ordinary?" },
       { sn: "13", label: "Residential or Commercial Use" },
       { sn: "14", label: "Owner-occupied or Rented" },
@@ -1205,6 +1205,8 @@ export default function SBIApartmentForm() {
           </table>
         </div>
       ))}
+      
+      <ValuationTable />
       
       <style>
         {`
