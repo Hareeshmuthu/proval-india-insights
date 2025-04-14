@@ -12,8 +12,6 @@ import Signup from "./pages/Signup";
 import CreateProject from "./pages/CreateProject";
 import ProjectFiles from "./pages/ProjectFiles";
 import SBIApartmentValuation from "./pages/SBIApartmentValuation";
-import PropertyDataTool from "./pages/dashboard/PropertyDataTool";
-import ThreatsAssessmentTool from "./pages/dashboard/ThreatsAssessmentTool";
 import { useEffect } from "react";
 import { QueryClient } from "@tanstack/react-query";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
@@ -92,22 +90,6 @@ const RouterWrapper = () => {
             element={
               <ProtectedRoute>
                 <SBIApartmentValuation />
-              </ProtectedRoute>
-            } 
-          />
-          <Route 
-            path="/dashboard/property-data" 
-            element={
-              <ProtectedRoute>
-                <PropertyDataTool />
-              </ProtectedRoute>
-            } 
-          />
-          <Route 
-            path="/dashboard/threats-assessment" 
-            element={
-              <ProtectedRoute>
-                <ThreatsAssessmentTool />
               </ProtectedRoute>
             } 
           />
