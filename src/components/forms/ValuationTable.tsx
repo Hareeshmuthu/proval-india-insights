@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -85,17 +84,23 @@ const ValuationTable = () => {
                 <td className="border border-gray-300 dark:border-gray-600 p-2">
                   <Input
                     type="number"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
                     value={row.quantity}
                     onChange={(e) => updateRow(row.id, 'quantity', parseFloat(e.target.value) || 0)}
-                    className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600"
+                    className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                    style={{ MozAppearance: 'textfield' }}
                   />
                 </td>
                 <td className="border border-gray-300 dark:border-gray-600 p-2">
                   <Input
                     type="number"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
                     value={row.ratePerUnit}
                     onChange={(e) => updateRow(row.id, 'ratePerUnit', parseFloat(e.target.value) || 0)}
-                    className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600"
+                    className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                    style={{ MozAppearance: 'textfield' }}
                   />
                 </td>
                 <td className="border border-gray-300 dark:border-gray-600 p-2">
