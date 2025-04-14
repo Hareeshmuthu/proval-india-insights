@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -70,10 +71,10 @@ const ValuationTable = () => {
             </tr>
           </thead>
           <tbody>
-            {rows.map((row) => (
+            {rows.map((row, index) => (
               <tr key={row.id} className="dark:bg-gray-900">
                 <td className="border border-gray-300 dark:border-gray-600 p-2 text-center">
-                  {row.id}
+                  {index + 1}
                 </td>
                 <td className="border border-gray-300 dark:border-gray-600 p-2">
                   <Input
@@ -89,6 +90,7 @@ const ValuationTable = () => {
                     onChange={(e) => updateRow(row.id, 'quantity', parseFloat(e.target.value) || 0)}
                     className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600"
                     min="0"
+                    style={{ appearance: "textfield" }}
                   />
                 </td>
                 <td className="border border-gray-300 dark:border-gray-600 p-2">
@@ -98,6 +100,7 @@ const ValuationTable = () => {
                     onChange={(e) => updateRow(row.id, 'ratePerUnit', parseFloat(e.target.value) || 0)}
                     className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600"
                     min="0"
+                    style={{ appearance: "textfield" }}
                   />
                 </td>
                 <td className="border border-gray-300 dark:border-gray-600 p-2">
