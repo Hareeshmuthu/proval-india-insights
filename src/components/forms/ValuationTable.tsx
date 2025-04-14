@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Trash2 } from "lucide-react";
+import { X } from "lucide-react";
 
 interface ValuationRow {
   id: string;
@@ -61,13 +61,12 @@ const ValuationTable = () => {
         <table className="w-full border-collapse border border-gray-300 dark:border-gray-600">
           <thead>
             <tr className="bg-gray-100 dark:bg-gray-800">
-              <th className="border border-gray-300 dark:border-gray-600 p-2 w-16">SI.No.</th>
-              <th className="border border-gray-300 dark:border-gray-600 p-2 w-1/2">Description</th>
-              <th className="border border-gray-300 dark:border-gray-600 p-2 w-24">Qty.</th>
+              <th className="border border-gray-300 dark:border-gray-600 p-2 w-12">SI.No.</th>
+              <th className="border border-gray-300 dark:border-gray-600 p-2 w-1/3">Description</th>
+              <th className="border border-gray-300 dark:border-gray-600 p-2 w-32">Qty.</th>
               <th className="border border-gray-300 dark:border-gray-600 p-2 w-32">Rate per unit Rs.</th>
               <th className="border border-gray-300 dark:border-gray-600 p-2 w-24">Unit</th>
               <th className="border border-gray-300 dark:border-gray-600 p-2 w-32">Estimated value Rs.in Lakhs</th>
-              <th className="border border-gray-300 dark:border-gray-600 p-2 w-16">Action</th>
             </tr>
           </thead>
           <tbody>
@@ -139,7 +138,7 @@ const ValuationTable = () => {
                     onClick={() => deleteRow(row.id)}
                     className="p-1 h-8 w-8"
                   >
-                    <Trash2 className="h-4 w-4" />
+                    <X className="h-4 w-4" />
                   </Button>
                 </td>
               </tr>
