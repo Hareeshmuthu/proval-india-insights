@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { X } from "lucide-react";
+import { Trash2 } from "lucide-react";
 
 interface ValuationRow {
   id: string;
@@ -63,18 +63,18 @@ const ValuationTable = () => {
             <tr className="bg-gray-100 dark:bg-gray-800">
               <th className="border border-gray-300 dark:border-gray-600 p-2 w-16">SI.No.</th>
               <th className="border border-gray-300 dark:border-gray-600 p-2 w-1/2">Description</th>
-              <th className="border border-gray-300 dark:border-gray-600 p-2 w-32">Qty.</th>
-              <th className="border border-gray-300 dark:border-gray-600 p-2 w-36">Rate per unit Rs.</th>
+              <th className="border border-gray-300 dark:border-gray-600 p-2 w-24">Qty.</th>
+              <th className="border border-gray-300 dark:border-gray-600 p-2 w-32">Rate per unit Rs.</th>
               <th className="border border-gray-300 dark:border-gray-600 p-2 w-24">Unit</th>
               <th className="border border-gray-300 dark:border-gray-600 p-2 w-32">Estimated value Rs.in Lakhs</th>
-              <th className="w-10"></th>
+              <th className="border border-gray-300 dark:border-gray-600 p-2 w-16">Action</th>
             </tr>
           </thead>
           <tbody>
-            {rows.map((row, index) => (
+            {rows.map((row) => (
               <tr key={row.id} className="dark:bg-gray-900">
                 <td className="border border-gray-300 dark:border-gray-600 p-2 text-center">
-                  {index + 1}
+                  {row.id}
                 </td>
                 <td className="border border-gray-300 dark:border-gray-600 p-2">
                   <Input
@@ -89,8 +89,6 @@ const ValuationTable = () => {
                     value={row.quantity}
                     onChange={(e) => updateRow(row.id, 'quantity', parseFloat(e.target.value) || 0)}
                     className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600"
-                    min="0"
-                    style={{ appearance: "textfield" }}
                   />
                 </td>
                 <td className="border border-gray-300 dark:border-gray-600 p-2">
@@ -99,8 +97,6 @@ const ValuationTable = () => {
                     value={row.ratePerUnit}
                     onChange={(e) => updateRow(row.id, 'ratePerUnit', parseFloat(e.target.value) || 0)}
                     className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600"
-                    min="0"
-                    style={{ appearance: "textfield" }}
                   />
                 </td>
                 <td className="border border-gray-300 dark:border-gray-600 p-2">
@@ -136,36 +132,34 @@ const ValuationTable = () => {
                 <td className="border border-gray-300 dark:border-gray-600 p-2 text-right">
                   {calculateRowValue(row.quantity, row.ratePerUnit).toFixed(2)}
                 </td>
-                <td className="px-2">
-                  {rows.length > 1 && (
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => deleteRow(row.id)}
-                      className="p-1 h-8 w-8 hover:bg-destructive hover:text-destructive-foreground"
-                    >
-                      <X className="h-4 w-4" />
-                    </Button>
-                  )}
+                <td className="border border-gray-300 dark:border-gray-600 p-2 text-center">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => deleteRow(row.id)}
+                    className="p-1 h-8 w-8"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
                 </td>
               </tr>
             ))}
             <tr className="bg-gray-50 dark:bg-gray-800 font-semibold">
-              <td colSpan={5} className="border border-gray-300 dark:border-gray-600 p-2">
+              <td colSpan={6} className="border border-gray-300 dark:border-gray-600 p-2">
                 <div className="flex justify-between items-center">
                   <span>Total</span>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={addRow}
-                    className="p-1 h-8 w-8"
-                  >
-                    +
-                  </Button>
+                  <span>{calculateTotal().toFixed(2)}</span>
                 </div>
               </td>
-              <td colSpan={2} className="border border-gray-300 dark:border-gray-600 p-2 text-right">
-                {calculateTotal().toFixed(2)}
+              <td className="border border-gray-300 dark:border-gray-600 p-2 text-center">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={addRow}
+                  className="p-1 h-8 w-8"
+                >
+                  +
+                </Button>
               </td>
             </tr>
           </tbody>
