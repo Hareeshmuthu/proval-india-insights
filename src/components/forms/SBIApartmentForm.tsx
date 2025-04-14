@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { CalendarIcon, ChevronDown, Check } from "lucide-react";
 import { format } from "date-fns";
@@ -102,29 +103,29 @@ const sbiFormFields = [
       { sn: "1", label: "The floor on which the flat is situated" },
       { sn: "2", label: "Door No. of the flat" },
       { sn: "3", label: "Specifications", subFields: [
-        { sn: "a", label: "Roof" },
-        { sn: "b", label: "Flooring" },
-        { sn: "c", label: "Doors" },
-        { sn: "d", label: "Windows" },
-        { sn: "e", label: "Fittings" },
-        { sn: "f", label: "Finishings" }
+        { sn: "3a", label: "Roof" },
+        { sn: "3b", label: "Flooring" },
+        { sn: "3c", label: "Doors" },
+        { sn: "3d", label: "Windows" },
+        { sn: "3e", label: "Fittings" },
+        { sn: "3f", label: "Finishings" }
       ]},
       { sn: "4", label: "House Tax", subFields: [
-        { sn: "a", label: "House tax" },
-        { sn: "b", label: "Assessment Number" },
-        { sn: "c", label: "Tax Paid in the Name of" },
-        { sn: "d", label: "Tax Amount" }
+        { sn: "4a", label: "House tax" },
+        { sn: "4b", label: "Assessment Number" },
+        { sn: "4c", label: "Tax Paid in the Name of" },
+        { sn: "4d", label: "Tax Amount" }
       ]},
       { sn: "5", label: "Electricity Service Connection", subFields: [
-        { sn: "a", label: "Electricity Service Connection Number" },
-        { sn: "b", label: "Meter card is in the Name of" }
+        { sn: "5a", label: "Electricity Service Connection Number" },
+        { sn: "5b", label: "Meter card is in the Name of" }
       ]},
       { sn: "6", label: "Maintenance of the flat" },
       { sn: "7", label: "Sale Deed executed in the name of" },
       { sn: "8", label: "Undivided land area" },
       { sn: "9", label: "Plinth Area" },
-      { sn: "10", label: "Floor Space Index" },
-      { sn: "11", label: "Carpet Area" },
+      { sn: "10", label: "Floor Space Index" }, // Rearranged position
+      { sn: "11", label: "Carpet Area" }, // Rearranged position
       { sn: "12", label: "Is it Posh / I Class / Medium / Ordinary?" },
       { sn: "13", label: "Residential or Commercial Use" },
       { sn: "14", label: "Owner-occupied or Rented" },
@@ -187,28 +188,19 @@ const CustomDropdown = ({ options, value, onChange, placeholder }) => {
     }
   }, [value, options]);
 
-  const handleOptionSelect = (val) => {
-    if (val === "custom") {
-      setIsCustom(true);
-      // Keep the current value if switching to custom mode
-      onChange(customValue || "");
-    } else {
-      setIsCustom(false);
-      onChange(val);
-    }
-  };
-
-  const handleCustomInputChange = (e) => {
-    const newValue = e.target.value;
-    setCustomValue(newValue);
-    onChange(newValue);
-  };
-
   return (
     <div className="w-full">
       <Select 
         value={isCustom ? "custom" : value}
-        onValueChange={handleOptionSelect}
+        onValueChange={(val) => {
+          if (val === "custom") {
+            setIsCustom(true);
+            onChange(customValue || "");
+          } else {
+            setIsCustom(false);
+            onChange(val);
+          }
+        }}
       >
         <SelectTrigger className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600">
           <SelectValue placeholder={placeholder} />
@@ -224,7 +216,10 @@ const CustomDropdown = ({ options, value, onChange, placeholder }) => {
       {isCustom && (
         <Input 
           value={customValue}
-          onChange={handleCustomInputChange}
+          onChange={(e) => {
+            setCustomValue(e.target.value);
+            onChange(e.target.value);
+          }}
           placeholder="Enter custom value..."
           className="mt-2 dark:bg-gray-800 dark:text-white dark:border-gray-600"
         />
@@ -255,7 +250,7 @@ const MultiSelectDropdown = ({ options, value, onChange, placeholder }) => {
             className="w-full justify-between text-left font-normal dark:bg-gray-800 dark:text-white dark:border-gray-600"
           >
             {selectedItems.length > 0 ? (
-              <span className="truncate">{selectedItems.length} document{selectedItems.length !== 1 ? 's' : ''} provided</span>
+              <span className="truncate">{selectedItems.length} document{selectedItems.length !== 1 ? 's' : ''} selected</span>
             ) : (
               <span className="text-muted-foreground">{placeholder}</span>
             )}
@@ -522,19 +517,6 @@ export default function SBIApartmentForm() {
     }));
   }, [formData.plotNo, formData.surveyNo, formData.doorNo, formData.ward, formData.village, formData.mandal]);
   
-  // Calculate age of building automatically when year of construction changes
-  useEffect(() => {
-    if (formData.yearOfConstruction) {
-      const currentYear = new Date().getFullYear();
-      const buildingAge = currentYear - formData.yearOfConstruction;
-      
-      setFormData(prev => ({
-        ...prev,
-        ageOfBuilding: buildingAge.toString()
-      }));
-    }
-  }, [formData.yearOfConstruction]);
-  
   // Render subfields and their inputs
   const renderSubfields = (subFields, parentField) => {
     return subFields.map((subField, idx) => (
@@ -779,7 +761,6 @@ export default function SBIApartmentForm() {
                                       rows={3}
                                       value={field.label === 'Purpose for which the valuation is made' ? formData.purpose : ''}
                                       onChange={e => field.label === 'Purpose for which the valuation is made' ? handleInputChange('purpose', e.target.value) : null}
-                                      style={{ minHeight: "80px", height: "auto", resize: "vertical" }}
                                    ></Textarea>;
                           } else if (field.label === 'Date of inspection') {
                             return <DatePicker value={dates.inspection} onChange={(date) => handleDateChange('inspection', date)} />;
@@ -1072,12 +1053,7 @@ export default function SBIApartmentForm() {
                               </Select>
                             );
                           } else if (["Name of the owner(s) and address(es)", "Postal address of the property"].includes(field.label)) {
-                            return <Textarea 
-                                      className="w-full border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
-                                      placeholder={`Enter ${field.label.toLowerCase()}`} 
-                                      rows={3}
-                                      style={{ minHeight: "80px", height: "auto", resize: "vertical" }}
-                                   ></Textarea>;
+                            return <Textarea className="w-full border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" placeholder={`Enter ${field.label.toLowerCase()}`} rows={3}></Textarea>;
                           } else if (["Residential Area", "Commercial Area", "Industrial Area"].includes(field.label)) {
                             return (
                               <Select>
@@ -1214,7 +1190,6 @@ export default function SBIApartmentForm() {
                                 rows={3}
                                 value={formData[fieldKey]}
                                 onChange={(e) => handleInputChange(fieldKey, e.target.value)}
-                                style={{ minHeight: "80px", height: "auto", resize: "vertical" }}
                               ></Textarea>
                             );
                           } else {
@@ -1244,7 +1219,6 @@ export default function SBIApartmentForm() {
           min-height: 80px;
           resize: vertical;
           overflow: hidden;
-          height: auto;
         }
         
         /* Style for z-index of dropdown content */
