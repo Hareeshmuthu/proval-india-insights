@@ -21,9 +21,11 @@ import {
 } from "@/components/ui/select";
 import {
   Form,
+  FormField,
   FormItem,
   FormLabel,
   FormControl,
+  FormDescription,
 } from "@/components/ui/form";
 import { useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -32,6 +34,7 @@ import ValuationTable from './ValuationTable';
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { useForm } from "react-hook-form";
+import { DialogClose } from "@/components/ui/dialog";
 
 const sbiFormFields = [
   {
@@ -295,7 +298,7 @@ const YearPicker = ({ value, onChange }: { value: number | null, onChange: (year
   );
 };
 
-const DatePicker = ({ value, onChange }: { value: Date, onChange: (date: Date) => void }) => {
+const DatePicker = ({ value, onChange }: { value: Date | undefined, onChange: (date: Date | undefined) => void }) => {
   const [open, setOpen] = React.useState(false)
 
   return (
@@ -328,88 +331,100 @@ const DatePicker = ({ value, onChange }: { value: Date, onChange: (date: Date) =
 }
 
 export default function SBIApartmentForm() {
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState<Record<string, any>>({});
   const [searchParams] = useSearchParams();
   const [location, setLocation] = useState("");
   const [currentDate, setCurrentDate] = useState(new Date());
   const [netRealizableValue, setNetRealizableValue] = useState(0);
   
-  // Create form
+  // Initialize the form
   const form = useForm({
     defaultValues: {},
   });
   
   // Handler functions for form inputs
-  const handleInputChange = (fieldName, value) => {
+  const handleInputChange = (fieldName: string, value: any) => {
     setFormData(prev => ({ ...prev, [fieldName]: value }));
   };
 
   return (
     <div className="space-y-8">
-      {/* Form with FormProvider */}
+      {/* Form */}
       <Form {...form}>
-        <div className="grid gap-6">
+        <form className="grid gap-6">
           {sbiFormFields.map((field) => (
             <div key={field.name}>
               <FormItem>
                 <FormLabel>{field.label}</FormLabel>
-                <FormControl>
-                  {field.type === 'text' && (
+                {field.type === 'text' && (
+                  <FormControl>
                     <Input
                       type="text"
                       placeholder={field.placeholder}
                       value={formData[field.name] || ''}
                       onChange={(e) => handleInputChange(field.name, e.target.value)}
                     />
-                  )}
-                  {field.type === 'textarea' && (
+                  </FormControl>
+                )}
+                {field.type === 'textarea' && (
+                  <FormControl>
                     <Textarea
                       placeholder={field.placeholder}
                       value={formData[field.name] || ''}
                       onChange={(e) => handleInputChange(field.name, e.target.value)}
                     />
-                  )}
-                  {field.type === 'number' && (
+                  </FormControl>
+                )}
+                {field.type === 'number' && (
+                  <FormControl>
                     <Input
                       type="number"
                       placeholder={field.placeholder}
                       value={formData[field.name] || ''}
                       onChange={(e) => handleInputChange(field.name, e.target.value)}
                     />
-                  )}
-                  {field.type === 'select' && (
+                  </FormControl>
+                )}
+                {field.type === 'select' && (
+                  <FormControl>
                     <CustomDropdown
                       options={field.options}
                       placeholder={field.placeholder}
                       value={formData[field.name] || ''}
                       onChange={(value) => handleInputChange(field.name, value)}
                     />
-                  )}
-                  {field.type === 'multi-select' && (
+                  </FormControl>
+                )}
+                {field.type === 'multi-select' && (
+                  <FormControl>
                     <MultiSelectDropdown
                       options={field.options}
                       placeholder={field.placeholder}
                       value={formData[field.name] || []}
                       onChange={(value) => handleInputChange(field.name, value)}
                     />
-                  )}
-                  {field.type === 'checkbox' && (
+                  </FormControl>
+                )}
+                {field.type === 'checkbox' && (
+                  <FormControl>
                     <Checkbox
                       checked={formData[field.name] || false}
                       onCheckedChange={(checked) => handleInputChange(field.name, checked)}
                     />
-                  )}
-                   {field.type === 'year' && (
+                  </FormControl>
+                )}
+                {field.type === 'year' && (
+                  <FormControl>
                     <YearPicker
                       onChange={(year) => handleInputChange(field.name, year)}
                       value={formData[field.name] || null}
                     />
-                  )}
-                </FormControl>
+                  </FormControl>
+                )}
               </FormItem>
             </div>
           ))}
-        </div>
+        </form>
       </Form>
       
       {/* ValuationTable component */}
