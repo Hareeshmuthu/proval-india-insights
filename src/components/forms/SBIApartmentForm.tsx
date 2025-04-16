@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { CalendarIcon, ChevronDown, Check } from "lucide-react";
 import { format } from "date-fns";
@@ -20,10 +21,9 @@ import {
 } from "@/components/ui/select";
 import {
   Form,
-  FormControl,
-  FormField,
   FormItem,
   FormLabel,
+  FormControl,
 } from "@/components/ui/form";
 import { useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -31,6 +31,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import ValuationTable from './ValuationTable';
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { useForm } from "react-hook-form";
 
 const sbiFormFields = [
   {
@@ -238,7 +239,7 @@ const CustomDropdown = ({ options, value, onChange, placeholder }) => {
   );
 };
 
-const MultiSelectDropdown = ({ options, value, onChange, placeholder }) => {
+const MultiSelectDropdown = ({ options, value = [], onChange, placeholder }) => {
   const [selectedOptions, setSelectedOptions] = useState(value || []);
 
   const handleCheckboxChange = (option) => {
@@ -333,6 +334,11 @@ export default function SBIApartmentForm() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [netRealizableValue, setNetRealizableValue] = useState(0);
   
+  // Create form
+  const form = useForm({
+    defaultValues: {},
+  });
+  
   // Handler functions for form inputs
   const handleInputChange = (fieldName, value) => {
     setFormData(prev => ({ ...prev, [fieldName]: value }));
@@ -340,73 +346,74 @@ export default function SBIApartmentForm() {
 
   return (
     <div className="space-y-8">
-      {/* Form sections and fields */}
-      <div className="grid gap-6">
-        {sbiFormFields.map((field) => (
-          <div key={field.name}>
-            <FormItem>
-              <FormLabel>{field.label}</FormLabel>
-              <FormControl>
-                {field.type === 'text' && (
-                  <Input
-                    type="text"
-                    placeholder={field.placeholder}
-                    onChange={(e) => handleInputChange(field.name, e.target.value)}
-                  />
-                )}
-                {field.type === 'textarea' && (
-                  <Textarea
-                    placeholder={field.placeholder}
-                    onChange={(e) => handleInputChange(field.name, e.target.value)}
-                  />
-                )}
-                {field.type === 'number' && (
-                  <Input
-                    type="number"
-                    placeholder={field.placeholder}
-                    onChange={(e) => handleInputChange(field.name, e.target.value)}
-                  />
-                )}
-                {field.type === 'select' && (
-                  <CustomDropdown
-                    options={field.options}
-                    placeholder={field.placeholder}
-                    onChange={(value) => handleInputChange(field.name, value)}
-                  />
-                )}
-                {field.type === 'multi-select' && (
-                  <MultiSelectDropdown
-                    options={field.options}
-                    placeholder={field.placeholder}
-                    onChange={(value) => handleInputChange(field.name, value)}
-                  />
-                )}
-                {field.type === 'checkbox' && (
-                  <Checkbox
-                    onCheckedChange={(checked) => handleInputChange(field.name, checked)}
-                  />
-                )}
-                 {field.type === 'year' && (
-                  <YearPicker
-                    onChange={(year) => handleInputChange(field.name, year)}
-                    value={formData[field.name] || null}
-                  />
-                )}
-              </FormControl>
-            </FormItem>
-          </div>
-        ))}
-      </div>
+      {/* Form with FormProvider */}
+      <Form {...form}>
+        <div className="grid gap-6">
+          {sbiFormFields.map((field) => (
+            <div key={field.name}>
+              <FormItem>
+                <FormLabel>{field.label}</FormLabel>
+                <FormControl>
+                  {field.type === 'text' && (
+                    <Input
+                      type="text"
+                      placeholder={field.placeholder}
+                      value={formData[field.name] || ''}
+                      onChange={(e) => handleInputChange(field.name, e.target.value)}
+                    />
+                  )}
+                  {field.type === 'textarea' && (
+                    <Textarea
+                      placeholder={field.placeholder}
+                      value={formData[field.name] || ''}
+                      onChange={(e) => handleInputChange(field.name, e.target.value)}
+                    />
+                  )}
+                  {field.type === 'number' && (
+                    <Input
+                      type="number"
+                      placeholder={field.placeholder}
+                      value={formData[field.name] || ''}
+                      onChange={(e) => handleInputChange(field.name, e.target.value)}
+                    />
+                  )}
+                  {field.type === 'select' && (
+                    <CustomDropdown
+                      options={field.options}
+                      placeholder={field.placeholder}
+                      value={formData[field.name] || ''}
+                      onChange={(value) => handleInputChange(field.name, value)}
+                    />
+                  )}
+                  {field.type === 'multi-select' && (
+                    <MultiSelectDropdown
+                      options={field.options}
+                      placeholder={field.placeholder}
+                      value={formData[field.name] || []}
+                      onChange={(value) => handleInputChange(field.name, value)}
+                    />
+                  )}
+                  {field.type === 'checkbox' && (
+                    <Checkbox
+                      checked={formData[field.name] || false}
+                      onCheckedChange={(checked) => handleInputChange(field.name, checked)}
+                    />
+                  )}
+                   {field.type === 'year' && (
+                    <YearPicker
+                      onChange={(year) => handleInputChange(field.name, year)}
+                      value={formData[field.name] || null}
+                    />
+                  )}
+                </FormControl>
+              </FormItem>
+            </div>
+          ))}
+        </div>
+      </Form>
       
       {/* ValuationTable component */}
       <ValuationTable />
-
-      {/* Appraisal Statement */}
-      <div className="mt-8">
-        <p className="text-base leading-7">
-          As a result of my appraisal and analysis, it is my considered opinion that the Net Realizable Value of the above property in the prevailing condition with aforesaid specifications is Rs. {netRealizableValue.toLocaleString()} Lakhs (Rupees {netRealizableValue.toLocaleString()} Only)
-        </p>
-      </div>
 
       {/* Signatures Section */}
       <div className="mt-10 grid grid-cols-2 gap-4">
