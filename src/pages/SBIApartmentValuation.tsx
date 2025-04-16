@@ -1,10 +1,10 @@
 
 import React, { useState, useEffect } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import Sidebar from "@/components/dashboard/Sidebar";
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
 import SBIApartmentForm from "@/components/forms/SBIApartmentForm";
-import { FilePenLine, Printer, FileText, ArrowLeft } from "lucide-react";
+import { FilePenLine, Printer, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
@@ -19,7 +19,6 @@ interface Project {
 const SBIApartmentValuation = () => {
   const [project, setProject] = useState<Project | null>(null);
   const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
   
   useEffect(() => {
     const projectId = searchParams.get('project');
@@ -49,10 +48,6 @@ const SBIApartmentValuation = () => {
     // In a real implementation, this would generate a Word document
   };
 
-  const handleBackToFiles = () => {
-    navigate('/dashboard/files');
-  };
-
   return (
     <div className="flex h-screen overflow-hidden bg-background">
       <Sidebar />
@@ -61,25 +56,15 @@ const SBIApartmentValuation = () => {
         <DashboardHeader />
         
         <main className="flex-1 overflow-y-auto p-6">
-          <div className="mb-6 flex items-center justify-between">
-            <div>
-              <Button 
-                variant="outline" 
-                size="sm" 
-                className="mb-2 flex items-center gap-2"
-                onClick={handleBackToFiles}
-              >
-                <ArrowLeft size={16} /> Back to Files
-              </Button>
-              <h1 className="text-2xl font-bold text-foreground">
-                {project ? `${project.customerName}'s SBI Apartment Valuation` : 'SBI Apartment Valuation Form'}
-              </h1>
-              <p className="text-muted-foreground">
-                {project 
-                  ? `Project #${project.projectNumber} - Complete the form below for SBI apartment valuation` 
-                  : 'Complete the form below for SBI apartment valuation'}
-              </p>
-            </div>
+          <div className="mb-6">
+            <h1 className="text-2xl font-bold text-foreground">
+              {project ? `${project.customerName}'s SBI Apartment Valuation` : 'SBI Apartment Valuation Form'}
+            </h1>
+            <p className="text-muted-foreground">
+              {project 
+                ? `Project #${project.projectNumber} - Complete the form below for SBI apartment valuation` 
+                : 'Complete the form below for SBI apartment valuation'}
+            </p>
           </div>
           
           <div className="bg-white rounded-lg shadow dark:bg-gray-900">
