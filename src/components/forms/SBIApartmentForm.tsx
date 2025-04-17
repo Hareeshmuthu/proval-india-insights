@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { CalendarIcon, ChevronDown, Check } from "lucide-react";
+import React, { useState } from "react";
 import { format } from "date-fns";
+import { CalendarIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -8,27 +8,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-} from "@/components/ui/form";
-import { useSearchParams } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
-import { Checkbox } from "@/components/ui/checkbox";
-import ValuationTable from './ValuationTable';
+import { cn } from "@/lib/utils";
 
 // Updated SBI form fields with new requirements
 const sbiFormFields = [
@@ -179,7 +160,6 @@ const CustomDropdown = ({ options, value, onChange, placeholder }) => {
   const [customValue, setCustomValue] = useState("");
   
   useEffect(() => {
-    // If the value is not in options, set it as custom
     if (value && !options.includes(value)) {
       setIsCustom(true);
       setCustomValue(value);
@@ -363,7 +343,7 @@ const DatePicker = ({ value, onChange }: { value: Date, onChange: (date: Date) =
   );
 };
 
-export default function SBIApartmentForm() {
+const SBIApartmentForm = () => {
   const [searchParams] = useSearchParams();
   const projectId = searchParams.get('project');
   const [projectData, setProjectData] = useState(null);
@@ -675,6 +655,11 @@ export default function SBIApartmentForm() {
     }
   };
   
+  const [place, setPlace] = useState("Coimbatore");
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [valuerSignature, setValuerSignature] = useState("");
+  const [branchManagerSignature, setBranchManagerSignature] = useState("");
+
   return (
     <div className="print:text-sm">
       <div className="mb-6">
@@ -712,9 +697,7 @@ export default function SBIApartmentForm() {
           <table className="w-full border border-gray-300 dark:border-gray-600">
             <tbody>
               {section.fields.map((field, idx) => {
-                // For section with subfields, handle differently
                 if (field.subFields && section.section !== "VI. COMPOSITE RATE AFTER DEPRECIATION" && field.sn !== "3") {
-                  // For break-up of rate
                   if (field.sn === "3" && section.section === "V. RATE") {
                     return (
                       <React.Fragment key={idx}>
@@ -753,7 +736,6 @@ export default function SBIApartmentForm() {
                       <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white">{field.label}</td>
                       <td className="border p-2 align-top dark:border-gray-600">
                         {(() => {
-                          // Section I fields
                           if (field.label === 'Purpose for which the valuation is made' || field.label === 'Brief description of the property') {
                             return <Textarea 
                                       className="w-full border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
@@ -900,7 +882,6 @@ export default function SBIApartmentForm() {
                                       longitude: parts[1].trim()
                                     }));
                                   } else {
-                                    // Just set the whole string as latitude if format isn't recognized
                                     setFormData(prev => ({
                                       ...prev,
                                       latitude: e.target.value,
@@ -920,7 +901,6 @@ export default function SBIApartmentForm() {
                               />
                             );
                           } 
-                          // Section II fields
                           else if (field.label === 'T. S. No. / S.F. No./ Door No') {
                             return (
                               <Input 
@@ -1106,7 +1086,6 @@ export default function SBIApartmentForm() {
                               </Select>
                             );
                           }
-                          // Section III fields
                           else if (field.label === 'The floor on which the flat is situated') {
                             return <Input type="text" className="w-full border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" placeholder={`Enter ${field.label.toLowerCase()}`} />;
                           } else if (field.label === 'Door No. of the flat') {
@@ -1167,7 +1146,6 @@ export default function SBIApartmentForm() {
                               </Select>
                             );
                           }
-                          // Section IV fields
                           else if (field.label === 'How is the marketability?') {
                             return (
                               <Select>
@@ -1208,6 +1186,80 @@ export default function SBIApartmentForm() {
       
       <ValuationTable />
       
+      <div className="my-8"></div>
+
+      <div className="flex justify-between items-start mb-6">
+        <div className="flex flex-col gap-2">
+          <div>
+            <span className="font-semibold underline mr-2">Place:</span>
+            <Input
+              type="text"
+              value={place}
+              onChange={(e) => setPlace(e.target.value)}
+              className="inline-block w-48 dark:bg-gray-800 dark:text-white dark:border-gray-600"
+            />
+          </div>
+          <div>
+            <span className="font-semibold underline mr-2">Date:</span>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  className={cn(
+                    "w-48 justify-start text-left font-normal",
+                    !currentDate && "text-muted-foreground"
+                  )}
+                >
+                  <CalendarIcon className="mr-2 h-4 w-4" />
+                  {format(currentDate, "dd/MM/yyyy")}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <Calendar
+                  mode="single"
+                  selected={currentDate}
+                  onSelect={(date) => date && setCurrentDate(date)}
+                  initialFocus
+                  className="pointer-events-auto"
+                />
+              </PopoverContent>
+            </Popover>
+          </div>
+        </div>
+        <div className="text-right">
+          <div className="mb-2">Signature</div>
+          <Input
+            type="text"
+            value={valuerSignature}
+            onChange={(e) => setValuerSignature(e.target.value)}
+            placeholder="Enter name"
+            className="w-64 mb-1 dark:bg-gray-800 dark:text-white dark:border-gray-600"
+          />
+          <div className="text-sm">(Name and Official Seal of the Approved Valuer)</div>
+        </div>
+      </div>
+
+      <div className="mt-8">
+        <p className="mb-6 text-justify">
+          The undersigned has inspected the property detailed in the Valuation Report dated ___________ on ___________. 
+          We are satisfied that the fair and reasonable market value of the property is Rs.___________________ 
+          (Rs. _______________________ only).
+        </p>
+        <div className="flex justify-end">
+          <div className="text-right">
+            <div className="mb-2">Signature</div>
+            <Input
+              type="text"
+              value={branchManagerSignature}
+              onChange={(e) => setBranchManagerSignature(e.target.value)}
+              placeholder="Enter name"
+              className="w-64 mb-1 dark:bg-gray-800 dark:text-white dark:border-gray-600"
+            />
+            <div className="text-sm">(Name of the Bank Manager with office Seal)</div>
+          </div>
+        </div>
+      </div>
+
       <style>
         {`
         @media print {
@@ -1231,4 +1283,6 @@ export default function SBIApartmentForm() {
       </style>
     </div>
   );
-}
+};
+
+export default SBIApartmentForm;
