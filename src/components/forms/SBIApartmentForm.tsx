@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { format } from "date-fns";
@@ -23,7 +22,6 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import ValuationTable from "./ValuationTable";
 
-// Updated SBI form fields with new requirements
 const sbiFormFields = [
   {
     section: "I. GENERAL",
@@ -166,7 +164,6 @@ const sbiFormFields = [
   }
 ];
 
-// Custom dropdown component that allows both selection and custom input
 const CustomDropdown = ({ options, value, onChange, placeholder }) => {
   const [isCustom, setIsCustom] = useState(false);
   const [customValue, setCustomValue] = useState("");
@@ -220,7 +217,6 @@ const CustomDropdown = ({ options, value, onChange, placeholder }) => {
   );
 };
 
-// MultiSelect Dropdown component
 const MultiSelectDropdown = ({ options, value, onChange, placeholder }) => {
   const [selectedItems, setSelectedItems] = useState(value || []);
   
@@ -292,7 +288,6 @@ const MultiSelectDropdown = ({ options, value, onChange, placeholder }) => {
   );
 };
 
-// Year picker component
 const YearPicker = ({ value, onChange }: { value: number | null, onChange: (year: number) => void }) => {
   const [open, setOpen] = useState(false);
   const years = Array.from({ length: 100 }, (_, i) => new Date().getFullYear() - i);
@@ -329,7 +324,6 @@ const YearPicker = ({ value, onChange }: { value: number | null, onChange: (year
   );
 };
 
-// Date picker component with DD/MM/YYYY format
 const DatePicker = ({ value, onChange }: { value: Date, onChange: (date: Date) => void }) => {
   return (
     <Popover>
@@ -360,9 +354,7 @@ const SBIApartmentForm = () => {
   const projectId = searchParams.get('project');
   const [projectData, setProjectData] = useState(null);
   
-  // Form state
   const [formData, setFormData] = useState({
-    // Section I
     purpose: "",
     selectedDocs: [],
     plotNo: "",
@@ -379,7 +371,6 @@ const SBIApartmentForm = () => {
     longitude: "",
     occupancyDetails: "",
     
-    // Section II
     tsNoSfNoDoorNo: "",
     blockNo: "",
     wardNo: "",
@@ -397,51 +388,37 @@ const SBIApartmentForm = () => {
     compoundWall: "",
     pavementAroundBuilding: "",
     
-    // Section III
     doorNoFlat: "",
-    // Specifications
     roof: "",
     flooring: "",
     doors: "",
     windows: "",
     fittings: "",
     finishings: "",
-    // House Tax
     houseTax: "",
     assessmentNumber: "",
     taxPaidInNameOf: "",
     taxAmount: "",
-    // Electricity
     electricityServiceNumber: "",
     meterCardNameOf: "",
-    
     maintenanceOfFlat: "",
-    
-    // Section IV
     marketability: "",
     factorsFavoring: "",
     negativeFactors: "",
-    
-    // Section V
     buildingServicesAmenities: "",
     landDevelopmentGated: "",
-    
-    // Section VI - a
     depreciatedBuildingRate: "",
     replacementCost: "",
     ageOfBuilding: "",
     estimatedLifeOfBuilding: "",
     depreciationPercentage: "",
     depreciatedRateOfBuilding: "",
-    
-    // Section VI - b
     totalCompositeValueBeforeValuation: "",
     depreciatedBuildingRateB: "",
     rateForLandOther: "",
     totalCompositeRate: ""
   });
 
-  // Date states
   const [dates, setDates] = useState({
     inspection: new Date(),
     valuation: new Date(),
@@ -458,7 +435,6 @@ const SBIApartmentForm = () => {
     'Copy of Property Tax Receipt'
   ];
 
-  // Fetch project data (for location coordinates)
   useEffect(() => {
     if (projectId) {
       const storedProjects = localStorage.getItem('proval_projects');
@@ -468,7 +444,6 @@ const SBIApartmentForm = () => {
         if (project) {
           setProjectData(project);
           
-          // Set default latitude and longitude if available
           if (project.latitude && project.longitude) {
             setFormData(prev => ({
               ...prev,
@@ -481,7 +456,6 @@ const SBIApartmentForm = () => {
     }
   }, [projectId]);
 
-  // Handle form data changes
   const handleInputChange = (field, value) => {
     setFormData(prev => ({
       ...prev,
@@ -489,7 +463,6 @@ const SBIApartmentForm = () => {
     }));
   };
 
-  // Handle date changes
   const handleDateChange = (dateType: keyof typeof dates, date: Date) => {
     setDates(prev => ({
       ...prev,
@@ -497,7 +470,6 @@ const SBIApartmentForm = () => {
     }));
   };
 
-  // Copy values from Section I to Section II and III
   useEffect(() => {
     setFormData(prev => ({
       ...prev,
@@ -509,7 +481,6 @@ const SBIApartmentForm = () => {
     }));
   }, [formData.plotNo, formData.surveyNo, formData.doorNo, formData.ward, formData.village, formData.mandal]);
   
-  // Render subfields and their inputs
   const renderSubfields = (subFields, parentField) => {
     return subFields.map((subField, idx) => (
       <tr key={`${parentField}-${idx}`} className="print:break-inside-avoid">
@@ -553,7 +524,6 @@ const SBIApartmentForm = () => {
     ));
   };
 
-  // Render breakup rate fields
   const renderBreakupFields = (subFields) => {
     return subFields.map((subField, idx) => (
       <tr key={`breakup-${idx}`} className="print:break-inside-avoid">
@@ -586,7 +556,6 @@ const SBIApartmentForm = () => {
     ));
   };
 
-  // Render Depreciation section fields
   const renderDepreciationFields = (section) => {
     if (section.sn === "a") {
       return (
@@ -666,47 +635,47 @@ const SBIApartmentForm = () => {
       );
     }
   };
-  
+
   const [place, setPlace] = useState("Coimbatore");
   const [currentDate, setCurrentDate] = useState(new Date());
   const [valuerSignature, setValuerSignature] = useState("");
   const [branchManagerSignature, setBranchManagerSignature] = useState("");
 
   return (
-    <div className="print:text-sm">
-      <div className="mb-6">
-        <div className="text-base mb-2 flex items-center gap-2">
+    <div className="print:text-sm text-[11px]">
+      <div className="mb-2">
+        <div className="text-[12px] mb-1 flex items-center gap-1">
           <span className="dark:text-white">Ref: SBI</span>
           <input 
             type="text" 
             placeholder="Enter reference number" 
-            className="border px-2 py-1 rounded focus:outline-none focus:ring-0 dark:bg-gray-800 dark:text-white dark:border-gray-600" 
+            className="border px-1 py-0 rounded focus:outline-none focus:ring-0 dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px]" 
             style={{ borderBottom: '1px solid', padding: 0 }} 
           />
         </div>
-        <div className="mb-1 font-semibold dark:text-white">TO,</div>
-        <div className="mb-1 font-semibold flex gap-2 items-center dark:text-white">
+        <div className="mb-0 font-semibold text-[12px] dark:text-white">TO,</div>
+        <div className="mb-0 font-semibold flex gap-1 items-center text-[12px] dark:text-white">
           STATE BANK OF INDIA BRANCH:
           <input 
             type="text" 
             placeholder="Branch name" 
-            className="border px-2 py-1 rounded focus:outline-none focus:ring-0 dark:bg-gray-800 dark:text-white dark:border-gray-600" 
+            className="border px-1 py-0 rounded focus:outline-none focus:ring-0 dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px]" 
             style={{ borderBottom: '1px solid', padding: 0 }} 
           />, (
           <input 
             type="text" 
             placeholder="City name" 
-            className="border px-2 py-1 rounded focus:outline-none focus:ring-0 dark:bg-gray-800 dark:text-white dark:border-gray-600" 
+            className="border px-1 py-0 rounded focus:outline-none focus:ring-0 dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px]" 
             style={{ borderBottom: '1px solid', padding: 0 }} 
           />)
         </div>
-        <div className="font-semibold text-center dark:text-white">VALUATION REPORT (IN RESPECT OF APARTMENT)</div>
+        <div className="font-semibold text-center text-[12px] dark:text-white">VALUATION REPORT (IN RESPECT OF APARTMENT)</div>
       </div>
       
       {sbiFormFields.map((section, sectionIndex) => (
-        <div key={sectionIndex} className="mb-8">
-          <h2 className="text-xl font-semibold mb-2 dark:text-white">{section.section}</h2>
-          <table className="w-full border border-gray-300 dark:border-gray-600">
+        <div key={sectionIndex} className="mb-2">
+          <h2 className="text-[11px] font-semibold mb-1 dark:text-white">{section.section}</h2>
+          <table className="w-full border border-gray-300 dark:border-gray-600 text-[11px]">
             <tbody>
               {section.fields.map((field, idx) => {
                 if (field.subFields && section.section !== "VI. COMPOSITE RATE AFTER DEPRECIATION" && field.sn !== "3") {
