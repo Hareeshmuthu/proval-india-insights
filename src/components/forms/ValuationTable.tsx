@@ -59,7 +59,7 @@ const ValuationTable = () => {
   };
 
   return (
-    <div className="mt-8">
+    <div className="mt-8 text-[11px]">
       <h2 className="text-xl font-semibold mb-4 dark:text-white">Details of Valuation: (Valuation Inputs)</h2>
       <div className="overflow-x-auto">
         <table className="w-full border-collapse border border-gray-300 dark:border-gray-600">
@@ -79,21 +79,21 @@ const ValuationTable = () => {
                 <td className="border border-gray-300 dark:border-gray-600 p-2 text-center">
                   {row.id}
                 </td>
-                <td className="border border-gray-300 dark:border-gray-600 p-2">
+                <td className="border border-gray-300 dark:border-gray-600 p-1">
                   <Input
                     value={row.description}
                     onChange={(e) => updateRow(row.id, 'description', e.target.value)}
-                    className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600"
+                    className="w-full h-8 px-2 py-1 text-[11px] dark:bg-gray-800 dark:text-white dark:border-gray-600"
                   />
                 </td>
-                <td className="border border-gray-300 dark:border-gray-600 p-2">
+                <td className="border border-gray-300 dark:border-gray-600 p-1">
                   <Input
                     type="number"
                     inputMode="numeric"
                     pattern="[0-9]*"
                     value={row.quantity}
                     onChange={(e) => updateRow(row.id, 'quantity', parseFloat(e.target.value) || 0)}
-                    className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                    className="w-full h-8 px-2 py-1 text-[11px] dark:bg-gray-800 dark:text-white dark:border-gray-600 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                     style={{ MozAppearance: 'textfield' }}
                   />
                 </td>
