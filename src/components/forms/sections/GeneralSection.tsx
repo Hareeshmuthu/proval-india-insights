@@ -1,31 +1,51 @@
+
 import React from "react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { DatePicker } from "../form-components/DatePicker";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { MultiSelectDropdown } from "../form-components/MultiSelectDropdown";
+import { DatePicker } from "../form-components/DatePicker";
 import { CustomDropdown } from "../form-components/CustomDropdown";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface GeneralSectionProps {
   formData: any;
-  dates: any;
   handleInputChange: (field: string, value: any) => void;
+  dates: {
+    inspection: Date;
+    valuation: Date;
+    report: Date;
+    layoutPlan: Date;
+  };
   handleDateChange: (dateType: string, date: Date) => void;
-  docOptions: string[];
 }
 
 const GeneralSection = ({
   formData,
-  dates,
   handleInputChange,
-  handleDateChange,
-  docOptions
+  dates,
+  handleDateChange
 }: GeneralSectionProps) => {
+  const docOptions = [
+    'Copy of Sale Deed',
+    'Copy of Settlement Deed',
+    'Copy of Agreement Deed',
+    'Copy of Patta',
+    'Copy of Electricity Bill',
+    'Copy of Property Tax Receipt'
+  ];
+
   return (
     <div className="mb-8">
       <h2 className="text-xl font-semibold mb-2 dark:text-white">I. GENERAL</h2>
       <table className="w-full border border-gray-300 dark:border-gray-600">
         <tbody>
+          {/* Purpose for which the valuation is made */}
           <tr className="print:break-inside-avoid">
             <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white">1</td>
             <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white">Purpose for which the valuation is made</td>
@@ -36,10 +56,11 @@ const GeneralSection = ({
                 rows={3}
                 value={formData.purpose}
                 onChange={e => handleInputChange('purpose', e.target.value)}
-              />
+              ></Textarea>
             </td>
           </tr>
 
+          {/* Date of inspection */}
           <tr className="print:break-inside-avoid">
             <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white">2a</td>
             <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white">Date of inspection</td>
@@ -47,7 +68,8 @@ const GeneralSection = ({
               <DatePicker value={dates.inspection} onChange={(date) => handleDateChange('inspection', date)} />
             </td>
           </tr>
-          
+
+          {/* Date on which the valuation is made */}
           <tr className="print:break-inside-avoid">
             <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white">2b</td>
             <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white">Date on which the valuation is made</td>
@@ -56,6 +78,7 @@ const GeneralSection = ({
             </td>
           </tr>
 
+          {/* Date of Report */}
           <tr className="print:break-inside-avoid">
             <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white">2c</td>
             <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white">Date of Report</td>
@@ -64,6 +87,7 @@ const GeneralSection = ({
             </td>
           </tr>
 
+          {/* List of documents produced for perusal */}
           <tr className="print:break-inside-avoid">
             <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white">3</td>
             <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white">List of documents produced for perusal</td>
@@ -77,18 +101,33 @@ const GeneralSection = ({
             </td>
           </tr>
 
+          {/* Name of the owner(s) and address(es) */}
           <tr className="print:break-inside-avoid">
             <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white">4</td>
             <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white">Name of the owner(s) and address(es)</td>
             <td className="border p-2 align-top dark:border-gray-600">
               <Textarea 
                 className="w-full border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
-                placeholder="Enter owner names and addresses" 
+                placeholder="Enter name of the owner(s) and address(es)" 
                 rows={3}
-              />
+              ></Textarea>
             </td>
           </tr>
 
+          {/* Brief description of the property */}
+          <tr className="print:break-inside-avoid">
+            <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white">5</td>
+            <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white">Brief description of the property</td>
+            <td className="border p-2 align-top dark:border-gray-600">
+              <Textarea 
+                className="w-full border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
+                placeholder="Enter brief description of the property" 
+                rows={3}
+              ></Textarea>
+            </td>
+          </tr>
+
+          {/* Plot No. / Survey No. */}
           <tr className="print:break-inside-avoid">
             <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white">6a</td>
             <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white">Plot No. / Survey No.</td>
@@ -113,6 +152,7 @@ const GeneralSection = ({
             </td>
           </tr>
 
+          {/* Door No. */}
           <tr className="print:break-inside-avoid">
             <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white">6b</td>
             <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white">Door No.</td>
@@ -127,6 +167,7 @@ const GeneralSection = ({
             </td>
           </tr>
 
+          {/* T. S. No. / Village */}
           <tr className="print:break-inside-avoid">
             <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white">6c</td>
             <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white">T. S. No. / Village</td>
@@ -151,6 +192,7 @@ const GeneralSection = ({
             </td>
           </tr>
 
+          {/* Ward / Taluka */}
           <tr className="print:break-inside-avoid">
             <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white">6d</td>
             <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white">Ward / Taluka</td>
@@ -175,6 +217,7 @@ const GeneralSection = ({
             </td>
           </tr>
 
+          {/* Mandal / District */}
           <tr className="print:break-inside-avoid">
             <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white">6e</td>
             <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white">Mandal / District</td>
@@ -199,6 +242,7 @@ const GeneralSection = ({
             </td>
           </tr>
 
+          {/* Date of issue and validity of layout plan */}
           <tr className="print:break-inside-avoid">
             <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white">6f</td>
             <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white">Date of issue and validity of layout plan</td>
@@ -207,6 +251,7 @@ const GeneralSection = ({
             </td>
           </tr>
 
+          {/* Approved map issuing authority */}
           <tr className="print:break-inside-avoid">
             <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white">6g</td>
             <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white">Approved map issuing authority</td>
@@ -219,6 +264,7 @@ const GeneralSection = ({
             </td>
           </tr>
 
+          {/* Genuineness of the approved map verified */}
           <tr className="print:break-inside-avoid">
             <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white">6h</td>
             <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white">Genuineness of the approved map verified</td>
@@ -238,6 +284,7 @@ const GeneralSection = ({
             </td>
           </tr>
 
+          {/* Comments on authenticity of plan */}
           <tr className="print:break-inside-avoid">
             <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white">6i</td>
             <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white">Comments on authenticity of plan</td>
@@ -250,14 +297,20 @@ const GeneralSection = ({
             </td>
           </tr>
 
+          {/* Postal address of the property */}
           <tr className="print:break-inside-avoid">
             <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white">7</td>
             <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white">Postal address of the property</td>
             <td className="border p-2 align-top dark:border-gray-600">
-              <Textarea className="w-full border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" placeholder="Enter postal address of the property" rows={3}></Textarea>
+              <Textarea 
+                className="w-full border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
+                placeholder="Enter postal address of the property" 
+                rows={3}
+              ></Textarea>
             </td>
           </tr>
 
+          {/* City / Town */}
           <tr className="print:break-inside-avoid">
             <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white">8a</td>
             <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white">City / Town</td>
@@ -265,11 +318,12 @@ const GeneralSection = ({
               <Input 
                 type="text" 
                 className="w-full border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
-                placeholder="Enter city / town" 
+                placeholder="Enter city/town" 
               />
             </td>
           </tr>
 
+          {/* Residential Area */}
           <tr className="print:break-inside-avoid">
             <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white">8b</td>
             <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white">Residential Area</td>
@@ -286,6 +340,7 @@ const GeneralSection = ({
             </td>
           </tr>
 
+          {/* Commercial Area */}
           <tr className="print:break-inside-avoid">
             <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white">8c</td>
             <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white">Commercial Area</td>
@@ -302,6 +357,7 @@ const GeneralSection = ({
             </td>
           </tr>
 
+          {/* Industrial Area */}
           <tr className="print:break-inside-avoid">
             <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white">8d</td>
             <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white">Industrial Area</td>
@@ -318,6 +374,7 @@ const GeneralSection = ({
             </td>
           </tr>
 
+          {/* Classification of area - High / Middle / Poor */}
           <tr className="print:break-inside-avoid">
             <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white">9a</td>
             <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white">Classification of area - High / Middle / Poor</td>
@@ -335,6 +392,7 @@ const GeneralSection = ({
             </td>
           </tr>
 
+          {/* Urban / Semi Urban / Rural */}
           <tr className="print:break-inside-avoid">
             <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white">9b</td>
             <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white">Urban / Semi Urban / Rural</td>
@@ -352,6 +410,7 @@ const GeneralSection = ({
             </td>
           </tr>
 
+          {/* Coming under Corporation / Panchayat / Municipality */}
           <tr className="print:break-inside-avoid">
             <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white">10</td>
             <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white">Coming under Corporation / Panchayat / Municipality</td>
@@ -369,102 +428,7 @@ const GeneralSection = ({
             </td>
           </tr>
 
-          <tr className="print:break-inside-avoid">
-            <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white">11</td>
-            <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white">Covered under enactments or notified area</td>
-            <td className="border p-2 align-top dark:border-gray-600">
-              <Input 
-                type="text" 
-                className="w-full border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
-                placeholder="Enter details" 
-              />
-            </td>
-          </tr>
-
-          <tr className="print:break-inside-avoid">
-            <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white">12</td>
-            <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white">Boundaries of the property</td>
-            <td className="border p-2 align-top dark:border-gray-600">
-              <Input 
-                type="text" 
-                className="w-full border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
-                placeholder="Enter boundaries of the property" 
-              />
-            </td>
-          </tr>
-
-          <tr className="print:break-inside-avoid">
-            <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white">13a</td>
-            <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white">Dimensions - North</td>
-            <td className="border p-2 align-top dark:border-gray-600">
-              <Input 
-                type="text" 
-                className="w-full border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
-                placeholder="Enter dimension for north" 
-              />
-            </td>
-          </tr>
-
-          <tr className="print:break-inside-avoid">
-            <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white">13b</td>
-            <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white">Dimensions - South</td>
-            <td className="border p-2 align-top dark:border-gray-600">
-              <Input 
-                type="text" 
-                className="w-full border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
-                placeholder="Enter dimension for south" 
-              />
-            </td>
-          </tr>
-
-          <tr className="print:break-inside-avoid">
-            <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white">13c</td>
-            <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white">Dimensions - East</td>
-            <td className="border p-2 align-top dark:border-gray-600">
-              <Input 
-                type="text" 
-                className="w-full border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
-                placeholder="Enter dimension for east" 
-              />
-            </td>
-          </tr>
-
-          <tr className="print:break-inside-avoid">
-            <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white">13d</td>
-            <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white">Dimensions - West</td>
-            <td className="border p-2 align-top dark:border-gray-600">
-              <Input 
-                type="text" 
-                className="w-full border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
-                placeholder="Enter dimension for west" 
-              />
-            </td>
-          </tr>
-
-          <tr className="print:break-inside-avoid">
-            <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white">13e</td>
-            <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white">North-East Corner</td>
-            <td className="border p-2 align-top dark:border-gray-600">
-              <Input 
-                type="text" 
-                className="w-full border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
-                placeholder="Enter North-East Corner" 
-              />
-            </td>
-          </tr>
-
-          <tr className="print:break-inside-avoid">
-            <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white">14</td>
-            <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white">Extent of the site</td>
-            <td className="border p-2 align-top dark:border-gray-600">
-              <Input 
-                type="text" 
-                className="w-full border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
-                placeholder="Enter extent of the site" 
-              />
-            </td>
-          </tr>
-
+          {/* Latitude / Longitude */}
           <tr className="print:break-inside-avoid">
             <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white">15</td>
             <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white">Latitude, Longitude & Co-ordinates</td>
@@ -477,35 +441,18 @@ const GeneralSection = ({
                 onChange={(e) => {
                   const parts = e.target.value.split(',');
                   if (parts.length === 2) {
-                    setFormData(prev => ({
-                      ...prev,
-                      latitude: parts[0].trim(),
-                      longitude: parts[1].trim()
-                    }));
+                    handleInputChange('latitude', parts[0].trim());
+                    handleInputChange('longitude', parts[1].trim());
                   } else {
-                    setFormData(prev => ({
-                      ...prev,
-                      latitude: e.target.value,
-                      longitude: ''
-                    }));
+                    handleInputChange('latitude', e.target.value);
+                    handleInputChange('longitude', '');
                   }
                 }}
               />
             </td>
           </tr>
 
-          <tr className="print:break-inside-avoid">
-            <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white">16</td>
-            <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white">Extent of site considered for valuation</td>
-            <td className="border p-2 align-top dark:border-gray-600">
-              <Input 
-                type="text" 
-                className="w-full border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
-                placeholder="Enter extent of site considered for valuation" 
-              />
-            </td>
-          </tr>
-
+          {/* Occupancy details */}
           <tr className="print:break-inside-avoid">
             <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white">17</td>
             <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white">Occupancy details</td>
