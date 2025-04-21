@@ -23,23 +23,23 @@ import { Checkbox } from "@/components/ui/checkbox";
 import ValuationTable from "./ValuationTable";
 
 const sbiFormFields = [
-  // ... keep existing sbiFormFields array the same ...
+  // ... keep existing form fields
 ];
 
 const CustomDropdown = ({ options, value, onChange, placeholder }) => {
-  // ... keep existing CustomDropdown component the same ...
+  // ... keep existing CustomDropdown component
 };
 
 const MultiSelectDropdown = ({ options, value, onChange, placeholder }) => {
-  // ... keep existing MultiSelectDropdown component the same ...
+  // ... keep existing MultiSelectDropdown component
 };
 
 const YearPicker = ({ value, onChange }: { value: number | null, onChange: (year: number) => void }) => {
-  // ... keep existing YearPicker component the same ...
+  // ... keep existing YearPicker component
 };
 
 const DatePicker = ({ value, onChange }: { value: Date, onChange: (date: Date) => void }) => {
-  // ... keep existing DatePicker component the same ...
+  // ... keep existing DatePicker component
 };
 
 const SBIApartmentForm = () => {
@@ -48,7 +48,7 @@ const SBIApartmentForm = () => {
   const [projectData, setProjectData] = useState(null);
   
   const [formData, setFormData] = useState({
-    // ... keep existing form state the same ...
+    // ... keep existing form state
   });
 
   const [dates, setDates] = useState({
@@ -114,11 +114,11 @@ const SBIApartmentForm = () => {
   }, [formData.plotNo, formData.surveyNo, formData.doorNo, formData.ward, formData.village, formData.mandal]);
 
   const renderSubfields = (subFields, parentField) => {
-    // ... keep existing renderSubfields function the same ...
+    // ... keep existing renderSubfields function
   };
 
   const renderBreakupFields = (subFields) => {
-    // ... keep existing renderBreakupFields function the same ...
+    // ... keep existing renderBreakupFields function
   };
 
   const renderDepreciationFields = (section) => {
@@ -207,7 +207,7 @@ const SBIApartmentForm = () => {
   const [branchManagerSignature, setBranchManagerSignature] = useState("");
 
   return (
-    <div className="sbi-apartment-form-printable print:bg-white print:text-black print:p-9 print:rounded-none print:shadow-none print:mx-0 print:my-0 print:w-full print:max-w-full print:block print:text-sm print:leading-relaxed">
+    <div className="print:text-sm">
       <div className="mb-6">
         <div className="text-base mb-2 flex items-center gap-2">
           <span className="dark:text-white">Ref: SBI</span>
@@ -729,9 +729,9 @@ const SBIApartmentForm = () => {
           </table>
         </div>
       ))}
-      
+
       <ValuationTable />
-      
+
       <div className="my-8"></div>
 
       <div className="flex justify-between items-start mb-6">
@@ -773,15 +773,8 @@ const SBIApartmentForm = () => {
           </div>
         </div>
         <div className="text-right">
-          <div className="mb-2">Signature</div>
-          <Input
-            type="text"
-            value={valuerSignature}
-            onChange={(e) => setValuerSignature(e.target.value)}
-            placeholder="Enter name"
-            className="w-64 mb-1 dark:bg-gray-800 dark:text-white dark:border-gray-600"
-          />
-          <div className="text-sm">(Name and Official Seal of the Approved Valuer)</div>
+          <div className="mb-2 text-center">Signature</div>
+          <div className="text-center">(Name and Official Seal of the Approved Valuer)</div>
         </div>
       </div>
 
@@ -793,15 +786,8 @@ const SBIApartmentForm = () => {
         </p>
         <div className="flex justify-end">
           <div className="text-right">
-            <div className="mb-2">Signature</div>
-            <Input
-              type="text"
-              value={branchManagerSignature}
-              onChange={(e) => setBranchManagerSignature(e.target.value)}
-              placeholder="Enter name"
-              className="w-64 mb-1 dark:bg-gray-800 dark:text-white dark:border-gray-600"
-            />
-            <div className="text-sm">(Name of the Bank Manager with office Seal)</div>
+            <div className="mb-2 text-center">Signature</div>
+            <div className="text-center">(Name of the Bank Manager with office Seal)</div>
           </div>
         </div>
       </div>
@@ -824,61 +810,6 @@ const SBIApartmentForm = () => {
         /* Style for z-index of dropdown content */
         .SelectContent {
           z-index: 50 !important;
-        }
-        
-        @media print {
-          /* Hide everything except the .sbi-apartment-form-printable */
-          body * {
-            visibility: hidden !important;
-          }
-          .sbi-apartment-form-printable, .sbi-apartment-form-printable * {
-            visibility: visible !important;
-          }
-          .sbi-apartment-form-printable {
-            position: absolute !important;
-            left: 0 !important; top: 0 !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            width: 210mm !important;
-            min-height: 297mm !important;
-            max-width: 100vw !important;
-            box-shadow: none !important;
-            background: white !important;
-            color: black !important;
-            font-size: 13px !important;
-          }
-          /* Remove printable's padding for exact A4 size */
-          .print\\:p-0, .print\\:p-4, .print\\:p-9, .print\\:mx-0, .print\\:my-0, .print\\:w-full, .print\\:max-w-full {
-            padding: 0 !important;
-            margin: 0 !important;
-            width: 100% !important;
-            max-width: 100vw !important;
-          }
-          /* Page break after each A4 length if needed */
-          .sbi-apartment-form-printable > * {
-            page-break-inside: avoid !important;
-          }
-          .sbi-apartment-form-printable .form-section {
-            page-break-after: always;
-          }
-          /* Buttons, headers, navigation, non-form content hidden */
-          button, nav, .sidebar, .dashboard-header, .print\\:hidden {
-            display: none !important;
-          }
-          /* Remove shadow/border/background from form */
-          .bg-white, .dark\\:bg-gray-900, .rounded-lg, .shadow {
-            background: none !important;
-            box-shadow: none !important;
-            border: none !important;
-          }
-        }
-
-        /* Optional: For visual A4 margin in preview (not print), slightly reduce width for desktop screens */
-        @media (min-width: 768px) {
-          .sbi-apartment-form-printable {
-            max-width: 800px;
-            margin: auto;
-          }
         }
         `}
       </style>
