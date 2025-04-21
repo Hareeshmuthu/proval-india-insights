@@ -1,10 +1,10 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
-import ValuationRow from './valuation-components/ValuationRow';
-import ValueCalculation from './valuation-components/ValueCalculation';
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { X } from "lucide-react";
 
-interface ValuationRowData {
+interface ValuationRow {
   id: string;
   description: string;
   quantity: number;
@@ -15,7 +15,7 @@ interface ValuationRowData {
 const unitOptions = ["Ft³", "M³", "Ft²", "M²", "Ft", "M", "Nos."];
 
 const ValuationTable = () => {
-  const [rows, setRows] = useState<ValuationRowData[]>([
+  const [rows, setRows] = useState<ValuationRow[]>([
     { id: '1', description: '', quantity: 0, ratePerUnit: 0, unit: '' }
   ]);
   const [customUnit, setCustomUnit] = useState("");
@@ -37,7 +37,7 @@ const ValuationTable = () => {
     }
   };
 
-  const updateRow = (id: string, field: keyof ValuationRowData, value: any) => {
+  const updateRow = (id: string, field: keyof ValuationRow, value: any) => {
     setRows(rows.map(row => {
       if (row.id === id) {
         return { ...row, [field]: value };
@@ -54,8 +54,12 @@ const ValuationTable = () => {
     return rows.reduce((total, row) => total + calculateRowValue(row.quantity, row.ratePerUnit), 0);
   };
 
+  const calculateNetRealizableValue = (): number => {
+    return calculateTotal() - compelledSellerValue;
+  };
+
   return (
-    <div className="mt-8 text-[11px]">
+    <div className="mt-8">
       <h2 className="text-xl font-semibold mb-4 dark:text-white">Details of Valuation: (Valuation Inputs)</h2>
       <div className="overflow-x-auto">
         <table className="w-full border-collapse border border-gray-300 dark:border-gray-600">
@@ -71,14 +75,83 @@ const ValuationTable = () => {
           </thead>
           <tbody>
             {rows.map((row) => (
-              <ValuationRow
-                key={row.id}
-                row={row}
-                unitOptions={unitOptions}
-                onUpdate={updateRow}
-                onDelete={deleteRow}
-                calculateRowValue={calculateRowValue}
-              />
+              <tr key={row.id} className="dark:bg-gray-900">
+                <td className="border border-gray-300 dark:border-gray-600 p-2 text-center">
+                  {row.id}
+                </td>
+                <td className="border border-gray-300 dark:border-gray-600 p-2">
+                  <Input
+                    value={row.description}
+                    onChange={(e) => updateRow(row.id, 'description', e.target.value)}
+                    className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600"
+                  />
+                </td>
+                <td className="border border-gray-300 dark:border-gray-600 p-2">
+                  <Input
+                    type="number"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
+                    value={row.quantity}
+                    onChange={(e) => updateRow(row.id, 'quantity', parseFloat(e.target.value) || 0)}
+                    className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                    style={{ MozAppearance: 'textfield' }}
+                  />
+                </td>
+                <td className="border border-gray-300 dark:border-gray-600 p-2">
+                  <Input
+                    type="number"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
+                    value={row.ratePerUnit}
+                    onChange={(e) => updateRow(row.id, 'ratePerUnit', parseFloat(e.target.value) || 0)}
+                    className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                    style={{ MozAppearance: 'textfield' }}
+                  />
+                </td>
+                <td className="border border-gray-300 dark:border-gray-600 p-2">
+                  <Select
+                    value={row.unit}
+                    onValueChange={(value) => {
+                      if (value === "custom") {
+                        const customVal = prompt("Enter custom unit:");
+                        if (customVal) {
+                          updateRow(row.id, 'unit', customVal);
+                          if (!unitOptions.includes(customVal)) {
+                            setCustomUnit(customVal);
+                          }
+                        }
+                      } else {
+                        updateRow(row.id, 'unit', value);
+                      }
+                    }}
+                  >
+                    <SelectTrigger className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600">
+                      <SelectValue placeholder="Select unit" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {unitOptions.map((unit) => (
+                        <SelectItem key={unit} value={unit}>
+                          {unit}
+                        </SelectItem>
+                      ))}
+                      <SelectItem value="custom">Custom...</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </td>
+                <td className="border border-gray-300 dark:border-gray-600 p-2 text-right">
+                  {calculateRowValue(row.quantity, row.ratePerUnit).toFixed(2)}
+                </td>
+                <td className="border border-gray-300 dark:border-gray-600 p-2 text-center">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => deleteRow(row.id)}
+                    className="p-1 h-8 w-8"
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                </td>
+              </tr>
             ))}
             <tr className="bg-gray-50 dark:bg-gray-800 font-semibold">
               <td colSpan={6} className="border border-gray-300 dark:border-gray-600 p-2">
@@ -101,14 +174,42 @@ const ValuationTable = () => {
           </tbody>
         </table>
         
-        <ValueCalculation 
-          totalValue={calculateTotal()} 
-          compelledSellerValue={compelledSellerValue}
-          setCompelledSellerValue={setCompelledSellerValue}
-        />
+        <div className="mt-4 space-y-4">
+          <div className="p-4 bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded">
+            <p className="text-sm dark:text-white">
+              Net Realizable Value = Rs.{" "}
+              <span className="font-semibold">{calculateTotal().toFixed(2)}</span> Lakhs - Rs.{" "}
+              <Input
+                type="number"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                value={compelledSellerValue}
+                onChange={(e) => setCompelledSellerValue(parseFloat(e.target.value) || 0)}
+                className="w-20 inline-block mx-1 px-2 py-0 h-6 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                style={{ MozAppearance: 'textfield' }}
+              />{" "}
+              Lakhs (Less Compelled Seller) = Rs.{" "}
+              <span className="font-semibold">{calculateNetRealizableValue().toFixed(2)}</span> Lakhs
+            </p>
+          </div>
+
+          <div className="p-4 bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded">
+            <p className="text-sm dark:text-white leading-relaxed">
+              As a result of my appraisal and analysis, it is my considered opinion that the Net Realizable Value of the above property 
+              in the prevailing condition with aforesaid specifications is Rs.{" "}
+              <span className="font-semibold">{calculateNetRealizableValue().toFixed(2)}</span> Lakhs 
+              (Rupees {numberToWords(calculateNetRealizableValue())} Lakhs Only)
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );
+};
+
+const numberToWords = (num: number): string => {
+  const value = num.toFixed(2);
+  return value;
 };
 
 export default ValuationTable;
