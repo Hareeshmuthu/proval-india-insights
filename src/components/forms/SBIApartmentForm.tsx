@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { format } from "date-fns";
@@ -683,10 +684,10 @@ const SBIApartmentForm = () => {
                     return (
                       <React.Fragment key={idx}>
                         <tr className="print:break-inside-avoid">
-                          <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white" rowSpan={field.subFields.length + 1}>
+                          <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white text-[11px]" rowSpan={field.subFields.length + 1}>
                             {field.sn}
                           </td>
-                          <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white" colSpan={2}>
+                          <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white text-[11px]" colSpan={2}>
                             {field.label}
                           </td>
                         </tr>
@@ -697,10 +698,10 @@ const SBIApartmentForm = () => {
                     return (
                       <React.Fragment key={idx}>
                         <tr className="print:break-inside-avoid">
-                          <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white">
+                          <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white text-[11px]">
                             {field.sn}
                           </td>
-                          <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white" colSpan={2}>
+                          <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white text-[11px]" colSpan={2}>
                             {field.label}
                           </td>
                         </tr>
@@ -713,10 +714,130 @@ const SBIApartmentForm = () => {
                 } else {
                   return (
                     <tr key={idx} className="print:break-inside-avoid">
-                      <td className={`border p-2 text-center align-top w-12 ${field.sn === "" ? "invisible" : ""} dark:border-gray-600 dark:text-white`}>{field.sn}</td>
-                      <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white">{field.label}</td>
+                      <td className={`border p-2 text-center align-top w-12 ${field.sn === "" ? "invisible" : ""} dark:border-gray-600 dark:text-white text-[11px]`}>{field.sn}</td>
+                      <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white text-[11px]">{field.label}</td>
                       <td className="border p-2 align-top dark:border-gray-600">
-                        {(() => {
-                          if (field.label === 'Purpose for which the valuation is made' || field.label === 'Brief description of the property') {
-                            return <Textarea 
-                                      className="w-full border px-2 py-[3px] rounded dark:bg-gray-8
+                        {field.label === "Date of inspection" || field.label === "Date on which the valuation is made" || field.label === "Date of Report" ? (
+                          <DatePicker 
+                            value={
+                              field.label === "Date of inspection" ? dates.inspection :
+                              field.label === "Date on which the valuation is made" ? dates.valuation :
+                              dates.report
+                            }
+                            onChange={(date) => {
+                              if (field.label === "Date of inspection") handleDateChange("inspection", date);
+                              else if (field.label === "Date on which the valuation is made") handleDateChange("valuation", date);
+                              else handleDateChange("report", date);
+                            }}
+                          />
+                        ) : field.label === "Date of issue and validity of layout plan" ? (
+                          <DatePicker 
+                            value={dates.layoutPlan}
+                            onChange={(date) => handleDateChange("layoutPlan", date)}
+                          />
+                        ) : field.label === "List of documents produced for perusal" ? (
+                          <MultiSelectDropdown 
+                            options={docOptions}
+                            value={formData.selectedDocs}
+                            onChange={(value) => handleInputChange("selectedDocs", value)}
+                            placeholder="Select documents"
+                          />
+                        ) : field.label === "Year of Construction" ? (
+                          <YearPicker 
+                            value={formData.yearOfConstruction}
+                            onChange={(year) => handleInputChange("yearOfConstruction", year)}
+                          />
+                        ) : field.label === "Purpose for which the valuation is made" || field.label === "Brief description of the property" || field.label === "Name of the owner(s) and address(es)" || field.label === "Postal address of the property" || field.label === "Boundaries of the property" || field.label === "Description of the locality" ? (
+                          <Textarea 
+                            value={field.label === "Purpose for which the valuation is made" ? formData.purpose : ""}
+                            onChange={(e) => {
+                              if (field.label === "Purpose for which the valuation is made") handleInputChange("purpose", e.target.value);
+                            }}
+                            placeholder={`Enter ${field.label.toLowerCase()}`}
+                            className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px]"
+                          />
+                        ) : field.label === "Genuineness of the approved map verified" ? (
+                          <CustomDropdown 
+                            options={["Yes", "No"]}
+                            value={formData.genuinenessVerified}
+                            onChange={(value) => handleInputChange("genuinenessVerified", value)}
+                            placeholder="Select"
+                          />
+                        ) : (
+                          <Input 
+                            type="text" 
+                            className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px] h-[26px] py-[3px]" 
+                            placeholder={`Enter ${field.label.toLowerCase()}`}
+                            value={
+                              field.label === "Plot No. / Survey No." ? formData.plotNo :
+                              field.label === "Survey No." ? formData.surveyNo :
+                              field.label === "Door No." ? formData.doorNo :
+                              field.label === "T. S. No. / Village" ? formData.tsNo :
+                              field.label === "Village" ? formData.village :
+                              field.label === "Ward / Taluka" ? formData.ward :
+                              field.label === "Taluka" ? formData.taluka :
+                              field.label === "Mandal / District" ? formData.mandal :
+                              field.label === "District" ? formData.district :
+                              field.label === "Latitude, Longitude & Co-ordinates" ? `${formData.latitude}, ${formData.longitude}` :
+                              field.label === "Occupancy details" ? formData.occupancyDetails :
+                              ""
+                            }
+                            onChange={(e) => {
+                              if (field.label === "Plot No. / Survey No.") handleInputChange("plotNo", e.target.value);
+                              else if (field.label === "Survey No.") handleInputChange("surveyNo", e.target.value);
+                              else if (field.label === "Door No.") handleInputChange("doorNo", e.target.value);
+                              else if (field.label === "T. S. No. / Village") handleInputChange("tsNo", e.target.value);
+                              else if (field.label === "Village") handleInputChange("village", e.target.value);
+                              else if (field.label === "Ward / Taluka") handleInputChange("ward", e.target.value);
+                              else if (field.label === "Taluka") handleInputChange("taluka", e.target.value);
+                              else if (field.label === "Mandal / District") handleInputChange("mandal", e.target.value);
+                              else if (field.label === "District") handleInputChange("district", e.target.value);
+                              else if (field.label === "Occupancy details") handleInputChange("occupancyDetails", e.target.value);
+                            }}
+                          />
+                        )}
+                      </td>
+                    </tr>
+                  );
+                }
+              })}
+            </tbody>
+          </table>
+        </div>
+      ))}
+      
+      <ValuationTable />
+      
+      <div className="mt-8 print:mt-4">
+        <div className="flex justify-between items-start">
+          <div className="w-1/3">
+            <p className="mb-1 text-[11px] dark:text-white">Date: {format(currentDate, "dd/MM/yyyy")}</p>
+            <p className="mb-1 text-[11px] dark:text-white">Place: {place}</p>
+          </div>
+          <div className="w-1/3 text-center">
+            <input 
+              type="text" 
+              placeholder="Valuer Signature" 
+              className="border-b border-gray-400 px-2 py-1 w-full text-center dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px]"
+              value={valuerSignature}
+              onChange={(e) => setValuerSignature(e.target.value)}
+            />
+            <p className="text-[11px] dark:text-white">BANK'S APPROVED VALUER</p>
+          </div>
+          <div className="w-1/3 text-right">
+            <input 
+              type="text" 
+              placeholder="Branch Manager Signature" 
+              className="border-b border-gray-400 px-2 py-1 w-full text-center dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px]"
+              value={branchManagerSignature}
+              onChange={(e) => setBranchManagerSignature(e.target.value)}
+            />
+            <p className="text-[11px] dark:text-white">BRANCH MANAGER</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default SBIApartmentForm;
