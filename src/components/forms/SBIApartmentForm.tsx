@@ -484,16 +484,16 @@ const SBIApartmentForm = () => {
   const renderSubfields = (subFields, parentField) => {
     return subFields.map((subField, idx) => (
       <tr key={`${parentField}-${idx}`} className="print:break-inside-avoid">
-        <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white">
+        <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white text-[11px]">
           {subField.sn || ""}
         </td>
-        <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white">
+        <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white text-[11px]">
           {subField.label}
         </td>
-        <td className="border p-2 align-top dark:border-gray-600">
+        <td className="border p-2 align-top dark:border-gray-600 text-[11px]">
           <Input 
             type="text" 
-            className="w-full border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
+            className="w-full border px-2 py-[3px] rounded dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px] h-[26px]" 
             placeholder={`Enter ${subField.label.toLowerCase()}`}
             value={
               parentField === "3" ? formData[subField.label.toLowerCase()] :
@@ -527,16 +527,16 @@ const SBIApartmentForm = () => {
   const renderBreakupFields = (subFields) => {
     return subFields.map((subField, idx) => (
       <tr key={`breakup-${idx}`} className="print:break-inside-avoid">
-        <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white">
+        <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white text-[11px]">
           {subField.sn}
         </td>
-        <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white">
+        <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white text-[11px]">
           {subField.label}
         </td>
-        <td className="border p-2 align-top dark:border-gray-600">
+        <td className="border p-2 align-top dark:border-gray-600 text-[11px]">
           <Input 
             type="text" 
-            className="w-full border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
+            className="w-full border px-2 py-[3px] rounded dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px] h-[26px]" 
             placeholder={`Enter ${subField.label.toLowerCase()}`}
             value={
               subField.label === "Building + Services + Amenities" 
@@ -573,7 +573,7 @@ const SBIApartmentForm = () => {
               <td className="border p-2 align-top dark:border-gray-600">
                 <Input 
                   type="text" 
-                  className="w-full border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
+                  className="w-full border px-2 py-[3px] rounded dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px] h-[26px]" 
                   placeholder={`Enter ${field.label.toLowerCase()}`}
                   value={
                     idx === 0 ? formData.depreciatedBuildingRate :
@@ -613,7 +613,7 @@ const SBIApartmentForm = () => {
               <td className="border p-2 align-top dark:border-gray-600">
                 <Input 
                   type="text" 
-                  className="w-full border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
+                  className="w-full border px-2 py-[3px] rounded dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px] h-[26px]" 
                   placeholder={`Enter ${field.label.toLowerCase()}`}
                   value={
                     idx === 0 ? formData.totalCompositeValueBeforeValuation :
@@ -719,7 +719,7 @@ const SBIApartmentForm = () => {
                         {(() => {
                           if (field.label === 'Purpose for which the valuation is made' || field.label === 'Brief description of the property') {
                             return <Textarea 
-                                      className="w-full border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
+                                      className="w-full border px-2 py-[3px] rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
                                       placeholder={`Enter ${field.label.toLowerCase()}`} 
                                       rows={3}
                                       value={field.label === 'Purpose for which the valuation is made' ? formData.purpose : ''}
@@ -747,7 +747,7 @@ const SBIApartmentForm = () => {
                               <div className="flex items-center gap-2">
                                 <Input 
                                   type="text" 
-                                  className="w-1/2 border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
+                                  className="w-1/2 border px-2 py-[3px] rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
                                   placeholder="Plot No." 
                                   value={formData.plotNo}
                                   onChange={(e) => handleInputChange('plotNo', e.target.value)}
@@ -755,7 +755,7 @@ const SBIApartmentForm = () => {
                                 <span className="dark:text-white">/</span>
                                 <Input 
                                   type="text" 
-                                  className="w-1/2 border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
+                                  className="w-1/2 border px-2 py-[3px] rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
                                   placeholder="Survey No." 
                                   value={formData.surveyNo}
                                   onChange={(e) => handleInputChange('surveyNo', e.target.value)}
@@ -766,7 +766,7 @@ const SBIApartmentForm = () => {
                             return (
                               <Input 
                                 type="text" 
-                                className="w-full border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
+                                className="w-full border px-2 py-[3px] rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
                                 placeholder="Enter door number" 
                                 value={formData.doorNo}
                                 onChange={(e) => handleInputChange('doorNo', e.target.value)}
@@ -777,7 +777,7 @@ const SBIApartmentForm = () => {
                               <div className="flex items-center gap-2">
                                 <Input 
                                   type="text" 
-                                  className="w-1/2 border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
+                                  className="w-1/2 border px-2 py-[3px] rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
                                   placeholder="T.S. No." 
                                   value={formData.tsNo}
                                   onChange={(e) => handleInputChange('tsNo', e.target.value)}
@@ -785,7 +785,7 @@ const SBIApartmentForm = () => {
                                 <span className="dark:text-white">/</span>
                                 <Input 
                                   type="text" 
-                                  className="w-1/2 border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
+                                  className="w-1/2 border px-2 py-[3px] rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
                                   placeholder="Village" 
                                   value={formData.village}
                                   onChange={(e) => handleInputChange('village', e.target.value)}
@@ -797,7 +797,7 @@ const SBIApartmentForm = () => {
                               <div className="flex items-center gap-2">
                                 <Input 
                                   type="text" 
-                                  className="w-1/2 border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
+                                  className="w-1/2 border px-2 py-[3px] rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
                                   placeholder="Ward" 
                                   value={formData.ward}
                                   onChange={(e) => handleInputChange('ward', e.target.value)}
@@ -805,7 +805,7 @@ const SBIApartmentForm = () => {
                                 <span className="dark:text-white">/</span>
                                 <Input 
                                   type="text" 
-                                  className="w-1/2 border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
+                                  className="w-1/2 border px-2 py-[3px] rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
                                   placeholder="Taluka" 
                                   value={formData.taluka}
                                   onChange={(e) => handleInputChange('taluka', e.target.value)}
@@ -817,7 +817,7 @@ const SBIApartmentForm = () => {
                               <div className="flex items-center gap-2">
                                 <Input 
                                   type="text" 
-                                  className="w-1/2 border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
+                                  className="w-1/2 border px-2 py-[3px] rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
                                   placeholder="Mandal" 
                                   value={formData.mandal}
                                   onChange={(e) => handleInputChange('mandal', e.target.value)}
@@ -825,7 +825,7 @@ const SBIApartmentForm = () => {
                                 <span className="dark:text-white">/</span>
                                 <Input 
                                   type="text" 
-                                  className="w-1/2 border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
+                                  className="w-1/2 border px-2 py-[3px] rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
                                   placeholder="District" 
                                   value={formData.district}
                                   onChange={(e) => handleInputChange('district', e.target.value)}
@@ -851,7 +851,7 @@ const SBIApartmentForm = () => {
                             return (
                               <Input 
                                 type="text" 
-                                className="w-full border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
+                                className="w-full border px-2 py-[3px] rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
                                 placeholder="Enter coordinates" 
                                 value={formData.latitude ? `${formData.latitude}, ${formData.longitude}` : ''}
                                 onChange={(e) => {
@@ -886,7 +886,7 @@ const SBIApartmentForm = () => {
                             return (
                               <Input 
                                 type="text" 
-                                className="w-full border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
+                                className="w-full border px-2 py-[3px] rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
                                 placeholder="Enter T.S. No. / S.F. No. / Door No." 
                                 value={formData.tsNoSfNoDoorNo}
                                 onChange={(e) => handleInputChange('tsNoSfNoDoorNo', e.target.value)}
@@ -896,7 +896,7 @@ const SBIApartmentForm = () => {
                             return (
                               <Input 
                                 type="text" 
-                                className="w-full border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
+                                className="w-full border px-2 py-[3px] rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
                                 placeholder="Enter block number" 
                                 value={formData.blockNo}
                                 onChange={(e) => handleInputChange('blockNo', e.target.value)}
@@ -906,7 +906,7 @@ const SBIApartmentForm = () => {
                             return (
                               <Input 
                                 type="text" 
-                                className="w-full border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
+                                className="w-full border px-2 py-[3px] rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
                                 placeholder="Enter ward number" 
                                 value={formData.wardNo}
                                 onChange={(e) => handleInputChange('wardNo', e.target.value)}
@@ -916,7 +916,7 @@ const SBIApartmentForm = () => {
                             return (
                               <Input 
                                 type="text" 
-                                className="w-full border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
+                                className="w-full border px-2 py-[3px] rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
                                 placeholder="Enter door no., street/road" 
                                 value={formData.doorNoStreetRoad}
                                 onChange={(e) => handleInputChange('doorNoStreetRoad', e.target.value)}
@@ -926,7 +926,7 @@ const SBIApartmentForm = () => {
                             return (
                               <Input 
                                 type="text" 
-                                className="w-full border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
+                                className="w-full border px-2 py-[3px] rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
                                 placeholder="Enter village/municipality/corporation" 
                                 value={formData.villageMunicipalityCorp}
                                 onChange={(e) => handleInputChange('villageMunicipalityCorp', e.target.value)}
@@ -1014,7 +1014,7 @@ const SBIApartmentForm = () => {
                               </Select>
                             );
                           } else if (["Name of the owner(s) and address(es)", "Postal address of the property"].includes(field.label)) {
-                            return <Textarea className="w-full border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" placeholder={`Enter ${field.label.toLowerCase()}`} rows={3}></Textarea>;
+                            return <Textarea className="w-full border px-2 py-[3px] rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" placeholder={`Enter ${field.label.toLowerCase()}`} rows={3}></Textarea>;
                           } else if (["Residential Area", "Commercial Area", "Industrial Area"].includes(field.label)) {
                             return (
                               <Select>
@@ -1068,12 +1068,12 @@ const SBIApartmentForm = () => {
                             );
                           }
                           else if (field.label === 'The floor on which the flat is situated') {
-                            return <Input type="text" className="w-full border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" placeholder={`Enter ${field.label.toLowerCase()}`} />;
+                            return <Input type="text" className="w-full border px-2 py-[3px] rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" placeholder={`Enter ${field.label.toLowerCase()}`} />;
                           } else if (field.label === 'Door No. of the flat') {
                             return (
                               <Input 
                                 type="text" 
-                                className="w-full border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
+                                className="w-full border px-2 py-[3px] rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
                                 placeholder="Enter door number of the flat" 
                                 value={formData.doorNoFlat}
                                 onChange={(e) => handleInputChange('doorNoFlat', e.target.value)}
@@ -1144,7 +1144,7 @@ const SBIApartmentForm = () => {
                             const fieldKey = field.label === 'Factors favoring extra value' ? 'factorsFavoring' : 'negativeFactors';
                             return (
                               <Textarea 
-                                className="w-full border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
+                                className="w-full border px-2 py-[3px] rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
                                 placeholder={`Enter ${field.label.toLowerCase()}`} 
                                 rows={3}
                                 value={formData[fieldKey]}
@@ -1152,7 +1152,7 @@ const SBIApartmentForm = () => {
                               ></Textarea>
                             );
                           } else {
-                            return <Input type="text" className="w-full border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" placeholder={`Enter ${field.label.toLowerCase()}`} />;
+                            return <Input type="text" className="w-full border px-2 py-[3px] rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" placeholder={`Enter ${field.label.toLowerCase()}`} />;
                           }
                         })()}
                       </td>

@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -60,55 +61,55 @@ const ValuationTable = () => {
 
   return (
     <div className="mt-8">
-      <h2 className="text-xl font-semibold mb-4 dark:text-white">Details of Valuation: (Valuation Inputs)</h2>
+      <h2 className="text-xl font-semibold mb-4 dark:text-white text-[13px]">Details of Valuation: (Valuation Inputs)</h2>
       <div className="overflow-x-auto">
-        <table className="w-full border-collapse border border-gray-300 dark:border-gray-600">
+        <table className="w-full border-collapse border border-gray-300 dark:border-gray-600 text-[11px]">
           <thead>
             <tr className="bg-gray-100 dark:bg-gray-800">
-              <th className="border border-gray-300 dark:border-gray-600 p-2 w-12">SI.No.</th>
-              <th className="border border-gray-300 dark:border-gray-600 p-2 w-1/3">Description</th>
-              <th className="border border-gray-300 dark:border-gray-600 p-2 w-32">Qty.</th>
-              <th className="border border-gray-300 dark:border-gray-600 p-2 w-32">Rate per unit Rs.</th>
-              <th className="border border-gray-300 dark:border-gray-600 p-2 w-24">Unit</th>
-              <th className="border border-gray-300 dark:border-gray-600 p-2 w-32">Estimated value Rs.in Lakhs</th>
+              <th className="border border-gray-300 dark:border-gray-600 p-1 w-12">SI.No.</th>
+              <th className="border border-gray-300 dark:border-gray-600 p-1 w-1/3">Description</th>
+              <th className="border border-gray-300 dark:border-gray-600 p-1 w-32">Qty.</th>
+              <th className="border border-gray-300 dark:border-gray-600 p-1 w-32">Rate per unit Rs.</th>
+              <th className="border border-gray-300 dark:border-gray-600 p-1 w-24">Unit</th>
+              <th className="border border-gray-300 dark:border-gray-600 p-1 w-32">Estimated value Rs.in Lakhs</th>
             </tr>
           </thead>
           <tbody>
             {rows.map((row) => (
               <tr key={row.id} className="dark:bg-gray-900">
-                <td className="border border-gray-300 dark:border-gray-600 p-2 text-center">
+                <td className="border border-gray-300 dark:border-gray-600 p-1 text-center align-middle text-[11px]">
                   {row.id}
                 </td>
-                <td className="border border-gray-300 dark:border-gray-600 p-2">
+                <td className="border border-gray-300 dark:border-gray-600 p-1 align-middle">
                   <Input
                     value={row.description}
                     onChange={(e) => updateRow(row.id, 'description', e.target.value)}
-                    className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600"
+                    className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px] py-[3px] px-2 h-[26px] leading-tight"
                   />
                 </td>
-                <td className="border border-gray-300 dark:border-gray-600 p-2">
+                <td className="border border-gray-300 dark:border-gray-600 p-1 align-middle">
                   <Input
                     type="number"
                     inputMode="numeric"
                     pattern="[0-9]*"
                     value={row.quantity}
                     onChange={(e) => updateRow(row.id, 'quantity', parseFloat(e.target.value) || 0)}
-                    className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                    className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px] py-[3px] px-2 h-[26px] leading-tight [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                     style={{ MozAppearance: 'textfield' }}
                   />
                 </td>
-                <td className="border border-gray-300 dark:border-gray-600 p-2">
+                <td className="border border-gray-300 dark:border-gray-600 p-1 align-middle">
                   <Input
                     type="number"
                     inputMode="numeric"
                     pattern="[0-9]*"
                     value={row.ratePerUnit}
                     onChange={(e) => updateRow(row.id, 'ratePerUnit', parseFloat(e.target.value) || 0)}
-                    className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                    className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px] py-[3px] px-2 h-[26px] leading-tight [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                     style={{ MozAppearance: 'textfield' }}
                   />
                 </td>
-                <td className="border border-gray-300 dark:border-gray-600 p-2">
+                <td className="border border-gray-300 dark:border-gray-600 p-1 align-middle">
                   <Select
                     value={row.unit}
                     onValueChange={(value) => {
@@ -125,47 +126,45 @@ const ValuationTable = () => {
                       }
                     }}
                   >
-                    <SelectTrigger className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600">
+                    <SelectTrigger className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px] h-[26px] py-[3px]">
                       <SelectValue placeholder="Select unit" />
                     </SelectTrigger>
                     <SelectContent>
                       {unitOptions.map((unit) => (
-                        <SelectItem key={unit} value={unit}>
-                          {unit}
-                        </SelectItem>
+                        <SelectItem key={unit} value={unit} className="text-[11px]">{unit}</SelectItem>
                       ))}
-                      <SelectItem value="custom">Custom...</SelectItem>
+                      <SelectItem value="custom" className="text-[11px]">Custom...</SelectItem>
                     </SelectContent>
                   </Select>
                 </td>
-                <td className="border border-gray-300 dark:border-gray-600 p-2 text-right">
+                <td className="border border-gray-300 dark:border-gray-600 p-1 text-right align-middle text-[11px]">
                   {calculateRowValue(row.quantity, row.ratePerUnit).toFixed(2)}
                 </td>
-                <td className="border border-gray-300 dark:border-gray-600 p-2 text-center">
+                <td className="border border-gray-300 dark:border-gray-600 p-1 text-center align-middle">
                   <Button
                     variant="ghost"
                     size="sm"
                     onClick={() => deleteRow(row.id)}
-                    className="p-1 h-8 w-8"
+                    className="p-1 h-7 w-7"
                   >
-                    <X className="h-4 w-4" />
+                    <X className="h-3 w-3" />
                   </Button>
                 </td>
               </tr>
             ))}
             <tr className="bg-gray-50 dark:bg-gray-800 font-semibold">
-              <td colSpan={6} className="border border-gray-300 dark:border-gray-600 p-2">
+              <td colSpan={6} className="border border-gray-300 dark:border-gray-600 p-1">
                 <div className="flex justify-between items-center">
-                  <span>Total</span>
-                  <span>{calculateTotal().toFixed(2)}</span>
+                  <span className="text-[11px]">Total</span>
+                  <span className="text-[11px]">{calculateTotal().toFixed(2)}</span>
                 </div>
               </td>
-              <td className="border border-gray-300 dark:border-gray-600 p-2 text-center">
+              <td className="border border-gray-300 dark:border-gray-600 p-1 text-center">
                 <Button
                   variant="outline"
                   size="sm"
                   onClick={addRow}
-                  className="p-1 h-8 w-8"
+                  className="p-1 h-7 w-7 text-[11px]"
                 >
                   +
                 </Button>
@@ -174,9 +173,9 @@ const ValuationTable = () => {
           </tbody>
         </table>
         
-        <div className="mt-4 space-y-4">
-          <div className="p-4 bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded">
-            <p className="text-sm dark:text-white">
+        <div className="mt-3 space-y-3">
+          <div className="p-3 bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded text-[11px]">
+            <p className="text-[11px] dark:text-white">
               Net Realizable Value = Rs.{" "}
               <span className="font-semibold">{calculateTotal().toFixed(2)}</span> Lakhs - Rs.{" "}
               <Input
@@ -185,7 +184,7 @@ const ValuationTable = () => {
                 pattern="[0-9]*"
                 value={compelledSellerValue}
                 onChange={(e) => setCompelledSellerValue(parseFloat(e.target.value) || 0)}
-                className="w-20 inline-block mx-1 px-2 py-0 h-6 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                className="w-16 inline-block mx-1 px-2 py-[3px] h-[24px] text-[11px] leading-tight align-middle [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                 style={{ MozAppearance: 'textfield' }}
               />{" "}
               Lakhs (Less Compelled Seller) = Rs.{" "}
@@ -193,8 +192,8 @@ const ValuationTable = () => {
             </p>
           </div>
 
-          <div className="p-4 bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded">
-            <p className="text-sm dark:text-white leading-relaxed">
+          <div className="p-3 bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded text-[11px]">
+            <p className="text-[11px] dark:text-white leading-relaxed">
               As a result of my appraisal and analysis, it is my considered opinion that the Net Realizable Value of the above property 
               in the prevailing condition with aforesaid specifications is Rs.{" "}
               <span className="font-semibold">{calculateNetRealizableValue().toFixed(2)}</span> Lakhs 
@@ -213,3 +212,4 @@ const numberToWords = (num: number): string => {
 };
 
 export default ValuationTable;
+
