@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -188,6 +189,55 @@ const GeneralSection: React.FC<GeneralSectionProps> = ({
                 placeholder="Enter Mandal / District"
                 value={formData.mandal}
                 onChange={(e) => handleInputChange("mandal", e.target.value)}
+              />
+            </td>
+          </tr>
+
+          <tr className="print:break-inside-avoid">
+            <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white text-[11px]">7</td>
+            <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white text-[11px]">GPS Coordinates (if available)</td>
+            <td className="border p-2 align-top dark:border-gray-600">
+              <div className="flex gap-2">
+                <Input 
+                  type="text" 
+                  className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px] h-[26px] py-[3px]" 
+                  placeholder="Latitude"
+                  value={formData.latitude}
+                  onChange={(e) => handleInputChange("latitude", e.target.value)}
+                />
+                <Input 
+                  type="text" 
+                  className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px] h-[26px] py-[3px]" 
+                  placeholder="Longitude"
+                  value={formData.longitude}
+                  onChange={(e) => handleInputChange("longitude", e.target.value)}
+                />
+              </div>
+            </td>
+          </tr>
+          
+          <tr className="print:break-inside-avoid">
+            <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white text-[11px]">8</td>
+            <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white text-[11px]">Genuineness of the documents verified</td>
+            <td className="border p-2 align-top dark:border-gray-600">
+              <Textarea 
+                value={formData.genuinenessVerified || ""}
+                onChange={(e) => handleInputChange("genuinenessVerified", e.target.value)}
+                placeholder="Enter verification details"
+                className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px]"
+              />
+            </td>
+          </tr>
+          
+          <tr className="print:break-inside-avoid">
+            <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white text-[11px]">9</td>
+            <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white text-[11px]">Occupancy details</td>
+            <td className="border p-2 align-top dark:border-gray-600">
+              <Textarea 
+                value={formData.occupancyDetails || ""}
+                onChange={(e) => handleInputChange("occupancyDetails", e.target.value)}
+                placeholder="Enter occupancy details"
+                className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px]"
               />
             </td>
           </tr>

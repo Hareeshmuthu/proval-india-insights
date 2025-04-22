@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -244,7 +245,47 @@ const FlatSection: React.FC<FlatSectionProps> = ({
             </td>
           </tr>
           
-          {/* Additional fields including Maintenance, Sale Deed, etc. */}
+          {/* Electricity Service */}
+          <tr className="print:break-inside-avoid">
+            <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white text-[11px]" rowSpan={3}>
+              5
+            </td>
+            <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white text-[11px]" colSpan={2}>
+              Electricity Service
+            </td>
+          </tr>
+          
+          <tr className="print:break-inside-avoid">
+            <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white text-[11px]">
+              a. Electricity Service Number
+            </td>
+            <td className="border p-2 align-top dark:border-gray-600">
+              <Input 
+                type="text" 
+                className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px] h-[26px] py-[3px]" 
+                placeholder="Enter electricity service number"
+                value={formData.electricityServiceNumber || ""}
+                onChange={(e) => handleInputChange("electricityServiceNumber", e.target.value)}
+              />
+            </td>
+          </tr>
+          
+          <tr className="print:break-inside-avoid">
+            <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white text-[11px]">
+              b. Meter Card in the Name of
+            </td>
+            <td className="border p-2 align-top dark:border-gray-600">
+              <Input 
+                type="text" 
+                className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px] h-[26px] py-[3px]" 
+                placeholder="Enter name on meter card"
+                value={formData.meterCardNameOf || ""}
+                onChange={(e) => handleInputChange("meterCardNameOf", e.target.value)}
+              />
+            </td>
+          </tr>
+          
+          {/* Maintenance of Flat */}
           <tr className="print:break-inside-avoid">
             <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white text-[11px]">
               6

@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -14,8 +15,8 @@ const ApartmentBuildingSection = ({
   handleInputChange
 }: ApartmentBuildingSectionProps) => {
   return (
-    <div className="mb-8">
-      <h2 className="text-xl font-semibold mb-2 dark:text-white">SBI - AP II. APARTMENT BUILDING</h2>
+    <div className="space-y-4">
+      <h2 className="text-lg font-semibold mb-4 dark:text-white">SBI - AP II. APARTMENT BUILDING</h2>
       <table className="w-full border border-gray-300 dark:border-gray-600 text-[11px]">
         <tbody>
           <tr className="print:break-inside-avoid">
@@ -24,7 +25,7 @@ const ApartmentBuildingSection = ({
             <td className="border p-2 align-top dark:border-gray-600">
               <Input 
                 type="text" 
-                className="w-full border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px]" 
+                className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px] h-[26px] py-[3px]" 
                 placeholder="Enter nature of the apartment"
                 value={formData.natureOfApartment}
                 onChange={(e) => handleInputChange('natureOfApartment', e.target.value)}
@@ -37,7 +38,7 @@ const ApartmentBuildingSection = ({
             <td className="border p-2 align-top dark:border-gray-600">
               <Input 
                 type="text" 
-                className="w-full border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px]" 
+                className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px] h-[26px] py-[3px]" 
                 placeholder="Enter TS No. / SF No. / Door No."
                 value={formData.tsNoSfNoDoorNo}
                 onChange={(e) => handleInputChange('tsNoSfNoDoorNo', e.target.value)}
@@ -50,7 +51,7 @@ const ApartmentBuildingSection = ({
             <td className="border p-2 align-top dark:border-gray-600">
               <Input 
                 type="text" 
-                className="w-full border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px]" 
+                className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px] h-[26px] py-[3px]" 
                 placeholder="Enter Block No. / Ward No."
                 value={formData.blockNo}
                 onChange={(e) => handleInputChange('blockNo', e.target.value)}
@@ -74,7 +75,7 @@ const ApartmentBuildingSection = ({
             <td className="border p-2 align-top dark:border-gray-600">
               <Input 
                 type="text" 
-                className="w-full border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px]" 
+                className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px] h-[26px] py-[3px]" 
                 placeholder="Enter type of structure"
                 value={formData.typeOfStructure}
                 onChange={(e) => handleInputChange('typeOfStructure', e.target.value)}
@@ -87,7 +88,7 @@ const ApartmentBuildingSection = ({
             <td className="border p-2 align-top dark:border-gray-600">
               <Input 
                 type="text" 
-                className="w-full border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px]" 
+                className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px] h-[26px] py-[3px]" 
                 placeholder="Enter quality of construction"
                 value={formData.qualityOfConstruction}
                 onChange={(e) => handleInputChange('qualityOfConstruction', e.target.value)}
@@ -100,7 +101,7 @@ const ApartmentBuildingSection = ({
             <td className="border p-2 align-top dark:border-gray-600">
               <Input 
                 type="text" 
-                className="w-full border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px]" 
+                className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px] h-[26px] py-[3px]" 
                 placeholder="Enter appearance of the building"
                 value={formData.appearanceOfBuilding}
                 onChange={(e) => handleInputChange('appearanceOfBuilding', e.target.value)}
@@ -113,7 +114,7 @@ const ApartmentBuildingSection = ({
             <td className="border p-2 align-top dark:border-gray-600">
               <Input 
                 type="text" 
-                className="w-full border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px]" 
+                className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px] h-[26px] py-[3px]" 
                 placeholder="Enter maintenance of the building"
                 value={formData.maintenanceOfBuilding}
                 onChange={(e) => handleInputChange('maintenanceOfBuilding', e.target.value)}
@@ -128,7 +129,7 @@ const ApartmentBuildingSection = ({
                 value={formData.lift || ""}
                 onValueChange={(value) => handleInputChange('lift', value)}
               >
-                <SelectTrigger className="w-full border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px]">
+                <SelectTrigger className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px] h-[26px]">
                   <SelectValue placeholder="Select" />
                 </SelectTrigger>
                 <SelectContent>
@@ -146,7 +147,7 @@ const ApartmentBuildingSection = ({
                 value={formData.protectedWaterSupply || ""}
                 onValueChange={(value) => handleInputChange('protectedWaterSupply', value)}
               >
-                <SelectTrigger className="w-full border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px]">
+                <SelectTrigger className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px] h-[26px]">
                   <SelectValue placeholder="Select" />
                 </SelectTrigger>
                 <SelectContent>
@@ -164,7 +165,7 @@ const ApartmentBuildingSection = ({
                 value={formData.undergroundSewerage || ""}
                 onValueChange={(value) => handleInputChange('undergroundSewerage', value)}
               >
-                <SelectTrigger className="w-full border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px]">
+                <SelectTrigger className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px] h-[26px]">
                   <SelectValue placeholder="Select" />
                 </SelectTrigger>
                 <SelectContent>
@@ -182,7 +183,7 @@ const ApartmentBuildingSection = ({
                 value={formData.carParking || ""}
                 onValueChange={(value) => handleInputChange('carParking', value)}
               >
-                <SelectTrigger className="w-full border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px]">
+                <SelectTrigger className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px] h-[26px]">
                   <SelectValue placeholder="Select" />
                 </SelectTrigger>
                 <SelectContent>
@@ -200,7 +201,7 @@ const ApartmentBuildingSection = ({
                 value={formData.compoundWall || ""}
                 onValueChange={(value) => handleInputChange('compoundWall', value)}
               >
-                <SelectTrigger className="w-full border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px]">
+                <SelectTrigger className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px] h-[26px]">
                   <SelectValue placeholder="Select" />
                 </SelectTrigger>
                 <SelectContent>
@@ -218,7 +219,7 @@ const ApartmentBuildingSection = ({
                 value={formData.pavementAroundBuilding || ""}
                 onValueChange={(value) => handleInputChange('pavementAroundBuilding', value)}
               >
-                <SelectTrigger className="w-full border px-2 py-1 rounded dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px]">
+                <SelectTrigger className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px] h-[26px]">
                   <SelectValue placeholder="Select" />
                 </SelectTrigger>
                 <SelectContent>
