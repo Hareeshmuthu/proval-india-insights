@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -16,7 +15,7 @@ const FlatSection: React.FC<FlatSectionProps> = ({
 }) => {
   return (
     <div className="space-y-4">
-      <h2 className="text-lg font-semibold mb-4 dark:text-white">III. FLAT</h2>
+      <h2 className="text-lg font-semibold mb-4 dark:text-white">SBI - AP III. FLAT</h2>
       
       <table className="w-full border border-gray-300 dark:border-gray-600 text-[11px]">
         <tbody>

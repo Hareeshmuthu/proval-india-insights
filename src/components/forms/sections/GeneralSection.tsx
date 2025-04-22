@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -34,17 +33,13 @@ const GeneralSection: React.FC<GeneralSectionProps> = ({
 }) => {
   return (
     <div className="space-y-4">
-      <h2 className="text-lg font-semibold mb-4 dark:text-white">I. GENERAL</h2>
+      <h2 className="text-lg font-semibold mb-4 dark:text-white">SBI - AP I. GENERAL</h2>
       
       <table className="w-full border border-gray-300 dark:border-gray-600 text-[11px]">
         <tbody>
           <tr className="print:break-inside-avoid">
-            <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white text-[11px]">
-              1
-            </td>
-            <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white text-[11px]">
-              Purpose for which the valuation is made
-            </td>
+            <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white text-[11px]">1</td>
+            <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white text-[11px]">Purpose for which the valuation is made</td>
             <td className="border p-2 align-top dark:border-gray-600">
               <Textarea 
                 value={formData.purpose}
@@ -56,12 +51,8 @@ const GeneralSection: React.FC<GeneralSectionProps> = ({
           </tr>
           
           <tr className="print:break-inside-avoid">
-            <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white text-[11px]">
-              2a
-            </td>
-            <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white text-[11px]">
-              Date of inspection
-            </td>
+            <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white text-[11px]">2a</td>
+            <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white text-[11px]">Date of inspection</td>
             <td className="border p-2 align-top dark:border-gray-600">
               <DatePicker 
                 value={dates.inspection}
@@ -71,12 +62,8 @@ const GeneralSection: React.FC<GeneralSectionProps> = ({
           </tr>
           
           <tr className="print:break-inside-avoid">
-            <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white text-[11px]">
-              2b
-            </td>
-            <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white text-[11px]">
-              Date on which the valuation is made
-            </td>
+            <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white text-[11px]">2b</td>
+            <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white text-[11px]">Date on which the valuation is made</td>
             <td className="border p-2 align-top dark:border-gray-600">
               <DatePicker 
                 value={dates.valuation}
@@ -86,12 +73,8 @@ const GeneralSection: React.FC<GeneralSectionProps> = ({
           </tr>
           
           <tr className="print:break-inside-avoid">
-            <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white text-[11px]">
-              2c
-            </td>
-            <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white text-[11px]">
-              Date of Report
-            </td>
+            <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white text-[11px]">2c</td>
+            <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white text-[11px]">Date of Report</td>
             <td className="border p-2 align-top dark:border-gray-600">
               <DatePicker 
                 value={dates.report}
@@ -101,12 +84,8 @@ const GeneralSection: React.FC<GeneralSectionProps> = ({
           </tr>
           
           <tr className="print:break-inside-avoid">
-            <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white text-[11px]">
-              3
-            </td>
-            <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white text-[11px]">
-              List of documents produced for perusal
-            </td>
+            <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white text-[11px]">3</td>
+            <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white text-[11px]">List of documents produced for perusal</td>
             <td className="border p-2 align-top dark:border-gray-600">
               <MultiSelectDropdown 
                 options={docOptions}
@@ -118,12 +97,8 @@ const GeneralSection: React.FC<GeneralSectionProps> = ({
           </tr>
           
           <tr className="print:break-inside-avoid">
-            <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white text-[11px]">
-              4
-            </td>
-            <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white text-[11px]">
-              Name of the owner(s) and address(es)
-            </td>
+            <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white text-[11px]">4</td>
+            <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white text-[11px]">Name of the owner(s) and address(es)</td>
             <td className="border p-2 align-top dark:border-gray-600">
               <Textarea 
                 value={formData.ownerNameAddress || ""}
@@ -135,12 +110,8 @@ const GeneralSection: React.FC<GeneralSectionProps> = ({
           </tr>
           
           <tr className="print:break-inside-avoid">
-            <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white text-[11px]">
-              5
-            </td>
-            <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white text-[11px]">
-              Brief description of the property
-            </td>
+            <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white text-[11px]">5</td>
+            <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white text-[11px]">Brief description of the property</td>
             <td className="border p-2 align-top dark:border-gray-600">
               <Textarea 
                 value={formData.propertyDescription || ""}
@@ -152,12 +123,8 @@ const GeneralSection: React.FC<GeneralSectionProps> = ({
           </tr>
           
           <tr className="print:break-inside-avoid">
-            <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white text-[11px]">
-              6a
-            </td>
-            <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white text-[11px]">
-              Plot No. / Survey No.
-            </td>
+            <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white text-[11px]">6a</td>
+            <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white text-[11px]">Plot No. / Survey No.</td>
             <td className="border p-2 align-top dark:border-gray-600">
               <Input 
                 type="text" 
@@ -170,12 +137,8 @@ const GeneralSection: React.FC<GeneralSectionProps> = ({
           </tr>
           
           <tr className="print:break-inside-avoid">
-            <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white text-[11px]">
-              6b
-            </td>
-            <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white text-[11px]">
-              Door No.
-            </td>
+            <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white text-[11px]">6b</td>
+            <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white text-[11px]">Door No.</td>
             <td className="border p-2 align-top dark:border-gray-600">
               <Input 
                 type="text" 
@@ -188,12 +151,8 @@ const GeneralSection: React.FC<GeneralSectionProps> = ({
           </tr>
           
           <tr className="print:break-inside-avoid">
-            <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white text-[11px]">
-              6c
-            </td>
-            <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white text-[11px]">
-              T. S. No. / Village
-            </td>
+            <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white text-[11px]">6c</td>
+            <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white text-[11px]">T. S. No. / Village</td>
             <td className="border p-2 align-top dark:border-gray-600">
               <Input 
                 type="text" 
@@ -206,12 +165,8 @@ const GeneralSection: React.FC<GeneralSectionProps> = ({
           </tr>
           
           <tr className="print:break-inside-avoid">
-            <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white text-[11px]">
-              6d
-            </td>
-            <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white text-[11px]">
-              Ward / Taluka
-            </td>
+            <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white text-[11px]">6d</td>
+            <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white text-[11px]">Ward / Taluka</td>
             <td className="border p-2 align-top dark:border-gray-600">
               <Input 
                 type="text" 
@@ -224,12 +179,8 @@ const GeneralSection: React.FC<GeneralSectionProps> = ({
           </tr>
           
           <tr className="print:break-inside-avoid">
-            <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white text-[11px]">
-              6e
-            </td>
-            <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white text-[11px]">
-              Mandal / District
-            </td>
+            <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white text-[11px]">6e</td>
+            <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white text-[11px]">Mandal / District</td>
             <td className="border p-2 align-top dark:border-gray-600">
               <Input 
                 type="text" 

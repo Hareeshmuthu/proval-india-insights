@@ -36,11 +36,10 @@ const ValuationTableSection: React.FC<ValuationTableSectionProps> = ({
     }
   }, [valuationRows]);
 
-  // Need to convert the ValuationTable component to be controlled by this component
-  // For now this is a simplified implementation
+  // REMOVE SIGNATURE NAME INPUT FIELDS - print only the role (label)
   return (
     <div className="space-y-4">
-      <h2 className="text-lg font-semibold mb-4 dark:text-white">VII. DETAILS OF VALUATION</h2>
+      <h2 className="text-lg font-semibold mb-4 dark:text-white">SBI - AP VII. DETAILS OF VALUATION</h2>
       
       <ValuationTable />
       
@@ -55,7 +54,7 @@ const ValuationTableSection: React.FC<ValuationTableSectionProps> = ({
               <Input 
                 value={grandTotal}
                 onChange={(e) => setGrandTotal(e.target.value)}
-                className="ml-1 dark:bg-gray-800 dark:text-white dark:border-gray-600"
+                className="ml-1 dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px]"
               />
             </div>
           </div>
@@ -74,9 +73,32 @@ const ValuationTableSection: React.FC<ValuationTableSectionProps> = ({
             value={valuationNotes}
             onChange={(e) => setValuationNotes(e.target.value)}
             rows={4}
-            className="w-full p-2 border rounded dark:bg-gray-800 dark:text-white dark:border-gray-600"
+            className="w-full p-2 border rounded dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px]"
             placeholder="Add any additional notes or observations about the valuation..."
           />
+        </div>
+      </div>
+
+      <div className="mt-8 print:mt-4">
+        <div className="flex justify-between items-start">
+          <div className="w-1/3">
+            {/* Date and Place text remain as they were */}
+            <p className="mb-1 text-[11px] dark:text-white">Date: {/* Add formatted date here or the same as original */}</p>
+            <p className="mb-1 text-[11px] dark:text-white">Place: {/* Place name here as per original state */}</p>
+          </div>
+          <div className="w-1/3 text-center">
+            <p className="text-[11px] dark:text-white border-b border-gray-400 px-2 py-1 w-full text-center dark:bg-gray-800 dark:border-gray-600">
+              {/* Signature line could be static dashes or empty for handwritten */}
+              &nbsp;
+            </p>
+            <p className="text-[11px] dark:text-white">BANK'S APPROVED VALUER</p>
+          </div>
+          <div className="w-1/3 text-right">
+            <p className="text-[11px] dark:text-white border-b border-gray-400 px-2 py-1 w-full text-center dark:bg-gray-800 dark:border-gray-600">
+              &nbsp;
+            </p>
+            <p className="text-[11px] dark:text-white">BRANCH MANAGER</p>
+          </div>
         </div>
       </div>
     </div>

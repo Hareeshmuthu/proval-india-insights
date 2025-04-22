@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Input } from "@/components/ui/input";
 
@@ -7,13 +6,13 @@ interface CompositeRateSectionProps {
   handleInputChange: (field: string, value: any) => void;
 }
 
-const CompositeRateSection: React.FC<CompositeRateSectionProps> = ({
+const CompositeRateSection = ({
   formData,
   handleInputChange
-}) => {
+}: CompositeRateSectionProps) => {
   return (
     <div className="space-y-4">
-      <h2 className="text-lg font-semibold mb-4 dark:text-white">VI. COMPOSITE RATE AFTER DEPRECIATION</h2>
+      <h2 className="text-lg font-semibold mb-4 dark:text-white">SBI - AP VI. COMPOSITE RATE AFTER DEPRECIATION</h2>
       
       <table className="w-full border border-gray-300 dark:border-gray-600 text-[11px]">
         <tbody>

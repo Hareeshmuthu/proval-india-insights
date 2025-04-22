@@ -13,7 +13,7 @@ const RateSection: React.FC<RateSectionProps> = ({
 }) => {
   return (
     <div className="space-y-4">
-      <h2 className="text-lg font-semibold mb-4 dark:text-white">V. RATE</h2>
+      <h2 className="text-lg font-semibold mb-4 dark:text-white">SBI - AP V. RATE</h2>
       
       <table className="w-full border border-gray-300 dark:border-gray-600 text-[11px]">
         <tbody>
