@@ -709,4 +709,191 @@ const SBIApartmentForm = () => {
                   return (
                     <tr key={idx} className="print:break-inside-avoid">
                       <td className={`border p-2 text-center align-top w-12 ${field.sn === "" ? "invisible" : ""} dark:border-gray-600 dark:text-white text-[11px]`}>{field.sn}</td>
-                      <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white text-[11px]">{field
+                      <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white text-[11px]">{field.label}</td>
+                      <td className="border p-2 align-top dark:border-gray-600 text-[11px]">
+                        {field.sn === "2a" && (
+                          <DatePicker
+                            value={dates.inspection}
+                            onChange={(date) => handleDateChange("inspection", date)}
+                          />
+                        )}
+                        {field.sn === "2b" && (
+                          <DatePicker
+                            value={dates.valuation}
+                            onChange={(date) => handleDateChange("valuation", date)}
+                          />
+                        )}
+                        {field.sn === "2c" && (
+                          <DatePicker
+                            value={dates.report}
+                            onChange={(date) => handleDateChange("report", date)}
+                          />
+                        )}
+                        {field.sn === "3" && (
+                          <MultiSelectDropdown
+                            options={docOptions}
+                            value={formData.selectedDocs}
+                            onChange={(docs) => handleInputChange("selectedDocs", docs)}
+                            placeholder="Select documents"
+                          />
+                        )}
+                        {field.sn === "6f" && (
+                          <DatePicker
+                            value={dates.layoutPlan}
+                            onChange={(date) => handleDateChange("layoutPlan", date)}
+                          />
+                        )}
+                        {field.sn === "4" && section.section === "II. APARTMENT BUILDING" && (
+                          <YearPicker
+                            value={formData.yearOfConstruction}
+                            onChange={(year) => handleInputChange("yearOfConstruction", year)}
+                          />
+                        )}
+                        {!(field.sn === "2a" || field.sn === "2b" || field.sn === "2c" || field.sn === "3" || field.sn === "6f" || 
+                           (field.sn === "4" && section.section === "II. APARTMENT BUILDING")) && (
+                          <Input
+                            type="text"
+                            className="w-full border px-2 py-[3px] rounded dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px] h-[26px]"
+                            placeholder={`Enter ${field.label.toLowerCase()}`}
+                            value={
+                              field.sn === "1" && section.section === "I. GENERAL" ? formData.purpose :
+                              field.sn === "4" && section.section === "I. GENERAL" ? formData.ownerNameAddress :
+                              field.sn === "6a" ? formData.plotNo :
+                              field.sn === "6b" ? formData.doorNo :
+                              field.sn === "6c" ? formData.tsNo :
+                              field.sn === "6d" ? formData.ward :
+                              field.sn === "6e" ? formData.mandal :
+                              field.sn === "6g" ? formData.mapIssuingAuthority :
+                              field.sn === "6h" ? formData.genuinenessVerified :
+                              field.sn === "6i" ? formData.commentsAuthenticity :
+                              field.sn === "7" ? formData.postalAddress :
+                              field.sn === "15" ? `${formData.latitude}, ${formData.longitude}` :
+                              field.sn === "17" ? formData.occupancyDetails :
+                              field.sn === "1" && section.section === "II. APARTMENT BUILDING" ? formData.natureOfApartment :
+                              field.sn === "2a" && section.section === "II. APARTMENT BUILDING" ? formData.tsNoSfNoDoorNo :
+                              field.sn === "2b" ? formData.blockNo :
+                              field.sn === "2c" ? formData.wardNo :
+                              field.sn === "2d" ? formData.villageMunicipalityCorp :
+                              field.sn === "2e" ? formData.doorNoStreetRoad :
+                              field.sn === "3" && section.section === "II. APARTMENT BUILDING" ? formData.descriptionLocality :
+                              field.sn === "5" ? formData.typeOfStructure :
+                              field.sn === "6" ? formData.numberOfFloors :
+                              field.sn === "7" && section.section === "II. APARTMENT BUILDING" ? formData.numberOfDwellingUnits :
+                              field.sn === "8" ? formData.qualityOfConstruction :
+                              field.sn === "9" ? formData.appearanceOfBuilding :
+                              field.sn === "10" ? formData.maintenanceOfBuilding :
+                              field.sn === "11a" ? formData.lift :
+                              field.sn === "11b" ? formData.protectedWaterSupply :
+                              field.sn === "11c" ? formData.undergroundSewerage :
+                              field.sn === "11d" ? formData.carParking :
+                              field.sn === "11e" ? formData.compoundWall :
+                              field.sn === "11f" ? formData.pavementAroundBuilding :
+                              field.sn === "1" && section.section === "III. FLAT" ? formData.floorOfFlat :
+                              field.sn === "2" && section.section === "III. FLAT" ? formData.doorNoFlat :
+                              field.sn === "6" && section.section === "III. FLAT" ? formData.maintenanceOfFlat :
+                              field.sn === "7" ? formData.saleDeedName :
+                              field.sn === "8" ? formData.undividedLandArea :
+                              field.sn === "9" ? formData.plinthArea :
+                              field.sn === "10" ? formData.floorSpaceIndex :
+                              field.sn === "11" ? formData.carpetArea :
+                              field.sn === "12" ? formData.classOfFlat :
+                              field.sn === "13" ? formData.residentialOrCommercial :
+                              field.sn === "14" ? formData.ownerOccupiedOrRented :
+                              field.sn === "15" ? formData.rentDetails :
+                              field.sn === "1" && section.section === "IV. MARKETABILITY" ? formData.marketability :
+                              field.sn === "2" && section.section === "IV. MARKETABILITY" ? formData.factorsFavoring :
+                              field.sn === "3" && section.section === "IV. MARKETABILITY" ? formData.negativeFactors :
+                              field.sn === "1" && section.section === "V. RATE" ? formData.comparableRate :
+                              field.sn === "2" && section.section === "V. RATE" ? formData.adoptedBasicRate :
+                              field.sn === "4" && section.section === "V. RATE" ? formData.guidelineRate :
+                              ""
+                            }
+                            onChange={(e) => {
+                              if (field.sn === "1" && section.section === "I. GENERAL") handleInputChange("purpose", e.target.value);
+                              else if (field.sn === "4" && section.section === "I. GENERAL") handleInputChange("ownerNameAddress", e.target.value);
+                              else if (field.sn === "6a") handleInputChange("plotNo", e.target.value);
+                              else if (field.sn === "6b") handleInputChange("doorNo", e.target.value);
+                              else if (field.sn === "6c") handleInputChange("tsNo", e.target.value);
+                              else if (field.sn === "6d") handleInputChange("ward", e.target.value);
+                              else if (field.sn === "6e") handleInputChange("mandal", e.target.value);
+                              else if (field.sn === "6g") handleInputChange("mapIssuingAuthority", e.target.value);
+                              else if (field.sn === "6h") handleInputChange("genuinenessVerified", e.target.value);
+                              else if (field.sn === "6i") handleInputChange("commentsAuthenticity", e.target.value);
+                              else if (field.sn === "7") handleInputChange("postalAddress", e.target.value);
+                              else if (field.sn === "15") {
+                                const [lat, lng] = e.target.value.split(',').map(s => s.trim());
+                                handleInputChange("latitude", lat || "");
+                                handleInputChange("longitude", lng || "");
+                              }
+                              else if (field.sn === "17") handleInputChange("occupancyDetails", e.target.value);
+                              else if (field.sn === "1" && section.section === "II. APARTMENT BUILDING") handleInputChange("natureOfApartment", e.target.value);
+                              else if (field.sn === "2b") handleInputChange("blockNo", e.target.value);
+                              else if (field.sn === "3" && section.section === "II. APARTMENT BUILDING") handleInputChange("descriptionLocality", e.target.value);
+                              else if (field.sn === "5") handleInputChange("typeOfStructure", e.target.value);
+                              else if (field.sn === "6") handleInputChange("numberOfFloors", e.target.value);
+                              else if (field.sn === "7" && section.section === "II. APARTMENT BUILDING") handleInputChange("numberOfDwellingUnits", e.target.value);
+                              else if (field.sn === "8") handleInputChange("qualityOfConstruction", e.target.value);
+                              else if (field.sn === "9") handleInputChange("appearanceOfBuilding", e.target.value);
+                              else if (field.sn === "10") handleInputChange("maintenanceOfBuilding", e.target.value);
+                              else if (field.sn === "11a") handleInputChange("lift", e.target.value);
+                              else if (field.sn === "11b") handleInputChange("protectedWaterSupply", e.target.value);
+                              else if (field.sn === "11c") handleInputChange("undergroundSewerage", e.target.value);
+                              else if (field.sn === "11d") handleInputChange("carParking", e.target.value);
+                              else if (field.sn === "11e") handleInputChange("compoundWall", e.target.value);
+                              else if (field.sn === "11f") handleInputChange("pavementAroundBuilding", e.target.value);
+                              else if (field.sn === "1" && section.section === "III. FLAT") handleInputChange("floorOfFlat", e.target.value);
+                              else if (field.sn === "6" && section.section === "III. FLAT") handleInputChange("maintenanceOfFlat", e.target.value);
+                              else if (field.sn === "7") handleInputChange("saleDeedName", e.target.value);
+                              else if (field.sn === "8") handleInputChange("undividedLandArea", e.target.value);
+                              else if (field.sn === "9") handleInputChange("plinthArea", e.target.value);
+                              else if (field.sn === "10") handleInputChange("floorSpaceIndex", e.target.value);
+                              else if (field.sn === "11") handleInputChange("carpetArea", e.target.value);
+                              else if (field.sn === "12") handleInputChange("classOfFlat", e.target.value);
+                              else if (field.sn === "13") handleInputChange("residentialOrCommercial", e.target.value);
+                              else if (field.sn === "14") handleInputChange("ownerOccupiedOrRented", e.target.value);
+                              else if (field.sn === "15") handleInputChange("rentDetails", e.target.value);
+                              else if (field.sn === "1" && section.section === "IV. MARKETABILITY") handleInputChange("marketability", e.target.value);
+                              else if (field.sn === "2" && section.section === "IV. MARKETABILITY") handleInputChange("factorsFavoring", e.target.value);
+                              else if (field.sn === "3" && section.section === "IV. MARKETABILITY") handleInputChange("negativeFactors", e.target.value);
+                              else if (field.sn === "1" && section.section === "V. RATE") handleInputChange("comparableRate", e.target.value);
+                              else if (field.sn === "2" && section.section === "V. RATE") handleInputChange("adoptedBasicRate", e.target.value);
+                              else if (field.sn === "4" && section.section === "V. RATE") handleInputChange("guidelineRate", e.target.value);
+                            }}
+                          />
+                        )}
+                      </td>
+                    </tr>
+                  );
+                }
+              })}
+            </tbody>
+          </table>
+        </div>
+      ))}
+      
+      <div className="mt-4">
+        <ValuationTable />
+      </div>
+      
+      <div className="mt-4 print:break-inside-avoid text-[11px]">
+        <div className="flex mb-2 items-center gap-2">
+          <span className="dark:text-white">Place: </span>
+          <Input 
+            type="text" 
+            placeholder="Enter place" 
+            className="w-[200px] border px-2 py-[3px] rounded dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px] h-[26px]" 
+          />
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="dark:text-white">Date: </span>
+          <DatePicker
+            value={new Date()}
+            onChange={() => {}}
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default SBIApartmentForm;
