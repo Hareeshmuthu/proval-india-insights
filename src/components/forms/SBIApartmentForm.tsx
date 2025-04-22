@@ -191,7 +191,7 @@ const CustomDropdown = ({ options, value, onChange, placeholder }) => {
           }
         }}
       >
-        <SelectTrigger className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px] h-[26px] py-[3px]">
+        <SelectTrigger className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600">
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
         <SelectContent className="z-50 dark:bg-gray-800 dark:text-white dark:border-gray-600">
@@ -210,7 +210,7 @@ const CustomDropdown = ({ options, value, onChange, placeholder }) => {
             onChange(e.target.value);
           }}
           placeholder="Enter custom value..."
-          className="mt-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px] h-[26px] py-[3px]"
+          className="mt-2 dark:bg-gray-800 dark:text-white dark:border-gray-600"
         />
       )}
     </div>
@@ -235,7 +235,7 @@ const MultiSelectDropdown = ({ options, value, onChange, placeholder }) => {
         <PopoverTrigger asChild>
           <Button
             variant="outline"
-            className="w-full justify-between text-left font-normal dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px] h-[26px] py-[3px]"
+            className="w-full justify-between text-left font-normal dark:bg-gray-800 dark:text-white dark:border-gray-600"
           >
             {selectedItems.length > 0 ? (
               <span className="truncate">{selectedItems.length} document{selectedItems.length !== 1 ? 's' : ''} selected</span>
@@ -297,7 +297,7 @@ const YearPicker = ({ value, onChange }: { value: number | null, onChange: (year
       <PopoverTrigger asChild>
         <Button
           variant="outline"
-          className="w-full justify-start text-left font-normal bg-white dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px] h-[26px] py-[3px]"
+          className="w-full justify-start text-left font-normal bg-white dark:bg-gray-800 dark:text-white dark:border-gray-600"
         >
           <CalendarIcon className="mr-2 h-4 w-4" />
           {value ? value : <span className="text-muted-foreground">Select year</span>}
@@ -313,7 +313,7 @@ const YearPicker = ({ value, onChange }: { value: number | null, onChange: (year
                 onChange(year);
                 setOpen(false);
               }}
-              className="justify-center text-[11px] h-[26px] py-[3px]"
+              className="justify-center"
             >
               {year}
             </Button>
@@ -330,7 +330,7 @@ const DatePicker = ({ value, onChange }: { value: Date, onChange: (date: Date) =
       <PopoverTrigger asChild>
         <Button
           variant="outline"
-          className="w-full justify-start text-left font-normal bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 dark:text-white text-[11px] h-[26px] py-[3px]"
+          className="w-full justify-start text-left font-normal bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 dark:text-white"
         >
           <CalendarIcon className="mr-2 h-4 w-4" />
           {format(value, "dd/MM/yyyy")}
@@ -563,14 +563,14 @@ const SBIApartmentForm = () => {
           {section.subFields.map((field, idx) => (
             <tr key={`depr-a-${idx}`} className="print:break-inside-avoid">
               {idx === 0 && (
-                <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white text-[11px]" rowSpan={section.subFields.length}>
+                <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white" rowSpan={section.subFields.length}>
                   {section.sn}
                 </td>
               )}
-              <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white text-[11px]">
+              <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white">
                 {field.label}
               </td>
-              <td className="border p-2 align-top dark:border-gray-600 text-[11px]">
+              <td className="border p-2 align-top dark:border-gray-600">
                 <Input 
                   type="text" 
                   className="w-full border px-2 py-[3px] rounded dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px] h-[26px]" 
@@ -603,14 +603,14 @@ const SBIApartmentForm = () => {
           {section.subFields.map((field, idx) => (
             <tr key={`depr-b-${idx}`} className="print:break-inside-avoid">
               {idx === 0 && (
-                <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white text-[11px]" rowSpan={section.subFields.length}>
+                <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white" rowSpan={section.subFields.length}>
                   {section.sn}
                 </td>
               )}
-              <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white text-[11px]">
+              <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white">
                 {field.label}
               </td>
-              <td className="border p-2 align-top dark:border-gray-600 text-[11px]">
+              <td className="border p-2 align-top dark:border-gray-600">
                 <Input 
                   type="text" 
                   className="w-full border px-2 py-[3px] rounded dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px] h-[26px]" 
@@ -635,6 +635,11 @@ const SBIApartmentForm = () => {
       );
     }
   };
+
+  const [place, setPlace] = useState("Coimbatore");
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [valuerSignature, setValuerSignature] = useState("");
+  const [branchManagerSignature, setBranchManagerSignature] = useState("");
 
   return (
     <div className="print:text-sm text-[11px]">
@@ -678,10 +683,10 @@ const SBIApartmentForm = () => {
                     return (
                       <React.Fragment key={idx}>
                         <tr className="print:break-inside-avoid">
-                          <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white text-[11px]" rowSpan={field.subFields.length + 1}>
+                          <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white" rowSpan={field.subFields.length + 1}>
                             {field.sn}
                           </td>
-                          <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white text-[11px]" colSpan={2}>
+                          <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white" colSpan={2}>
                             {field.label}
                           </td>
                         </tr>
@@ -692,10 +697,10 @@ const SBIApartmentForm = () => {
                     return (
                       <React.Fragment key={idx}>
                         <tr className="print:break-inside-avoid">
-                          <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white text-[11px]">
+                          <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white">
                             {field.sn}
                           </td>
-                          <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white text-[11px]" colSpan={2}>
+                          <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white" colSpan={2}>
                             {field.label}
                           </td>
                         </tr>
@@ -708,159 +713,448 @@ const SBIApartmentForm = () => {
                 } else {
                   return (
                     <tr key={idx} className="print:break-inside-avoid">
-                      <td className={`border p-2 text-center align-top w-12 ${field.sn === "" ? "invisible" : ""} dark:border-gray-600 dark:text-white text-[11px]`}>{field.sn}</td>
-                      <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white text-[11px]">{field.label}</td>
-                      <td className="border p-2 align-top dark:border-gray-600 text-[11px]">
-                        {field.sn === "2a" && (
-                          <DatePicker
-                            value={dates.inspection}
-                            onChange={(date) => handleDateChange("inspection", date)}
-                          />
-                        )}
-                        {field.sn === "2b" && (
-                          <DatePicker
-                            value={dates.valuation}
-                            onChange={(date) => handleDateChange("valuation", date)}
-                          />
-                        )}
-                        {field.sn === "2c" && (
-                          <DatePicker
-                            value={dates.report}
-                            onChange={(date) => handleDateChange("report", date)}
-                          />
-                        )}
-                        {field.sn === "3" && (
-                          <MultiSelectDropdown
-                            options={docOptions}
-                            value={formData.selectedDocs}
-                            onChange={(docs) => handleInputChange("selectedDocs", docs)}
-                            placeholder="Select documents"
-                          />
-                        )}
-                        {field.sn === "6f" && (
-                          <DatePicker
-                            value={dates.layoutPlan}
-                            onChange={(date) => handleDateChange("layoutPlan", date)}
-                          />
-                        )}
-                        {field.sn === "4" && section.section === "II. APARTMENT BUILDING" && (
-                          <YearPicker
-                            value={formData.yearOfConstruction}
-                            onChange={(year) => handleInputChange("yearOfConstruction", year)}
-                          />
-                        )}
-                        {!(field.sn === "2a" || field.sn === "2b" || field.sn === "2c" || field.sn === "3" || field.sn === "6f" || 
-                           (field.sn === "4" && section.section === "II. APARTMENT BUILDING")) && (
-                          <Input
-                            type="text"
-                            className="w-full border px-2 py-[3px] rounded dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px] h-[26px]"
-                            placeholder={`Enter ${field.label.toLowerCase()}`}
-                            value={
-                              field.sn === "1" && section.section === "I. GENERAL" ? formData.purpose :
-                              field.sn === "4" && section.section === "I. GENERAL" ? formData.ownerNameAddress :
-                              field.sn === "6a" ? formData.plotNo :
-                              field.sn === "6b" ? formData.doorNo :
-                              field.sn === "6c" ? formData.tsNo :
-                              field.sn === "6d" ? formData.ward :
-                              field.sn === "6e" ? formData.mandal :
-                              field.sn === "6g" ? formData.mapIssuingAuthority :
-                              field.sn === "6h" ? formData.genuinenessVerified :
-                              field.sn === "6i" ? formData.commentsAuthenticity :
-                              field.sn === "7" ? formData.postalAddress :
-                              field.sn === "15" ? `${formData.latitude}, ${formData.longitude}` :
-                              field.sn === "17" ? formData.occupancyDetails :
-                              field.sn === "1" && section.section === "II. APARTMENT BUILDING" ? formData.natureOfApartment :
-                              field.sn === "2a" && section.section === "II. APARTMENT BUILDING" ? formData.tsNoSfNoDoorNo :
-                              field.sn === "2b" ? formData.blockNo :
-                              field.sn === "2c" ? formData.wardNo :
-                              field.sn === "2d" ? formData.villageMunicipalityCorp :
-                              field.sn === "2e" ? formData.doorNoStreetRoad :
-                              field.sn === "3" && section.section === "II. APARTMENT BUILDING" ? formData.descriptionLocality :
-                              field.sn === "5" ? formData.typeOfStructure :
-                              field.sn === "6" ? formData.numberOfFloors :
-                              field.sn === "7" && section.section === "II. APARTMENT BUILDING" ? formData.numberOfDwellingUnits :
-                              field.sn === "8" ? formData.qualityOfConstruction :
-                              field.sn === "9" ? formData.appearanceOfBuilding :
-                              field.sn === "10" ? formData.maintenanceOfBuilding :
-                              field.sn === "11a" ? formData.lift :
-                              field.sn === "11b" ? formData.protectedWaterSupply :
-                              field.sn === "11c" ? formData.undergroundSewerage :
-                              field.sn === "11d" ? formData.carParking :
-                              field.sn === "11e" ? formData.compoundWall :
-                              field.sn === "11f" ? formData.pavementAroundBuilding :
-                              field.sn === "1" && section.section === "III. FLAT" ? formData.floorOfFlat :
-                              field.sn === "2" && section.section === "III. FLAT" ? formData.doorNoFlat :
-                              field.sn === "6" && section.section === "III. FLAT" ? formData.maintenanceOfFlat :
-                              field.sn === "7" ? formData.saleDeedName :
-                              field.sn === "8" ? formData.undividedLandArea :
-                              field.sn === "9" ? formData.plinthArea :
-                              field.sn === "10" ? formData.floorSpaceIndex :
-                              field.sn === "11" ? formData.carpetArea :
-                              field.sn === "12" ? formData.classOfFlat :
-                              field.sn === "13" ? formData.residentialOrCommercial :
-                              field.sn === "14" ? formData.ownerOccupiedOrRented :
-                              field.sn === "15" ? formData.rentDetails :
-                              field.sn === "1" && section.section === "IV. MARKETABILITY" ? formData.marketability :
-                              field.sn === "2" && section.section === "IV. MARKETABILITY" ? formData.factorsFavoring :
-                              field.sn === "3" && section.section === "IV. MARKETABILITY" ? formData.negativeFactors :
-                              field.sn === "1" && section.section === "V. RATE" ? formData.comparableRate :
-                              field.sn === "2" && section.section === "V. RATE" ? formData.adoptedBasicRate :
-                              field.sn === "4" && section.section === "V. RATE" ? formData.guidelineRate :
-                              ""
-                            }
-                            onChange={(e) => {
-                              if (field.sn === "1" && section.section === "I. GENERAL") handleInputChange("purpose", e.target.value);
-                              else if (field.sn === "4" && section.section === "I. GENERAL") handleInputChange("ownerNameAddress", e.target.value);
-                              else if (field.sn === "6a") handleInputChange("plotNo", e.target.value);
-                              else if (field.sn === "6b") handleInputChange("doorNo", e.target.value);
-                              else if (field.sn === "6c") handleInputChange("tsNo", e.target.value);
-                              else if (field.sn === "6d") handleInputChange("ward", e.target.value);
-                              else if (field.sn === "6e") handleInputChange("mandal", e.target.value);
-                              else if (field.sn === "6g") handleInputChange("mapIssuingAuthority", e.target.value);
-                              else if (field.sn === "6h") handleInputChange("genuinenessVerified", e.target.value);
-                              else if (field.sn === "6i") handleInputChange("commentsAuthenticity", e.target.value);
-                              else if (field.sn === "7") handleInputChange("postalAddress", e.target.value);
-                              else if (field.sn === "15") {
-                                const [lat, lng] = e.target.value.split(',').map(s => s.trim());
-                                handleInputChange("latitude", lat || "");
-                                handleInputChange("longitude", lng || "");
-                              }
-                              else if (field.sn === "17") handleInputChange("occupancyDetails", e.target.value);
-                              else if (field.sn === "1" && section.section === "II. APARTMENT BUILDING") handleInputChange("natureOfApartment", e.target.value);
-                              else if (field.sn === "2b") handleInputChange("blockNo", e.target.value);
-                              else if (field.sn === "3" && section.section === "II. APARTMENT BUILDING") handleInputChange("descriptionLocality", e.target.value);
-                              else if (field.sn === "5") handleInputChange("typeOfStructure", e.target.value);
-                              else if (field.sn === "6") handleInputChange("numberOfFloors", e.target.value);
-                              else if (field.sn === "7" && section.section === "II. APARTMENT BUILDING") handleInputChange("numberOfDwellingUnits", e.target.value);
-                              else if (field.sn === "8") handleInputChange("qualityOfConstruction", e.target.value);
-                              else if (field.sn === "9") handleInputChange("appearanceOfBuilding", e.target.value);
-                              else if (field.sn === "10") handleInputChange("maintenanceOfBuilding", e.target.value);
-                              else if (field.sn === "11a") handleInputChange("lift", e.target.value);
-                              else if (field.sn === "11b") handleInputChange("protectedWaterSupply", e.target.value);
-                              else if (field.sn === "11c") handleInputChange("undergroundSewerage", e.target.value);
-                              else if (field.sn === "11d") handleInputChange("carParking", e.target.value);
-                              else if (field.sn === "11e") handleInputChange("compoundWall", e.target.value);
-                              else if (field.sn === "11f") handleInputChange("pavementAroundBuilding", e.target.value);
-                              else if (field.sn === "1" && section.section === "III. FLAT") handleInputChange("floorOfFlat", e.target.value);
-                              else if (field.sn === "6" && section.section === "III. FLAT") handleInputChange("maintenanceOfFlat", e.target.value);
-                              else if (field.sn === "7") handleInputChange("saleDeedName", e.target.value);
-                              else if (field.sn === "8") handleInputChange("undividedLandArea", e.target.value);
-                              else if (field.sn === "9") handleInputChange("plinthArea", e.target.value);
-                              else if (field.sn === "10") handleInputChange("floorSpaceIndex", e.target.value);
-                              else if (field.sn === "11") handleInputChange("carpetArea", e.target.value);
-                              else if (field.sn === "12") handleInputChange("classOfFlat", e.target.value);
-                              else if (field.sn === "13") handleInputChange("residentialOrCommercial", e.target.value);
-                              else if (field.sn === "14") handleInputChange("ownerOccupiedOrRented", e.target.value);
-                              else if (field.sn === "15") handleInputChange("rentDetails", e.target.value);
-                              else if (field.sn === "1" && section.section === "IV. MARKETABILITY") handleInputChange("marketability", e.target.value);
-                              else if (field.sn === "2" && section.section === "IV. MARKETABILITY") handleInputChange("factorsFavoring", e.target.value);
-                              else if (field.sn === "3" && section.section === "IV. MARKETABILITY") handleInputChange("negativeFactors", e.target.value);
-                              else if (field.sn === "1" && section.section === "V. RATE") handleInputChange("comparableRate", e.target.value);
-                              else if (field.sn === "2" && section.section === "V. RATE") handleInputChange("adoptedBasicRate", e.target.value);
-                              else if (field.sn === "4" && section.section === "V. RATE") handleInputChange("guidelineRate", e.target.value);
-                            }}
-                          />
-                        )}
+                      <td className={`border p-2 text-center align-top w-12 ${field.sn === "" ? "invisible" : ""} dark:border-gray-600 dark:text-white`}>{field.sn}</td>
+                      <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white">{field.label}</td>
+                      <td className="border p-2 align-top dark:border-gray-600">
+                        {(() => {
+                          if (field.label === 'Purpose for which the valuation is made' || field.label === 'Brief description of the property') {
+                            return <Textarea 
+                                      className="w-full border px-2 py-[3px] rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
+                                      placeholder={`Enter ${field.label.toLowerCase()}`} 
+                                      rows={3}
+                                      value={field.label === 'Purpose for which the valuation is made' ? formData.purpose : ''}
+                                      onChange={e => field.label === 'Purpose for which the valuation is made' ? handleInputChange('purpose', e.target.value) : null}
+                                   ></Textarea>;
+                          } else if (field.label === 'Date of inspection') {
+                            return <DatePicker value={dates.inspection} onChange={(date) => handleDateChange('inspection', date)} />;
+                          } else if (field.label === 'Date on which the valuation is made') {
+                            return <DatePicker value={dates.valuation} onChange={(date) => handleDateChange('valuation', date)} />;
+                          } else if (field.label === 'Date of Report') {
+                            return <DatePicker value={dates.report} onChange={(date) => handleDateChange('report', date)} />;
+                          } else if (field.label === 'Date of issue and validity of layout plan') {
+                            return <DatePicker value={dates.layoutPlan} onChange={(date) => handleDateChange('layoutPlan', date)} />;
+                          } else if (field.label === 'List of documents produced for perusal') {
+                            return (
+                              <MultiSelectDropdown 
+                                options={docOptions}
+                                value={formData.selectedDocs}
+                                onChange={(selected) => handleInputChange('selectedDocs', selected)}
+                                placeholder="Select documents"
+                              />
+                            );
+                          } else if (field.label === 'Plot No. / Survey No.') {
+                            return (
+                              <div className="flex items-center gap-2">
+                                <Input 
+                                  type="text" 
+                                  className="w-1/2 border px-2 py-[3px] rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
+                                  placeholder="Plot No." 
+                                  value={formData.plotNo}
+                                  onChange={(e) => handleInputChange('plotNo', e.target.value)}
+                                />
+                                <span className="dark:text-white">/</span>
+                                <Input 
+                                  type="text" 
+                                  className="w-1/2 border px-2 py-[3px] rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
+                                  placeholder="Survey No." 
+                                  value={formData.surveyNo}
+                                  onChange={(e) => handleInputChange('surveyNo', e.target.value)}
+                                />
+                              </div>
+                            );
+                          } else if (field.label === 'Door No.') {
+                            return (
+                              <Input 
+                                type="text" 
+                                className="w-full border px-2 py-[3px] rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
+                                placeholder="Enter door number" 
+                                value={formData.doorNo}
+                                onChange={(e) => handleInputChange('doorNo', e.target.value)}
+                              />
+                            );
+                          } else if (field.label === 'T. S. No. / Village') {
+                            return (
+                              <div className="flex items-center gap-2">
+                                <Input 
+                                  type="text" 
+                                  className="w-1/2 border px-2 py-[3px] rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
+                                  placeholder="T.S. No." 
+                                  value={formData.tsNo}
+                                  onChange={(e) => handleInputChange('tsNo', e.target.value)}
+                                />
+                                <span className="dark:text-white">/</span>
+                                <Input 
+                                  type="text" 
+                                  className="w-1/2 border px-2 py-[3px] rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
+                                  placeholder="Village" 
+                                  value={formData.village}
+                                  onChange={(e) => handleInputChange('village', e.target.value)}
+                                />
+                              </div>
+                            );
+                          } else if (field.label === 'Ward / Taluka') {
+                            return (
+                              <div className="flex items-center gap-2">
+                                <Input 
+                                  type="text" 
+                                  className="w-1/2 border px-2 py-[3px] rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
+                                  placeholder="Ward" 
+                                  value={formData.ward}
+                                  onChange={(e) => handleInputChange('ward', e.target.value)}
+                                />
+                                <span className="dark:text-white">/</span>
+                                <Input 
+                                  type="text" 
+                                  className="w-1/2 border px-2 py-[3px] rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
+                                  placeholder="Taluka" 
+                                  value={formData.taluka}
+                                  onChange={(e) => handleInputChange('taluka', e.target.value)}
+                                />
+                              </div>
+                            );
+                          } else if (field.label === 'Mandal / District') {
+                            return (
+                              <div className="flex items-center gap-2">
+                                <Input 
+                                  type="text" 
+                                  className="w-1/2 border px-2 py-[3px] rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
+                                  placeholder="Mandal" 
+                                  value={formData.mandal}
+                                  onChange={(e) => handleInputChange('mandal', e.target.value)}
+                                />
+                                <span className="dark:text-white">/</span>
+                                <Input 
+                                  type="text" 
+                                  className="w-1/2 border px-2 py-[3px] rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
+                                  placeholder="District" 
+                                  value={formData.district}
+                                  onChange={(e) => handleInputChange('district', e.target.value)}
+                                />
+                              </div>
+                            );
+                          } else if (field.label === 'Genuineness of the approved map verified') {
+                            return (
+                              <Select
+                                value={formData.genuinenessVerified}
+                                onValueChange={(value) => handleInputChange('genuinenessVerified', value)}
+                              >
+                                <SelectTrigger className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600">
+                                  <SelectValue placeholder="Select Yes or No" />
+                                </SelectTrigger>
+                                <SelectContent className="z-50 dark:bg-gray-800 dark:text-white dark:border-gray-600">
+                                  <SelectItem value="Yes">Yes</SelectItem>
+                                  <SelectItem value="No">No</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            );
+                          } else if (field.label === 'Latitude, Longitude & Co-ordinates') {
+                            return (
+                              <Input 
+                                type="text" 
+                                className="w-full border px-2 py-[3px] rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
+                                placeholder="Enter coordinates" 
+                                value={formData.latitude ? `${formData.latitude}, ${formData.longitude}` : ''}
+                                onChange={(e) => {
+                                  const parts = e.target.value.split(',');
+                                  if (parts.length === 2) {
+                                    setFormData(prev => ({
+                                      ...prev,
+                                      latitude: parts[0].trim(),
+                                      longitude: parts[1].trim()
+                                    }));
+                                  } else {
+                                    setFormData(prev => ({
+                                      ...prev,
+                                      latitude: e.target.value,
+                                      longitude: ''
+                                    }));
+                                  }
+                                }}
+                              />
+                            );
+                          } else if (field.label === 'Occupancy details') {
+                            return (
+                              <CustomDropdown
+                                options={['Owner', 'Rental']}
+                                value={formData.occupancyDetails}
+                                onChange={(value) => handleInputChange('occupancyDetails', value)}
+                                placeholder="Select occupancy details"
+                              />
+                            );
+                          } 
+                          else if (field.label === 'T. S. No. / S.F. No./ Door No') {
+                            return (
+                              <Input 
+                                type="text" 
+                                className="w-full border px-2 py-[3px] rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
+                                placeholder="Enter T.S. No. / S.F. No. / Door No." 
+                                value={formData.tsNoSfNoDoorNo}
+                                onChange={(e) => handleInputChange('tsNoSfNoDoorNo', e.target.value)}
+                              />
+                            );
+                          } else if (field.label === 'Block No.') {
+                            return (
+                              <Input 
+                                type="text" 
+                                className="w-full border px-2 py-[3px] rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
+                                placeholder="Enter block number" 
+                                value={formData.blockNo}
+                                onChange={(e) => handleInputChange('blockNo', e.target.value)}
+                              />
+                            );
+                          } else if (field.label === 'Ward No.') {
+                            return (
+                              <Input 
+                                type="text" 
+                                className="w-full border px-2 py-[3px] rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
+                                placeholder="Enter ward number" 
+                                value={formData.wardNo}
+                                onChange={(e) => handleInputChange('wardNo', e.target.value)}
+                              />
+                            );
+                          } else if (field.label === 'Door No., Street / Road') {
+                            return (
+                              <Input 
+                                type="text" 
+                                className="w-full border px-2 py-[3px] rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
+                                placeholder="Enter door no., street/road" 
+                                value={formData.doorNoStreetRoad}
+                                onChange={(e) => handleInputChange('doorNoStreetRoad', e.target.value)}
+                              />
+                            );
+                          } else if (field.label === 'Village / Municipality / Corporation') {
+                            return (
+                              <Input 
+                                type="text" 
+                                className="w-full border px-2 py-[3px] rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
+                                placeholder="Enter village/municipality/corporation" 
+                                value={formData.villageMunicipalityCorp}
+                                onChange={(e) => handleInputChange('villageMunicipalityCorp', e.target.value)}
+                              />
+                            );
+                          } else if (field.label === 'Year of Construction') {
+                            return (
+                              <YearPicker 
+                                value={formData.yearOfConstruction} 
+                                onChange={(year) => handleInputChange('yearOfConstruction', year)} 
+                              />
+                            );
+                          } else if (field.label === 'Type of Structure') {
+                            return (
+                              <CustomDropdown
+                                options={['Framed Structure', 'Load Bearing Structure']}
+                                value={formData.typeOfStructure}
+                                onChange={(value) => handleInputChange('typeOfStructure', value)}
+                                placeholder="Select structure type"
+                              />
+                            );
+                          } else if (field.label === 'Quality of Construction' || field.label === 'Maintenance of the Building') {
+                            const fieldKey = field.label === 'Quality of Construction' 
+                              ? 'qualityOfConstruction' 
+                              : 'maintenanceOfBuilding';
+                            
+                            return (
+                              <CustomDropdown
+                                options={['Good', 'Average', 'Poor']}
+                                value={formData[fieldKey]}
+                                onChange={(value) => handleInputChange(fieldKey, value)}
+                                placeholder={`Select ${field.label.toLowerCase()}`}
+                              />
+                            );
+                          } else if (field.label === 'Appearance of the Building') {
+                            return (
+                              <CustomDropdown
+                                options={['Superior', 'Fair', 'Ugly']}
+                                value={formData.appearanceOfBuilding}
+                                onChange={(value) => handleInputChange('appearanceOfBuilding', value)}
+                                placeholder="Select appearance of the building"
+                              />
+                            );
+                          } else if (field.label === 'Lift' || field.label === 'Protected Water Supply' || 
+                                    field.label === 'Underground Sewerage' || field.label === 'Compound wall' || 
+                                    field.label === 'Pavement around Building') {
+                            const fieldKey = field.label === 'Lift' 
+                              ? 'lift' 
+                              : field.label === 'Protected Water Supply' 
+                                ? 'protectedWaterSupply' 
+                                : field.label === 'Underground Sewerage'
+                                  ? 'undergroundSewerage'
+                                  : field.label === 'Compound wall'
+                                    ? 'compoundWall'
+                                    : 'pavementAroundBuilding';
+                            
+                            return (
+                              <Select
+                                value={formData[fieldKey]}
+                                onValueChange={(value) => handleInputChange(fieldKey, value)}
+                              >
+                                <SelectTrigger className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600">
+                                  <SelectValue placeholder="Select Yes or No" />
+                                </SelectTrigger>
+                                <SelectContent className="z-50 dark:bg-gray-800 dark:text-white dark:border-gray-600">
+                                  <SelectItem value="Yes">Yes</SelectItem>
+                                  <SelectItem value="No">No</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            );
+                          } else if (field.label === 'Car Parking') {
+                            return (
+                              <Select
+                                value={formData.carParking}
+                                onValueChange={(value) => handleInputChange('carParking', value)}
+                              >
+                                <SelectTrigger className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600">
+                                  <SelectValue placeholder="Select parking type" />
+                                </SelectTrigger>
+                                <SelectContent className="z-50 dark:bg-gray-800 dark:text-white dark:border-gray-600">
+                                  <SelectItem value="Covered Parking">Covered Parking</SelectItem>
+                                  <SelectItem value="Open Parking">Open Parking</SelectItem>
+                                  <SelectItem value="No">No</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            );
+                          } else if (["Name of the owner(s) and address(es)", "Postal address of the property"].includes(field.label)) {
+                            return <Textarea className="w-full border px-2 py-[3px] rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" placeholder={`Enter ${field.label.toLowerCase()}`} rows={3}></Textarea>;
+                          } else if (["Residential Area", "Commercial Area", "Industrial Area"].includes(field.label)) {
+                            return (
+                              <Select>
+                                <SelectTrigger className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600">
+                                  <SelectValue placeholder="Select Yes or No" />
+                                </SelectTrigger>
+                                <SelectContent className="z-50 dark:bg-gray-800 dark:text-white dark:border-gray-600">
+                                  <SelectItem value="Yes">Yes</SelectItem>
+                                  <SelectItem value="No">No</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            );
+                          } else if (field.label === 'Classification of area - High / Middle / Poor') {
+                            return (
+                              <Select>
+                                <SelectTrigger className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600">
+                                  <SelectValue placeholder="Select classification" />
+                                </SelectTrigger>
+                                <SelectContent className="z-50 dark:bg-gray-800 dark:text-white dark:border-gray-600">
+                                  <SelectItem value="High">High</SelectItem>
+                                  <SelectItem value="Middle">Middle</SelectItem>
+                                  <SelectItem value="Poor">Poor</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            );
+                          } else if (field.label === 'Urban / Semi Urban / Rural') {
+                            return (
+                              <Select>
+                                <SelectTrigger className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600">
+                                  <SelectValue placeholder="Select area type" />
+                                </SelectTrigger>
+                                <SelectContent className="z-50 dark:bg-gray-800 dark:text-white dark:border-gray-600">
+                                  <SelectItem value="Urban">Urban</SelectItem>
+                                  <SelectItem value="Semi Urban">Semi Urban</SelectItem>
+                                  <SelectItem value="Rural">Rural</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            );
+                          } else if (field.label === 'Coming under Corporation / Panchayat / Municipality') {
+                            return (
+                              <Select>
+                                <SelectTrigger className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600">
+                                  <SelectValue placeholder="Select administrative body" />
+                                </SelectTrigger>
+                                <SelectContent className="z-50 dark:bg-gray-800 dark:text-white dark:border-gray-600">
+                                  <SelectItem value="Corporation">Corporation</SelectItem>
+                                  <SelectItem value="Panchayat">Panchayat</SelectItem>
+                                  <SelectItem value="Municipality">Municipality</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            );
+                          }
+                          else if (field.label === 'The floor on which the flat is situated') {
+                            return <Input type="text" className="w-full border px-2 py-[3px] rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" placeholder={`Enter ${field.label.toLowerCase()}`} />;
+                          } else if (field.label === 'Door No. of the flat') {
+                            return (
+                              <Input 
+                                type="text" 
+                                className="w-full border px-2 py-[3px] rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
+                                placeholder="Enter door number of the flat" 
+                                value={formData.doorNoFlat}
+                                onChange={(e) => handleInputChange('doorNoFlat', e.target.value)}
+                              />
+                            );
+                          } else if (field.label === 'Maintenance of the flat') {
+                            return (
+                              <CustomDropdown
+                                options={['Good', 'Average', 'Poor']}
+                                value={formData.maintenanceOfFlat}
+                                onChange={(value) => handleInputChange('maintenanceOfFlat', value)}
+                                placeholder="Select maintenance level"
+                              />
+                            );
+                          } else if (field.label === 'Is it Posh / I Class / Medium / Ordinary?') {
+                            return (
+                              <Select>
+                                <SelectTrigger className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600">
+                                  <SelectValue placeholder="Select class" />
+                                </SelectTrigger>
+                                <SelectContent className="z-50 dark:bg-gray-800 dark:text-white dark:border-gray-600">
+                                  <SelectItem value="Posh">Posh</SelectItem>
+                                  <SelectItem value="I Class">I Class</SelectItem>
+                                  <SelectItem value="Medium">Medium</SelectItem>
+                                  <SelectItem value="Ordinary">Ordinary</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            );
+                          } else if (field.label === 'Residential or Commercial Use') {
+                            return (
+                              <Select>
+                                <SelectTrigger className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600">
+                                  <SelectValue placeholder="Select use type" />
+                                </SelectTrigger>
+                                <SelectContent className="z-50 dark:bg-gray-800 dark:text-white dark:border-gray-600">
+                                  <SelectItem value="Residential Use">Residential Use</SelectItem>
+                                  <SelectItem value="Commercial Use">Commercial Use</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            );
+                          } else if (field.label === 'Owner-occupied or Rented') {
+                            return (
+                              <Select>
+                                <SelectTrigger className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600">
+                                  <SelectValue placeholder="Select occupancy" />
+                                </SelectTrigger>
+                                <SelectContent className="z-50 dark:bg-gray-800 dark:text-white dark:border-gray-600">
+                                  <SelectItem value="Owner Occupied">Owner Occupied</SelectItem>
+                                  <SelectItem value="Rented">Rented</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            );
+                          }
+                          else if (field.label === 'How is the marketability?') {
+                            return (
+                              <Select>
+                                <SelectTrigger className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600">
+                                  <SelectValue placeholder="Select marketability" />
+                                </SelectTrigger>
+                                <SelectContent className="z-50 dark:bg-gray-800 dark:text-white dark:border-gray-600">
+                                  <SelectItem value="Good">Good</SelectItem>
+                                  <SelectItem value="Average">Average</SelectItem>
+                                  <SelectItem value="Poor">Poor</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            );
+                          } else if (field.label === 'Factors favoring extra value' || field.label === 'Negative factors affecting value') {
+                            const fieldKey = field.label === 'Factors favoring extra value' ? 'factorsFavoring' : 'negativeFactors';
+                            return (
+                              <Textarea 
+                                className="w-full border px-2 py-[3px] rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" 
+                                placeholder={`Enter ${field.label.toLowerCase()}`} 
+                                rows={3}
+                                value={formData[fieldKey]}
+                                onChange={(e) => handleInputChange(fieldKey, e.target.value)}
+                              ></Textarea>
+                            );
+                          } else {
+                            return <Input type="text" className="w-full border px-2 py-[3px] rounded dark:bg-gray-800 dark:text-white dark:border-gray-600" placeholder={`Enter ${field.label.toLowerCase()}`} />;
+                          }
+                        })()}
                       </td>
                     </tr>
                   );
@@ -871,27 +1165,103 @@ const SBIApartmentForm = () => {
         </div>
       ))}
       
-      <div className="mt-4">
-        <ValuationTable />
-      </div>
+      <ValuationTable />
       
-      <div className="mt-4 print:break-inside-avoid text-[11px]">
-        <div className="flex mb-2 items-center gap-2">
-          <span className="dark:text-white">Place: </span>
-          <Input 
-            type="text" 
-            placeholder="Enter place" 
-            className="w-[200px] border px-2 py-[3px] rounded dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px] h-[26px]" 
-          />
+      <div className="my-8"></div>
+
+      <div className="flex justify-between items-start mb-6">
+        <div className="flex flex-col gap-2">
+          <div>
+            <span className="font-semibold underline mr-2">Place:</span>
+            <Input
+              type="text"
+              value={place}
+              onChange={(e) => setPlace(e.target.value)}
+              className="inline-block w-48 dark:bg-gray-800 dark:text-white dark:border-gray-600"
+            />
+          </div>
+          <div>
+            <span className="font-semibold underline mr-2">Date:</span>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  className={cn(
+                    "w-48 justify-start text-left font-normal",
+                    !currentDate && "text-muted-foreground"
+                  )}
+                >
+                  <CalendarIcon className="mr-2 h-4 w-4" />
+                  {format(currentDate, "dd/MM/yyyy")}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <Calendar
+                  mode="single"
+                  selected={currentDate}
+                  onSelect={(date) => date && setCurrentDate(date)}
+                  initialFocus
+                  className="pointer-events-auto"
+                />
+              </PopoverContent>
+            </Popover>
+          </div>
         </div>
-        <div className="flex items-center gap-2">
-          <span className="dark:text-white">Date: </span>
-          <DatePicker
-            value={new Date()}
-            onChange={() => {}}
+        <div className="text-right">
+          <div className="mb-2">Signature</div>
+          <Input
+            type="text"
+            value={valuerSignature}
+            onChange={(e) => setValuerSignature(e.target.value)}
+            placeholder="Enter name"
+            className="w-64 mb-1 dark:bg-gray-800 dark:text-white dark:border-gray-600"
           />
+          <div className="text-sm">(Name and Official Seal of the Approved Valuer)</div>
         </div>
       </div>
+
+      <div className="mt-8">
+        <p className="mb-6 text-justify">
+          The undersigned has inspected the property detailed in the Valuation Report dated ___________ on ___________. 
+          We are satisfied that the fair and reasonable market value of the property is Rs.___________________ 
+          (Rs. _______________________ only).
+        </p>
+        <div className="flex justify-end">
+          <div className="text-right">
+            <div className="mb-2">Signature</div>
+            <Input
+              type="text"
+              value={branchManagerSignature}
+              onChange={(e) => setBranchManagerSignature(e.target.value)}
+              placeholder="Enter name"
+              className="w-64 mb-1 dark:bg-gray-800 dark:text-white dark:border-gray-600"
+            />
+            <div className="text-sm">(Name of the Bank Manager with office Seal)</div>
+          </div>
+        </div>
+      </div>
+
+      <style>
+        {`
+        @media print {
+          button {
+            display: none;
+          }
+        }
+        
+        /* Style for dynamic height textareas */
+        textarea {
+          min-height: 80px;
+          resize: vertical;
+          overflow: hidden;
+        }
+        
+        /* Style for z-index of dropdown content */
+        .SelectContent {
+          z-index: 50 !important;
+        }
+        `}
+      </style>
     </div>
   );
 };
