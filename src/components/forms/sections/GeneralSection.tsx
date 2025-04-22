@@ -241,6 +241,134 @@ const GeneralSection: React.FC<GeneralSectionProps> = ({
               />
             </td>
           </tr>
+          
+          <tr className="print:break-inside-avoid">
+            <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white text-[11px]">10</td>
+            <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white text-[11px]">UNDIVIDED SHARE OF LAND</td>
+            <td className="border p-2 align-top dark:border-gray-600">
+              <Input 
+                type="text" 
+                className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px] h-[26px] py-[3px]" 
+                placeholder="Enter undivided share of land"
+                value={formData.undividedShareOfLand || ""}
+                onChange={(e) => handleInputChange("undividedShareOfLand", e.target.value)}
+              />
+            </td>
+          </tr>
+          
+          <tr className="print:break-inside-avoid">
+            <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white text-[11px]">11</td>
+            <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white text-[11px]">Layout Plan / Date of approval</td>
+            <td className="border p-2 align-top dark:border-gray-600">
+              <div className="flex flex-col gap-2">
+                <Input 
+                  type="text" 
+                  className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px] h-[26px] py-[3px]" 
+                  placeholder="Enter layout plan details"
+                  value={formData.layoutPlan || ""}
+                  onChange={(e) => handleInputChange("layoutPlan", e.target.value)}
+                />
+                <DatePicker 
+                  value={dates.layoutPlan}
+                  onChange={(date) => handleDateChange("layoutPlan", date)}
+                />
+              </div>
+            </td>
+          </tr>
+          
+          <tr className="print:break-inside-avoid">
+            <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white text-[11px]">12</td>
+            <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white text-[11px]">Building Plan / Date of approval</td>
+            <td className="border p-2 align-top dark:border-gray-600">
+              <div className="flex flex-col gap-2">
+                <Input 
+                  type="text" 
+                  className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px] h-[26px] py-[3px]" 
+                  placeholder="Enter building plan details"
+                  value={formData.buildingPlan || ""}
+                  onChange={(e) => handleInputChange("buildingPlan", e.target.value)}
+                />
+                <DatePicker 
+                  value={formData.buildingPlanDate || new Date()}
+                  onChange={(date) => handleInputChange("buildingPlanDate", date)}
+                />
+              </div>
+            </td>
+          </tr>
+          
+          <tr className="print:break-inside-avoid">
+            <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white text-[11px]">13</td>
+            <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white text-[11px]">Completion Certificate / Date of issue</td>
+            <td className="border p-2 align-top dark:border-gray-600">
+              <div className="flex flex-col gap-2">
+                <Input 
+                  type="text" 
+                  className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px] h-[26px] py-[3px]" 
+                  placeholder="Enter completion certificate details"
+                  value={formData.completionCertificate || ""}
+                  onChange={(e) => handleInputChange("completionCertificate", e.target.value)}
+                />
+                <DatePicker 
+                  value={formData.completionCertificateDate || new Date()}
+                  onChange={(date) => handleInputChange("completionCertificateDate", date)}
+                />
+              </div>
+            </td>
+          </tr>
+          
+          <tr className="print:break-inside-avoid">
+            <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white text-[11px]">14</td>
+            <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white text-[11px]">Present use of the Building/Property</td>
+            <td className="border p-2 align-top dark:border-gray-600">
+              <Input 
+                type="text" 
+                className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px] h-[26px] py-[3px]" 
+                placeholder="Enter present use"
+                value={formData.presentUse || ""}
+                onChange={(e) => handleInputChange("presentUse", e.target.value)}
+              />
+            </td>
+          </tr>
+          
+          <tr className="print:break-inside-avoid">
+            <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white text-[11px]">15</td>
+            <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white text-[11px]">Proposed use of the property</td>
+            <td className="border p-2 align-top dark:border-gray-600">
+              <Input 
+                type="text" 
+                className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px] h-[26px] py-[3px]" 
+                placeholder="Enter proposed use"
+                value={formData.proposedUse || ""}
+                onChange={(e) => handleInputChange("proposedUse", e.target.value)}
+              />
+            </td>
+          </tr>
+          
+          <tr className="print:break-inside-avoid">
+            <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white text-[11px]">16</td>
+            <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white text-[11px]">Any other information</td>
+            <td className="border p-2 align-top dark:border-gray-600">
+              <Textarea 
+                value={formData.otherInformation || ""}
+                onChange={(e) => handleInputChange("otherInformation", e.target.value)}
+                placeholder="Enter any other information"
+                className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px]"
+              />
+            </td>
+          </tr>
+          
+          <tr className="print:break-inside-avoid">
+            <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white text-[11px]">17</td>
+            <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white text-[11px]">Encumbrances, if any</td>
+            <td className="border p-2 align-top dark:border-gray-600">
+              <Textarea 
+                value={formData.encumbrances || ""}
+                onChange={(e) => handleInputChange("encumbrances", e.target.value)}
+                placeholder="Enter encumbrances details"
+                className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px]"
+              />
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>

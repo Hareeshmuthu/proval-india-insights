@@ -22,12 +22,12 @@ const SBIApartmentForm: React.FC<SBIApartmentFormProps> = ({
 }) => {
   const [place, setPlace] = useState("Coimbatore");
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [valuerSignature, setValuerSignature] = useState("");
-  const [branchManagerSignature, setBranchManagerSignature] = useState("");
   const [formData, setFormData] = useState({
     // General section
     purpose: "",
     selectedDocs: [],
+    ownerNameAddress: "",
+    propertyDescription: "",
     plotNo: "",
     surveyNo: "",
     doorNo: "",
@@ -41,8 +41,17 @@ const SBIApartmentForm: React.FC<SBIApartmentFormProps> = ({
     latitude: "",
     longitude: "",
     occupancyDetails: "",
+    undividedShareOfLand: "",
+    layoutPlan: "",
+    buildingPlan: "",
+    completionCertificate: "",
+    presentUse: "",
+    proposedUse: "",
+    otherInformation: "",
+    encumbrances: "",
     
     // Building section
+    natureOfApartment: "",
     tsNoSfNoDoorNo: "",
     blockNo: "",
     wardNo: "",
@@ -59,22 +68,39 @@ const SBIApartmentForm: React.FC<SBIApartmentFormProps> = ({
     carParking: "",
     compoundWall: "",
     pavementAroundBuilding: "",
+    builderName: "",
+    buildingLocation: "",
+    otherBuildingLocation: "",
+    totalFloors: "",
+    totalFlats: "",
     
     // Flat section
+    floorSituated: "",
+    customFloor: "",
     doorNoFlat: "",
+    totalPlinthArea: "",
     roof: "",
     flooring: "",
     doors: "",
     windows: "",
     fittings: "",
     finishings: "",
+    accommodationDetails: "",
     houseTax: "",
     assessmentNumber: "",
     taxPaidInNameOf: "",
     taxAmount: "",
     electricityServiceNumber: "",
     meterCardNameOf: "",
+    waterConnectionNumber: "",
+    waterConnectionNameOf: "",
     maintenanceOfFlat: "",
+    carParkingAllotted: "",
+    carParkingDetails: "",
+    boundaryNorth: "",
+    boundarySouth: "",
+    boundaryEast: "",
+    boundaryWest: "",
     
     // Marketability section
     marketability: "",
@@ -98,14 +124,17 @@ const SBIApartmentForm: React.FC<SBIApartmentFormProps> = ({
     totalCompositeRate: "",
     
     // Valuation section
-    valuationRows: []
+    valuationRows: [],
+    place: "Coimbatore"
   });
 
   const [dates, setDates] = useState({
     inspection: new Date(),
     valuation: new Date(),
     report: new Date(),
-    layoutPlan: new Date()
+    layoutPlan: new Date(),
+    buildingPlanDate: new Date(),
+    completionCertificateDate: new Date()
   });
 
   // Load saved form data from localStorage on initial load
@@ -239,38 +268,6 @@ const SBIApartmentForm: React.FC<SBIApartmentFormProps> = ({
           handleInputChange={handleInputChange}
           projectData={projectData}
         />
-      )}
-      
-      {/* Footer only shown on print or in Valuation section */}
-      {(activeSection === "valuation" || document.querySelector('.print-content')) && (
-        <div className="mt-8 print:mt-4">
-          <div className="flex justify-between items-start">
-            <div className="w-1/3">
-              <p className="mb-1 text-[11px] dark:text-white">Date: {format(currentDate, "dd/MM/yyyy")}</p>
-              <p className="mb-1 text-[11px] dark:text-white">Place: {place}</p>
-            </div>
-            <div className="w-1/3 text-center">
-              <input 
-                type="text" 
-                placeholder="Valuer Signature" 
-                className="border-b border-gray-400 px-2 py-1 w-full text-center dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px]"
-                value={valuerSignature}
-                onChange={(e) => setValuerSignature(e.target.value)}
-              />
-              <p className="text-[11px] dark:text-white">BANK'S APPROVED VALUER</p>
-            </div>
-            <div className="w-1/3 text-right">
-              <input 
-                type="text" 
-                placeholder="Branch Manager Signature" 
-                className="border-b border-gray-400 px-2 py-1 w-full text-center dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px]"
-                value={branchManagerSignature}
-                onChange={(e) => setBranchManagerSignature(e.target.value)}
-              />
-              <p className="text-[11px] dark:text-white">BRANCH MANAGER</p>
-            </div>
-          </div>
-        </div>
       )}
     </div>
   );

@@ -75,10 +75,28 @@ const FlatSection: React.FC<FlatSectionProps> = ({
             </td>
           </tr>
           
+          <tr className="print:break-inside-avoid">
+            <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white text-[11px]">
+              3
+            </td>
+            <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white text-[11px]">
+              Total plinth area of the flat
+            </td>
+            <td className="border p-2 align-top dark:border-gray-600">
+              <Input 
+                type="text" 
+                className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px] h-[26px] py-[3px]" 
+                placeholder="Enter total plinth area"
+                value={formData.totalPlinthArea || ""}
+                onChange={(e) => handleInputChange("totalPlinthArea", e.target.value)}
+              />
+            </td>
+          </tr>
+          
           {/* Specifications */}
           <tr className="print:break-inside-avoid">
             <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white text-[11px]" rowSpan={7}>
-              3
+              4
             </td>
             <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white text-[11px]" colSpan={2}>
               Specifications
@@ -174,11 +192,28 @@ const FlatSection: React.FC<FlatSectionProps> = ({
               />
             </td>
           </tr>
+
+          <tr className="print:break-inside-avoid">
+            <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white text-[11px]">
+              5
+            </td>
+            <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white text-[11px]">
+              Accommodation Details
+            </td>
+            <td className="border p-2 align-top dark:border-gray-600">
+              <Textarea
+                value={formData.accommodationDetails || ""}
+                onChange={(e) => handleInputChange("accommodationDetails", e.target.value)}
+                placeholder="Enter accommodation details"
+                className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px]"
+              />
+            </td>
+          </tr>
           
           {/* House Tax */}
           <tr className="print:break-inside-avoid">
             <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white text-[11px]" rowSpan={5}>
-              4
+              6
             </td>
             <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white text-[11px]" colSpan={2}>
               House Tax
@@ -248,7 +283,7 @@ const FlatSection: React.FC<FlatSectionProps> = ({
           {/* Electricity Service */}
           <tr className="print:break-inside-avoid">
             <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white text-[11px]" rowSpan={3}>
-              5
+              7
             </td>
             <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white text-[11px]" colSpan={2}>
               Electricity Service
@@ -285,10 +320,50 @@ const FlatSection: React.FC<FlatSectionProps> = ({
             </td>
           </tr>
           
+          {/* Water Connection */}
+          <tr className="print:break-inside-avoid">
+            <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white text-[11px]" rowSpan={3}>
+              8
+            </td>
+            <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white text-[11px]" colSpan={2}>
+              Water Connection
+            </td>
+          </tr>
+          
+          <tr className="print:break-inside-avoid">
+            <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white text-[11px]">
+              a. Water Connection Number
+            </td>
+            <td className="border p-2 align-top dark:border-gray-600">
+              <Input 
+                type="text" 
+                className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px] h-[26px] py-[3px]" 
+                placeholder="Enter water connection number"
+                value={formData.waterConnectionNumber || ""}
+                onChange={(e) => handleInputChange("waterConnectionNumber", e.target.value)}
+              />
+            </td>
+          </tr>
+          
+          <tr className="print:break-inside-avoid">
+            <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white text-[11px]">
+              b. Water Connection in the Name of
+            </td>
+            <td className="border p-2 align-top dark:border-gray-600">
+              <Input 
+                type="text" 
+                className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px] h-[26px] py-[3px]" 
+                placeholder="Enter name on water connection"
+                value={formData.waterConnectionNameOf || ""}
+                onChange={(e) => handleInputChange("waterConnectionNameOf", e.target.value)}
+              />
+            </td>
+          </tr>
+          
           {/* Maintenance of Flat */}
           <tr className="print:break-inside-avoid">
             <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white text-[11px]">
-              6
+              9
             </td>
             <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white text-[11px]">
               Maintenance of the flat
@@ -300,6 +375,109 @@ const FlatSection: React.FC<FlatSectionProps> = ({
                 placeholder="Describe maintenance of the flat"
                 value={formData.maintenanceOfFlat || ""}
                 onChange={(e) => handleInputChange("maintenanceOfFlat", e.target.value)}
+              />
+            </td>
+          </tr>
+          
+          {/* Car Parking */}
+          <tr className="print:break-inside-avoid">
+            <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white text-[11px]">
+              10
+            </td>
+            <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white text-[11px]">
+              Car Parking Allotted
+            </td>
+            <td className="border p-2 align-top dark:border-gray-600">
+              <Select 
+                value={formData.carParkingAllotted || ""}
+                onValueChange={(value) => handleInputChange("carParkingAllotted", value)}
+              >
+                <SelectTrigger className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px] h-[26px]">
+                  <SelectValue placeholder="Select" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="yes">Yes</SelectItem>
+                  <SelectItem value="no">No</SelectItem>
+                </SelectContent>
+              </Select>
+              {formData.carParkingAllotted === "yes" && (
+                <Input 
+                  type="text" 
+                  className="w-full mt-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px] h-[26px] py-[3px]" 
+                  placeholder="Enter car parking details"
+                  value={formData.carParkingDetails || ""}
+                  onChange={(e) => handleInputChange("carParkingDetails", e.target.value)}
+                />
+              )}
+            </td>
+          </tr>
+          
+          {/* Property Boundaries */}
+          <tr className="print:break-inside-avoid">
+            <td className="border p-2 text-center align-top w-12 dark:border-gray-600 dark:text-white text-[11px]" rowSpan={5}>
+              11
+            </td>
+            <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white text-[11px]" colSpan={2}>
+              Boundaries of the Property
+            </td>
+          </tr>
+          
+          <tr className="print:break-inside-avoid">
+            <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white text-[11px]">
+              a. North
+            </td>
+            <td className="border p-2 align-top dark:border-gray-600">
+              <Input 
+                type="text" 
+                className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px] h-[26px] py-[3px]" 
+                placeholder="Enter north boundary"
+                value={formData.boundaryNorth || ""}
+                onChange={(e) => handleInputChange("boundaryNorth", e.target.value)}
+              />
+            </td>
+          </tr>
+          
+          <tr className="print:break-inside-avoid">
+            <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white text-[11px]">
+              b. South
+            </td>
+            <td className="border p-2 align-top dark:border-gray-600">
+              <Input 
+                type="text" 
+                className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px] h-[26px] py-[3px]" 
+                placeholder="Enter south boundary"
+                value={formData.boundarySouth || ""}
+                onChange={(e) => handleInputChange("boundarySouth", e.target.value)}
+              />
+            </td>
+          </tr>
+          
+          <tr className="print:break-inside-avoid">
+            <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white text-[11px]">
+              c. East
+            </td>
+            <td className="border p-2 align-top dark:border-gray-600">
+              <Input 
+                type="text" 
+                className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px] h-[26px] py-[3px]" 
+                placeholder="Enter east boundary"
+                value={formData.boundaryEast || ""}
+                onChange={(e) => handleInputChange("boundaryEast", e.target.value)}
+              />
+            </td>
+          </tr>
+          
+          <tr className="print:break-inside-avoid">
+            <td className="border p-2 w-1/2 align-top dark:border-gray-600 dark:text-white text-[11px]">
+              d. West
+            </td>
+            <td className="border p-2 align-top dark:border-gray-600">
+              <Input 
+                type="text" 
+                className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px] h-[26px] py-[3px]" 
+                placeholder="Enter west boundary"
+                value={formData.boundaryWest || ""}
+                onChange={(e) => handleInputChange("boundaryWest", e.target.value)}
               />
             </td>
           </tr>
