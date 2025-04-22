@@ -2,28 +2,19 @@
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { X } from "lucide-react";
-
-interface ValuationRow {
-  id: string;
-  description: string;
-  quantity: number;
-  ratePerUnit: number;
-  unit: string;
-}
+import ValuationRow from "./valuation/ValuationRow";
+import { numberToWords, calculateRowValue, calculateTotal } from "./valuation/valuationUtils";
 
 const unitOptions = ["Ft³", "M³", "Ft²", "M²", "Ft", "M", "Nos."];
 
 const ValuationTable = () => {
-  const [rows, setRows] = useState<ValuationRow[]>([
+  const [rows, setRows] = useState([
     { id: '1', description: '', quantity: 0, ratePerUnit: 0, unit: '' }
   ]);
-  const [customUnit, setCustomUnit] = useState("");
   const [compelledSellerValue, setCompelledSellerValue] = useState<number>(0);
 
   const addRow = () => {
-    setRows([...rows, { 
+    setRows([...rows, {
       id: (rows.length + 1).toString(),
       description: '',
       quantity: 0,
@@ -38,7 +29,7 @@ const ValuationTable = () => {
     }
   };
 
-  const updateRow = (id: string, field: keyof ValuationRow, value: any) => {
+  const updateRow = (id: string, field: string, value: any) => {
     setRows(rows.map(row => {
       if (row.id === id) {
         return { ...row, [field]: value };
@@ -47,17 +38,7 @@ const ValuationTable = () => {
     }));
   };
 
-  const calculateRowValue = (quantity: number, ratePerUnit: number): number => {
-    return (quantity * ratePerUnit) / 100000; // Converting to Lakhs
-  };
-
-  const calculateTotal = (): number => {
-    return rows.reduce((total, row) => total + calculateRowValue(row.quantity, row.ratePerUnit), 0);
-  };
-
-  const calculateNetRealizableValue = (): number => {
-    return calculateTotal() - compelledSellerValue;
-  };
+  const calculateNetRealizableValue = () => calculateTotal(rows) - compelledSellerValue;
 
   return (
     <div className="mt-8">
@@ -75,88 +56,20 @@ const ValuationTable = () => {
             </tr>
           </thead>
           <tbody>
-            {rows.map((row) => (
-              <tr key={row.id} className="dark:bg-gray-900">
-                <td className="border border-gray-300 dark:border-gray-600 p-1 text-center align-middle text-[11px]">
-                  {row.id}
-                </td>
-                <td className="border border-gray-300 dark:border-gray-600 p-1 align-middle">
-                  <Input
-                    value={row.description}
-                    onChange={(e) => updateRow(row.id, 'description', e.target.value)}
-                    className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px] py-[3px] px-2 h-[26px] leading-tight"
-                  />
-                </td>
-                <td className="border border-gray-300 dark:border-gray-600 p-1 align-middle">
-                  <Input
-                    type="number"
-                    inputMode="numeric"
-                    pattern="[0-9]*"
-                    value={row.quantity}
-                    onChange={(e) => updateRow(row.id, 'quantity', parseFloat(e.target.value) || 0)}
-                    className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px] py-[3px] px-2 h-[26px] leading-tight [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-                    style={{ MozAppearance: 'textfield' }}
-                  />
-                </td>
-                <td className="border border-gray-300 dark:border-gray-600 p-1 align-middle">
-                  <Input
-                    type="number"
-                    inputMode="numeric"
-                    pattern="[0-9]*"
-                    value={row.ratePerUnit}
-                    onChange={(e) => updateRow(row.id, 'ratePerUnit', parseFloat(e.target.value) || 0)}
-                    className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px] py-[3px] px-2 h-[26px] leading-tight [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-                    style={{ MozAppearance: 'textfield' }}
-                  />
-                </td>
-                <td className="border border-gray-300 dark:border-gray-600 p-1 align-middle">
-                  <Select
-                    value={row.unit}
-                    onValueChange={(value) => {
-                      if (value === "custom") {
-                        const customVal = prompt("Enter custom unit:");
-                        if (customVal) {
-                          updateRow(row.id, 'unit', customVal);
-                          if (!unitOptions.includes(customVal)) {
-                            setCustomUnit(customVal);
-                          }
-                        }
-                      } else {
-                        updateRow(row.id, 'unit', value);
-                      }
-                    }}
-                  >
-                    <SelectTrigger className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px] h-[26px] py-[3px]">
-                      <SelectValue placeholder="Select unit" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {unitOptions.map((unit) => (
-                        <SelectItem key={unit} value={unit} className="text-[11px]">{unit}</SelectItem>
-                      ))}
-                      <SelectItem value="custom" className="text-[11px]">Custom...</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </td>
-                <td className="border border-gray-300 dark:border-gray-600 p-1 text-right align-middle text-[11px]">
-                  {calculateRowValue(row.quantity, row.ratePerUnit).toFixed(2)}
-                </td>
-                <td className="border border-gray-300 dark:border-gray-600 p-1 text-center align-middle">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => deleteRow(row.id)}
-                    className="p-1 h-7 w-7"
-                  >
-                    <X className="h-3 w-3" />
-                  </Button>
-                </td>
-              </tr>
-            ))}
+            {rows.map((row) =>
+              <ValuationRow
+                key={row.id}
+                row={row}
+                unitOptions={unitOptions}
+                updateRow={updateRow}
+                deleteRow={deleteRow}
+              />
+            )}
             <tr className="bg-gray-50 dark:bg-gray-800 font-semibold">
               <td colSpan={6} className="border border-gray-300 dark:border-gray-600 p-1">
                 <div className="flex justify-between items-center">
                   <span className="text-[11px]">Total</span>
-                  <span className="text-[11px]">{calculateTotal().toFixed(2)}</span>
+                  <span className="text-[11px]">{calculateTotal(rows).toFixed(2)}</span>
                 </div>
               </td>
               <td className="border border-gray-300 dark:border-gray-600 p-1 text-center">
@@ -172,12 +85,12 @@ const ValuationTable = () => {
             </tr>
           </tbody>
         </table>
-        
+
         <div className="mt-3 space-y-3">
           <div className="p-3 bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded text-[11px]">
             <p className="text-[11px] dark:text-white">
               Net Realizable Value = Rs.{" "}
-              <span className="font-semibold">{calculateTotal().toFixed(2)}</span> Lakhs - Rs.{" "}
+              <span className="font-semibold">{calculateTotal(rows).toFixed(2)}</span> Lakhs - Rs.{" "}
               <Input
                 type="number"
                 inputMode="numeric"
@@ -194,9 +107,9 @@ const ValuationTable = () => {
 
           <div className="p-3 bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded text-[11px]">
             <p className="text-[11px] dark:text-white leading-relaxed">
-              As a result of my appraisal and analysis, it is my considered opinion that the Net Realizable Value of the above property 
+              As a result of my appraisal and analysis, it is my considered opinion that the Net Realizable Value of the above property
               in the prevailing condition with aforesaid specifications is Rs.{" "}
-              <span className="font-semibold">{calculateNetRealizableValue().toFixed(2)}</span> Lakhs 
+              <span className="font-semibold">{calculateNetRealizableValue().toFixed(2)}</span> Lakhs
               (Rupees {numberToWords(calculateNetRealizableValue())} Lakhs Only)
             </p>
           </div>
@@ -206,10 +119,4 @@ const ValuationTable = () => {
   );
 };
 
-const numberToWords = (num: number): string => {
-  const value = num.toFixed(2);
-  return value;
-};
-
 export default ValuationTable;
-
