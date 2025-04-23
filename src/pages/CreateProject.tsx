@@ -161,6 +161,12 @@ const CreateProject = () => {
         return;
       }
       
+      // Check if it's Canara Bank + Vacant Plot to navigate to Canara vacant plot page
+      if (formData.bankName === 'Canara' && formData.propertyType === 'Vacant Plot') {
+        navigate(`/dashboard/canara-vacant-plot?project=${nextProjectNumber}`);
+        return;
+      }
+      
       // Reset form for next entry
       setNextProjectNumber(prev => prev + 1);
       setFormData({
@@ -178,9 +184,11 @@ const CreateProject = () => {
       });
       setShowPvr(false);
     } else {
-      // Navigate to projects page, or SBI apartment page if applicable
+      // Navigate to appropriate form page based on bank and property type
       if (formData.bankName === 'SBI' && formData.propertyType === 'Apartment Flat') {
         navigate(`/dashboard/sbi-apartment?project=${nextProjectNumber}`);
+      } else if (formData.bankName === 'Canara' && formData.propertyType === 'Vacant Plot') {
+        navigate(`/dashboard/canara-vacant-plot?project=${nextProjectNumber}`);
       } else {
         navigate("/dashboard/files");
       }

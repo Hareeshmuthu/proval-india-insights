@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -12,16 +11,15 @@ import Signup from "./pages/Signup";
 import CreateProject from "./pages/CreateProject";
 import ProjectFiles from "./pages/ProjectFiles";
 import SBIApartmentValuation from "./pages/SBIApartmentValuation";
+import CanaraVacantPlotValuation from "./pages/CanaraVacantPlotValuation";
 import { useEffect } from "react";
 import { QueryClient } from "@tanstack/react-query";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 
-// Protected route component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading } = useAuth();
   
   if (loading) {
-    // Still loading
     return <div className="flex h-screen items-center justify-center">Loading...</div>;
   }
   
@@ -32,14 +30,10 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>;
 };
 
-// Create the query client instance
 const queryClient = new QueryClient();
 
-// We need this RouterWrapper because the AuthProvider needs to access useNavigate
-// but BrowserRouter needs to be the parent of AuthProvider
 const RouterWrapper = () => {
   useEffect(() => {
-    // Set dark mode by default for home page
     const path = window.location.pathname;
     if (path === "/" || path === "/signup" || path === "/login") {
       document.documentElement.classList.add("dark");
@@ -90,6 +84,14 @@ const RouterWrapper = () => {
             element={
               <ProtectedRoute>
                 <SBIApartmentValuation />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/dashboard/canara-vacant-plot" 
+            element={
+              <ProtectedRoute>
+                <CanaraVacantPlotValuation />
               </ProtectedRoute>
             } 
           />
