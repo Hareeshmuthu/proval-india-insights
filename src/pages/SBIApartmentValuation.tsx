@@ -20,6 +20,7 @@ interface Project {
   customerName: string;
   bankName: string;
   propertyType: string;
+  userName: string;
 }
 
 const FORM_SECTIONS = [
@@ -70,6 +71,7 @@ const SBIApartmentValuation = () => {
   };
 
   const handlePrint = () => {
+    // Always print the entire form (print form covers ALL sections by design)
     window.print();
   };
 
@@ -104,6 +106,8 @@ const SBIApartmentValuation = () => {
     }));
   };
 
+  const userName = project?.userName || project?.customerName || "";
+
   return (
     <div className="flex h-screen overflow-hidden bg-background">
       <Sidebar />
@@ -116,6 +120,7 @@ const SBIApartmentValuation = () => {
             <SBIApartmentPrintForm
               formData={formData}
               projectData={project}
+              userName={userName}
             />
           )}
 
