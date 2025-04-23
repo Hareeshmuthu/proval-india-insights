@@ -1,3 +1,4 @@
+
 import React from "react";
 import ValuationTable from "../ValuationTable";
 import { format } from "date-fns";
@@ -6,6 +7,7 @@ interface ValuationTableSectionProps {
   formData: any;
   handleInputChange: (field: string, value: any) => void;
   projectData: any;
+  printMode?: boolean; // Add printMode prop
 }
 
 const ValuationTableSection: React.FC<ValuationTableSectionProps> = ({

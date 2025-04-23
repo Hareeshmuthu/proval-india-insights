@@ -5,11 +5,13 @@ import { Input } from "@/components/ui/input";
 interface RateSectionProps {
   formData: any;
   handleInputChange: (field: string, value: any) => void;
+  printMode?: boolean; // Add printMode prop
 }
 
 const RateSection: React.FC<RateSectionProps> = ({
   formData,
-  handleInputChange
+  handleInputChange,
+  printMode = false
 }) => {
   return (
     <div className="space-y-4">
@@ -25,13 +27,17 @@ const RateSection: React.FC<RateSectionProps> = ({
               Comparable rate in locality
             </td>
             <td className="border p-2 align-top dark:border-gray-600">
-              <Input 
-                type="text" 
-                className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px] h-[26px] py-[3px]" 
-                placeholder="Enter comparable rate in locality"
-                value={formData.comparableRate || ""}
-                onChange={(e) => handleInputChange("comparableRate", e.target.value)}
-              />
+              {printMode ? (
+                <div className="p-2 dark:text-white">{formData.comparableRate || ""}</div>
+              ) : (
+                <Input 
+                  type="text" 
+                  className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px] h-[26px] py-[3px]" 
+                  placeholder="Enter comparable rate in locality"
+                  value={formData.comparableRate || ""}
+                  onChange={(e) => handleInputChange("comparableRate", e.target.value)}
+                />
+              )}
             </td>
           </tr>
           
@@ -43,13 +49,17 @@ const RateSection: React.FC<RateSectionProps> = ({
               Adopted basic composite rate
             </td>
             <td className="border p-2 align-top dark:border-gray-600">
-              <Input 
-                type="text" 
-                className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px] h-[26px] py-[3px]" 
-                placeholder="Enter adopted basic composite rate"
-                value={formData.adoptedBasicRate || ""}
-                onChange={(e) => handleInputChange("adoptedBasicRate", e.target.value)}
-              />
+              {printMode ? (
+                <div className="p-2 dark:text-white">{formData.adoptedBasicRate || ""}</div>
+              ) : (
+                <Input 
+                  type="text" 
+                  className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px] h-[26px] py-[3px]" 
+                  placeholder="Enter adopted basic composite rate"
+                  value={formData.adoptedBasicRate || ""}
+                  onChange={(e) => handleInputChange("adoptedBasicRate", e.target.value)}
+                />
+              )}
             </td>
           </tr>
           
@@ -67,13 +77,17 @@ const RateSection: React.FC<RateSectionProps> = ({
               i. Building + Services + Amenities
             </td>
             <td className="border p-2 align-top dark:border-gray-600">
-              <Input 
-                type="text" 
-                className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px] h-[26px] py-[3px]" 
-                placeholder="Enter building + services + amenities rate"
-                value={formData.buildingServicesAmenities || ""}
-                onChange={(e) => handleInputChange("buildingServicesAmenities", e.target.value)}
-              />
+              {printMode ? (
+                <div className="p-2 dark:text-white">{formData.buildingServicesAmenities || ""}</div>
+              ) : (
+                <Input 
+                  type="text" 
+                  className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px] h-[26px] py-[3px]" 
+                  placeholder="Enter building + services + amenities rate"
+                  value={formData.buildingServicesAmenities || ""}
+                  onChange={(e) => handleInputChange("buildingServicesAmenities", e.target.value)}
+                />
+              )}
             </td>
           </tr>
           
@@ -82,13 +96,17 @@ const RateSection: React.FC<RateSectionProps> = ({
               ii. Land + Development + Gated Community
             </td>
             <td className="border p-2 align-top dark:border-gray-600">
-              <Input 
-                type="text" 
-                className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px] h-[26px] py-[3px]" 
-                placeholder="Enter land + development + gated community rate"
-                value={formData.landDevelopmentGated || ""}
-                onChange={(e) => handleInputChange("landDevelopmentGated", e.target.value)}
-              />
+              {printMode ? (
+                <div className="p-2 dark:text-white">{formData.landDevelopmentGated || ""}</div>
+              ) : (
+                <Input 
+                  type="text" 
+                  className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px] h-[26px] py-[3px]" 
+                  placeholder="Enter land + development + gated community rate"
+                  value={formData.landDevelopmentGated || ""}
+                  onChange={(e) => handleInputChange("landDevelopmentGated", e.target.value)}
+                />
+              )}
             </td>
           </tr>
           
@@ -100,13 +118,17 @@ const RateSection: React.FC<RateSectionProps> = ({
               Guideline rate from Registrar
             </td>
             <td className="border p-2 align-top dark:border-gray-600">
-              <Input 
-                type="text" 
-                className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px] h-[26px] py-[3px]" 
-                placeholder="Enter guideline rate from Registrar"
-                value={formData.guidelineRate || ""}
-                onChange={(e) => handleInputChange("guidelineRate", e.target.value)}
-              />
+              {printMode ? (
+                <div className="p-2 dark:text-white">{formData.guidelineRate || ""}</div>
+              ) : (
+                <Input 
+                  type="text" 
+                  className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px] h-[26px] py-[3px]" 
+                  placeholder="Enter guideline rate from Registrar"
+                  value={formData.guidelineRate || ""}
+                  onChange={(e) => handleInputChange("guidelineRate", e.target.value)}
+                />
+              )}
             </td>
           </tr>
         </tbody>

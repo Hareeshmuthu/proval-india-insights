@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -5,11 +6,13 @@ import { Textarea } from "@/components/ui/textarea";
 interface MarketabilitySectionProps {
   formData: any;
   handleInputChange: (field: string, value: any) => void;
+  printMode?: boolean; // Add printMode prop
 }
 
 const MarketabilitySection: React.FC<MarketabilitySectionProps> = ({
   formData,
-  handleInputChange
+  handleInputChange,
+  printMode = false
 }) => {
   return (
     <div className="space-y-4">
@@ -25,12 +28,16 @@ const MarketabilitySection: React.FC<MarketabilitySectionProps> = ({
               How is the marketability?
             </td>
             <td className="border p-2 align-top dark:border-gray-600">
-              <Textarea 
-                value={formData.marketability}
-                onChange={(e) => handleInputChange("marketability", e.target.value)}
-                placeholder="Describe the marketability..."
-                className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px]"
-              />
+              {printMode ? (
+                <div className="p-2 dark:text-white">{formData.marketability || ""}</div>
+              ) : (
+                <Textarea 
+                  value={formData.marketability}
+                  onChange={(e) => handleInputChange("marketability", e.target.value)}
+                  placeholder="Describe the marketability..."
+                  className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px]"
+                />
+              )}
             </td>
           </tr>
           
@@ -42,12 +49,16 @@ const MarketabilitySection: React.FC<MarketabilitySectionProps> = ({
               Factors favoring extra value
             </td>
             <td className="border p-2 align-top dark:border-gray-600">
-              <Textarea 
-                value={formData.factorsFavoring}
-                onChange={(e) => handleInputChange("factorsFavoring", e.target.value)}
-                placeholder="List factors favoring extra value..."
-                className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px]"
-              />
+              {printMode ? (
+                <div className="p-2 dark:text-white">{formData.factorsFavoring || ""}</div>
+              ) : (
+                <Textarea 
+                  value={formData.factorsFavoring}
+                  onChange={(e) => handleInputChange("factorsFavoring", e.target.value)}
+                  placeholder="List factors favoring extra value..."
+                  className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px]"
+                />
+              )}
             </td>
           </tr>
           
@@ -59,12 +70,16 @@ const MarketabilitySection: React.FC<MarketabilitySectionProps> = ({
               Negative factors affecting value
             </td>
             <td className="border p-2 align-top dark:border-gray-600">
-              <Textarea 
-                value={formData.negativeFactors}
-                onChange={(e) => handleInputChange("negativeFactors", e.target.value)}
-                placeholder="List negative factors affecting value..."
-                className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px]"
-              />
+              {printMode ? (
+                <div className="p-2 dark:text-white">{formData.negativeFactors || ""}</div>
+              ) : (
+                <Textarea 
+                  value={formData.negativeFactors}
+                  onChange={(e) => handleInputChange("negativeFactors", e.target.value)}
+                  placeholder="List negative factors affecting value..."
+                  className="w-full dark:bg-gray-800 dark:text-white dark:border-gray-600 text-[11px]"
+                />
+              )}
             </td>
           </tr>
         </tbody>

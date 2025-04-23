@@ -7,11 +7,14 @@ import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 interface DatePickerProps {
-  value: Date;
+  value: Date | null; // Changed to allow null values
   onChange: (date: Date) => void;
 }
 
 export const DatePicker: React.FC<DatePickerProps> = ({ value, onChange }) => {
+  // Make sure we always have a valid date to format
+  const safeValue = value instanceof Date && !isNaN(value.getTime()) ? value : new Date();
+  
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -20,13 +23,13 @@ export const DatePicker: React.FC<DatePickerProps> = ({ value, onChange }) => {
           className="w-full justify-start text-left font-normal bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 dark:text-white"
         >
           <CalendarIcon className="mr-2 h-4 w-4" />
-          {format(value, "dd/MM/yyyy")}
+          {format(safeValue, "dd/MM/yyyy")}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0 pointer-events-auto z-50">
         <Calendar
           mode="single"
-          selected={value}
+          selected={safeValue}
           onSelect={(date) => date && onChange(date)}
           initialFocus
           className="pointer-events-auto"
