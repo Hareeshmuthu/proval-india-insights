@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -26,11 +25,12 @@ const docOptions = [
   'Copy of Property Tax Receipt'
 ];
 
-const GeneralSection: React.FC<GeneralSectionProps> = ({
+const GeneralSection = ({
   formData,
   handleInputChange,
   dates,
-  handleDateChange
+  handleDateChange,
+  printMode = false
 }) => {
   return (
     <div className="space-y-4">

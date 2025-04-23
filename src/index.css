@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -98,50 +97,65 @@
 
 /* Print styles */
 @media print {
+  .print-header, .print-footer {
+    display: block !important;
+  }
+  .print-footer {
+    position: fixed;
+    bottom: 0;
+    width: 100vw;
+    text-align: right;
+    font-size: 12px;
+  }
+  .print-header {
+    position: fixed;
+    top: 0;
+    width: 100vw;
+    text-align: left;
+    background: white;
+    z-index: 9999;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 4px;
+  }
+  .print-page-number:after {
+    content: counter(page);
+  }
   @page {
-    size: auto;
-    margin: 15mm 10mm 15mm 10mm;
+    margin-top: 48mm;
+    margin-bottom: 24mm;
   }
-  
-  body {
-    background-color: white !important;
-    color: black !important;
+  .print\:block {
+    display: block !important;
   }
-  
-  .ml-[240px] {
-    margin-left: 0 !important;
+  .print\:fixed {
+    position: fixed !important;
   }
-  
-  nav, header, footer, .no-print, button {
+  .print\:left-0 {
+    left: 0 !important;
+  }
+  .print\:right-0 {
+    right: 0 !important;
+  }
+  .print\:bottom-0 {
+    bottom: 0 !important;
+  }
+  .print\:top-0 {
+    top: 0 !important;
+  }
+  .print\:z-50 {
+    z-index: 50 !important;
+  }
+  .print\:pt-20 {
+    padding-top: 80px !important;
+  }
+  .print\:px-2 {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+  }
+  .print\:w-full {
+    width: 100% !important;
+  }
+  .hidden {
     display: none !important;
-  }
-  
-  .shadow {
-    box-shadow: none !important;
-  }
-  
-  .overflow-y-auto {
-    overflow: visible !important;
-  }
-  
-  .p-6 {
-    padding: 0 !important;
-  }
-  
-  .rounded-lg {
-    border-radius: 0 !important;
-  }
-  
-  .bg-white {
-    background: white !important;
-  }
-  
-  /* Make text and borders darker for better printing */
-  td, th {
-    border-color: #000 !important;
-  }
-  
-  input, select, textarea {
-    border: 1px solid #ccc !important;
   }
 }

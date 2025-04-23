@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -8,11 +7,13 @@ import { CustomDropdown } from "../form-components/CustomDropdown";
 interface FlatSectionProps {
   formData: any;
   handleInputChange: (field: string, value: any) => void;
+  printMode?: boolean;
 }
 
 const FlatSection: React.FC<FlatSectionProps> = ({
   formData,
-  handleInputChange
+  handleInputChange,
+  printMode = false
 }) => {
   return (
     <div className="space-y-4">

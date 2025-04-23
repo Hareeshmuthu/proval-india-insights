@@ -1,9 +1,9 @@
-
 import React, { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import Sidebar from "@/components/dashboard/Sidebar";
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
 import SBIApartmentForm from "@/components/forms/SBIApartmentForm";
+import SBIApartmentPrintForm from "@/components/forms/SBIApartmentPrintForm";
 import { FilePenLine, Printer, FileText, ArrowLeft, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -47,7 +47,7 @@ const SBIApartmentValuation = () => {
   const [searchParams] = useSearchParams();
   const [activeSection, setActiveSection] = useState("general");
   const [formData, setFormData] = useState({});
-  
+
   useEffect(() => {
     const projectId = searchParams.get('project');
     if (projectId) {
@@ -112,6 +112,13 @@ const SBIApartmentValuation = () => {
         <DashboardHeader />
         
         <main className="flex-1 overflow-y-auto p-6">
+          {project && (
+            <SBIApartmentPrintForm
+              formData={formData}
+              projectData={project}
+            />
+          )}
+
           <div className="mb-6">
             <h1 className="text-2xl font-bold text-foreground">
               {project ? `${project.customerName}'s SBI Apartment Valuation` : 'SBI Apartment Valuation Form'}

@@ -1,4 +1,3 @@
-
 import React from "react";
 import ValuationTable from "../ValuationTable";
 import { format } from "date-fns";
@@ -12,14 +11,13 @@ interface ValuationTableSectionProps {
 const ValuationTableSection: React.FC<ValuationTableSectionProps> = ({
   formData,
   handleInputChange,
-  projectData
+  projectData,
+  printMode = false
 }) => {
   return (
     <div className="space-y-4">
       <h2 className="text-lg font-semibold mb-4 dark:text-white">SBI - AP DETAILS OF VALUATION</h2>
-      
       <ValuationTable />
-      
       <div className="mt-8 print:mt-4">
         <div className="flex justify-between items-start">
           <div className="w-1/3">

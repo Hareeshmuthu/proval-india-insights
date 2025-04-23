@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -8,11 +7,13 @@ import { YearPicker } from "../form-components/YearPicker";
 interface ApartmentBuildingSectionProps {
   formData: any;
   handleInputChange: (field: string, value: any) => void;
+  printMode?: boolean;
 }
 
 const ApartmentBuildingSection = ({
   formData,
-  handleInputChange
+  handleInputChange,
+  printMode = false
 }: ApartmentBuildingSectionProps) => {
   return (
     <div className="space-y-4">
