@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
@@ -72,9 +71,10 @@ const RecentFilesTable = () => {
   };
 
   const handleEditProject = (project: any) => {
-    // If SBI Apartment, navigate to SBI apartment page
     if (project.bankName === 'SBI' && project.propertyType === 'Apartment Flat') {
       navigate(`/dashboard/sbi-apartment?project=${project.projectNumber}`);
+    } else if (project.bankName === 'Canara Bank' && project.propertyType === 'Vacant Plot') {
+      navigate(`/dashboard/canara-vacant-plot?project=${project.projectNumber}`);
     } else {
       toast.info("Editing other project types is not yet implemented");
     }
